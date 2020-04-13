@@ -80,10 +80,15 @@ export class UnitListComponent implements OnInit {
         private cookieStore:CookieStoreService,
         private globalService:GlobalService,
         private notificationService: NotificationService) {
-        this.getCustomerList('1');
         window.scrollTo(0,0);
         this.super_admin_id = this.globalService.getAdminID();
         this.cid = this.cookieStore.getCookie('cid');
+        console.log(this.cookieStore.getCookie('cid'));
+        console.log(this.globalService.adminIdDLZM);
+        // if(this.cookieStore.getCookie('cid') == this.globalService.adminIdDLZM){
+        //     this.role = '6';
+        // }
+        this.getCustomerList('1');
         this.getCustomerDefault();
     }
 
