@@ -416,7 +416,7 @@ div.dataTables_paginate ul.pagination {
     background-color: #60C060;
 }
 .label-primary {
-    background-color: #169af6;
+    background-color: #DAB866;
 }
 .label-warning {
     background-color: #fcad37;
@@ -451,7 +451,7 @@ div.dataTables_paginate ul.pagination {
     padding: 2px 10px;
 }
 .label-blue{
-    background-color: #169af6!important;
+    background-color: #DAB866!important;
     color: #fff;
     padding: 2px 10px;
 }
@@ -526,7 +526,7 @@ div.dataTables_paginate ul.pagination {
     background-color: #a1a1a1;
 }
 .badge-primary {
-    background-color: #169af6 !important;
+    background-color: #DAB866 !important;
 }
 .badge-success {
     background-color: #60C060 !important;
@@ -551,7 +551,7 @@ div.dataTables_paginate ul.pagination {
     line-height: 17px;
 }
 .progress-bar-info {
-    background-color: #169af6;
+    background-color: #DAB866;
 }
 .progress-bar-success {
     background-color: #60C060;
@@ -567,7 +567,7 @@ div.dataTables_paginate ul.pagination {
 
 
 .text-primary {
-    color: #169af6 !important;
+    color: #DAB866 !important;
 }
 .text-success {
     color: #60C060 !important;
@@ -691,11 +691,11 @@ div.dataTables_paginate ul.pagination {
     color: #23c6c8;
 }
 .text-blove {
-    color: #169af6;
+    color: #DAB866;
 }
 
 .bg-color-blove {
-    background-color: #169af6!important;
+    background-color: #DAB866!important;
 }
 
 .bg-color-blue {
@@ -790,7 +790,7 @@ div.dataTables_paginate ul.pagination {
     border: 2px solid #c79121!important;
 }
 .bo-color-blue{
-    border: 2px solid #169af6!important;
+    border: 2px solid #DAB866!important;
 }
 .bo-color-grey {
     border: 2px solid #ccc!important;
@@ -1272,7 +1272,7 @@ h1,h2,h3,h4 {
 }
 
 .btn-save{
-    background-color: #169af6;
+    background-color: #DAB866;
     padding: 6px 20px;
     color: #fff;
     font-size: 16px;
@@ -1297,18 +1297,18 @@ h1,h2,h3,h4 {
     border-radius: 4px;
 }
 .btn-loading:hover{
-    background-color: #169af6;
+    background-color: #DAB866;
     border:1px solid #3782e7;
     color: #fff;
 }
 
 .btn-s{
     color: #ffffff;
-    border: solid 1px #169af6;
+    border: solid 1px #DAB866;
     display: inline-block;
     line-height: 30px;
     padding: 0 8px;
-    background: #169af6
+    background: #DAB866
 }
 .btn-cancel{
     background-color: #ccc;

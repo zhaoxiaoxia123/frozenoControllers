@@ -805,8 +805,8 @@ body.nooverflow {
 }
 .jarviswidget header .nav-tabs>li.active>a, .jarviswidget header .nav-tabs>li.active>a:focus, .jarviswidget header .nav-tabs>li.active>a:hover {
     color: #fff;
-    background-color: #007bff;
-    border: 1px solid #007bff;
+    background-color: #DAB866;
+    border: 1px solid #DAB866;
     border-bottom-color: transparent;
     border-top: none;
     cursor: default;
@@ -1429,7 +1429,7 @@ label {
     left: -9999px;
 }
 .smart-form .checkbox input:checked+i, .smart-form .radio input:checked+i, .smart-form .toggle input:checked+i {
-    border-color: #007bff;
+    border-color: #DAB866;
 }
 .smart-form .radio i {
     border-radius: 50%;
@@ -1451,7 +1451,7 @@ label {
     opacity: 1;
 }
 .smart-form .radio input+i:after {
-    background-color: #007bff;
+    background-color: #DAB866;
 }
 .smart-form .radio input+i:after {
     content: '';
@@ -1886,7 +1886,7 @@ label {
 }
 
 .select2-results .select2-highlighted,.select2-results__option--highlighted {
-    background: #007bff;
+    background: #DAB866;
     color: #fff
 }
 
@@ -2046,7 +2046,7 @@ label {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background-color: #007bff
+    background-color: #DAB866
 }
 
 .smart-rtl .select2-container-multi .select2-choices .select2-search-choice,.smart-rtl .select2-selection__choice {
@@ -2221,7 +2221,7 @@ label {
     padding: 3px 28px 4px 8px;
     font-size: 13px;
     border: 1px solid #086aff;
-    background: #007bff
+    background: #DAB866
 }
 
 .bootstrap-tagsinput input {
@@ -2504,7 +2504,7 @@ table.dataTable {
     top: 0!important;
 }
 .smart-form .checkbox input+i:after {
-    color: #007bff;
+    color: #DAB866;
 }
 .smart-form .checkbox input+i:after {
     content: '\f00c';
@@ -3488,7 +3488,7 @@ div.dataTables_editor{
 }
 
 .pace .pace-progress {
-    background: #007bff;
+    background: #DAB866;
     position: fixed;
     z-index: 2000;
     top: 0;
@@ -3607,7 +3607,7 @@ div.dataTables_editor{
     padding-left: 45px;
 }
 .icon-set li a{
-    font-size: 32px;
+    font-size: 36px;
 }
 .icon-set_nailing{
     background: rgba(0, 0, 0, 0) url(../img/login.png) no-repeat scroll -43px -4px;
@@ -4016,7 +4016,7 @@ div.dataTables_editor{
     background: #f8f6f2;
 }
 .project-grid .project-item a.center:hover h4 {
-    color: #169af6;
+    color: #DAB866;
 }
 .project-grid .project-item a.center i {
     font-size: 32px;
@@ -4352,7 +4352,7 @@ div.dataTables_editor{
 }
 .task_style .entry-task-main a.entry-task-check i.fa-check-square {
     font-size: 17px;
-    color: #169af6;
+    color: #DAB866;
 }
 .task_style:after, .task_style:before {
     content: " ";
@@ -4675,7 +4675,7 @@ div.dataTables_editor{
     color: #b9b9b7;
 }
 .entity-well .entity-well-content .entity-title a:active, .entity-well .entity-well-content .entity-title a:hover {
-    color: #169af6;
+    color: #DAB866;
 }
 .entity-well .entity-well-content .entity-title h2 {
     margin: 5px 24px 5px 5px;
@@ -4709,7 +4709,7 @@ div.dataTables_editor{
     position: relative;
 }
 .entity-well .entity-well-content .entity-title a i.fa-check-square {
-    color: #169af6;
+    color: #DAB866;
 }
 .task-completed-style {
     color: #999;
@@ -4883,13 +4883,13 @@ ul.avatars li {
     width: 60px;
     height: 30px;
     color: #fff!important;
-    border: solid 1px #169af6;
+    border: solid 1px #DAB866;
     display: inline-block;
     font-size: 13px!important;
     line-height: 30px;
     padding: 0 4px;
     text-align: center;
-    background: #169af6;
+    background: #DAB866;
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 4px;
@@ -5364,7 +5364,7 @@ ul.checkable.checkable--popboxmenu li a .label-name {
     margin-top: 20px;
 }
 .pwdsave button {
-    background-color: #169af6;
+    background-color: #DAB866;
     padding: 6px 50px;
     color: #fff;
     font-size: 16px;
@@ -5719,13 +5719,13 @@ ul.checkable.checkable--popboxmenu li a .label-name {
     width: 60px;
     height: 60px;
     color: #ffffff;
-    border: solid 1px #169af6;
+    border: solid 1px #DAB866;
     display: inline-block;
     font-size: 16px!important;
     line-height: 60px;
     padding: 0 4px;
     text-align: center;
-    background: #169af6;
+    background: #DAB866;
     overflow: hidden;
     text-overflow: ellipsis;
     border-radius: 4px;
@@ -5903,7 +5903,7 @@ ul.checkable.checkable--popboxmenu li a .label-name {
     border-left: 1px solid #ddd;
 }
 .panel:hover{
-    border: 1px solid #169af6;
+    border: 1px solid #DAB866;
 }
 .panel{
     cursor: pointer;
@@ -5969,7 +5969,7 @@ ul.checkable.checkable--popboxmenu li a .label-name {
     content: attr(data-swchon-text);
     text-shadow: 0 -1px 0 #333;
     padding-left: 12px;
-    background-color: #007bff;
+    background-color: #DAB866;
     color: #fff;
     box-shadow: inset 0 2px 6px rgba(0,0,0,.5),0 1px 2px rgba(0,0,0,.05);
     text-align: left
@@ -6065,7 +6065,7 @@ ul.checkable.checkable--popboxmenu li a .label-name {
 }
 
 .onoffswitch-checkbox:checked+.onoffswitch-label {
-    border-color: #007bff #2a6395 #255681
+    border-color: #DAB866 #2a6395 #255681
 }
 
 .onoffswitch+span,.onoffswitch-title {

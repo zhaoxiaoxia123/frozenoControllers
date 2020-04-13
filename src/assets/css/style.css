@@ -8,9 +8,9 @@
 }
 /*刷新*/
 .refresh-page:hover{
-    background: #007bff;
+    background: #DAB866;
     color: #fff!important;
-    border: 1px solid #007bff;
+    border: 1px solid #DAB866;
 }
 /*well*/
 .well {
@@ -81,7 +81,7 @@
 }
 .login-item{
     font-weight: bold;
-    border-bottom: 3px solid #169af6;
+    border-bottom: 3px solid #DAB866;
 }
 .login-btn{
     cursor: pointer;
@@ -158,8 +158,8 @@
 .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
     z-index: 3;
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #DAB866;
+    border-color: #DAB866;
     cursor: default;
 }
 .pagination>.disabled>a, .pagination>.disabled>a:focus, .pagination>.disabled>a:hover, .pagination>.disabled>span, .pagination>.disabled>span:focus, .pagination>.disabled>span:hover {
