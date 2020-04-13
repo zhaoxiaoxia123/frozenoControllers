@@ -64,7 +64,7 @@ export class SmartMenuDirective implements OnInit, AfterContentInit {
         });
         this.togglersBinded = true;
       }
-    }, 2000);//xxx
+    }, 7000);//xxx
   }
 
   ngOnDestroy() {
