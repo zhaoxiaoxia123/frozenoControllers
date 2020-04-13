@@ -1,0 +1,227 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12 ">
+        <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+          <header>
+            <span class="widget-icon"> <i class="fa {{menuInfos?.menu_icon}}"></i> </span>
+            <h2>{{menuInfos?.menu_name}}</h2>
+          </header>
+          <div>
+            <div class="widget-body no-padding" >
+              <article>
+                <div class="navbar navbar-default">
+                  <form  class="navbar-form " novalidate="" role="search" >
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'edit')">
+                      <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':isStatus == 0}" (click)="detailAssets('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                    </div>
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'delete')">
+                      <button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':isStatus == 0}"  (click)="deleteAssets('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                    </div>
+                    <div class="btn-group" *ngIf="isPermission(menu_id,'detail')">
+                      <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':isStatus == 0}"  (click)="detailAssets('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                    </div>
+                    <!--<div class="btn-group">-->
+                      <!--<button type="button" class="btn btn-secondary" (click)="showAllCheck()" ><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>-->
+                      <!--<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">-->
+                        <!--<span class="sr-only"></span>-->
+                      <!--</button>-->
+                      <!--<div class="dropdown-menu">-->
+                        <!--<a class="dropdown-item" (click)="deleteAssets('all')">批量删除</a>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                  </form>
+                  <form  class="navbar-form" novalidate="" role="search" >
+                    <div class="btn-group">
+                      <input type="text" class="form-control"  maxlength="15" [(ngModel)]="keyword" name="keyword" placeholder="请输入搜索内容"  >
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn default-btn" (click)="getAssetsList('1')">搜索</button>
+                    </div>
+
+                  </form>
+                </div>
+              </article>
+              <div class="padding0 height-overflow" >
+                <div style="padding: 0;z-index: 2;width:10%;float:left;" class="table-scrolling">
+                  <table class="table table-striped smart-form table-height-20">
+                    <thead>
+                    <tr >
+                      <th>资产编号</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let a of assetsList?.result?.assetsList?.data" (click)="isStatusShow(a.assets_id,a.assets_status)" [ngClass]="{'table-color':editStatusAssetsId == a.assets_id}"><!--class="table-color"-->
+                      <td>
+                        <span class="click-a"><a>{{a.assets_number}}</a></span>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-responsive padding0" [ngStyle]="{'padding': '0','z-index': '1','width':width_1,'float':'left'}">
+                  <table class="table table-striped smart-form table-height-20">
+                    <thead>
+                    <tr >
+                      <th>商品名称</th>
+                      <th>商品类型</th>
+                      <th>数量</th>
+                      <th>计量单位</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let a1 of assetsList?.result?.assetsList?.data" (click)="isStatusShow(a1.assets_id,a1.assets_status)" [ngClass]="{'table-color':editStatusAssetsId == a1.assets_id}"><!-- class="table-color"-->
+                      <td><span class="">{{a1.assets_name}}</span></td>
+                      <td><span class="">{{a1.category_desc}}</span></td>
+                      <td><span class="">{{a1.assets_surplus_count}}</span></td>
+                      <td><span class="">{{a1.assets_unit}}</span></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 底部-（分页部分）-->
+              <div class="footer-size flex-justify-end">
+                <ul class="pagination"  *ngIf="assetsList?.result?.page" >
+                  <li *ngFor="let ap of assetsList?.result?.page" class="{{ap.class}}">
+                    <a class="page-link" (click)="pagination(ap.value)" *ngIf="ap.method=='method'">{{ap.text}}</a>
+                    <a class="page-link"  *ngIf="ap.method==''">{{ap.text}}</a>
+                  </li>
+                  <li class="page-item disabled">
+                    <a  class="page-link" disabled>共{{assetsList?.result?.assetsList?.total}}条</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>
+
+
+<div class="modal fade bd-example-modal-xl" bsModal #addModal="bs-modal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- 标题 -->
+        <h3 class="modal-title  color-yellow" data-ng-bind='results.title'><i class="fa-fw fa fa-pencil"></i>修改库存信息</h3>
+        <!-- 关闭按钮 -->
+        <button type="button" class="close" (click)="clear_('edit')">
+          ×
+        </button>
+
+      </div>
+      <div class="modal-body height-overflow-380">
+        <div class="row mt-20">
+          <form   class="form-distance ">
+            <fieldset>
+              <div class="form-row">
+
+                <div class="form-group col-sm-4">
+                  <label class="label">编号</label>
+                  <input type="text" class="form-control"   name="assets_number" [(ngModel)]="assets_number">
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label  class="label txt-color-blue">商名称<span  class="asterisk-color">*</span></label>
+                  <input type="text" class="form-control" name="assets_name" [(ngModel)]="assets_name" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">商品类型</label>
+                  <input type="text" class="form-control"  name="category_type_name" [(ngModel)]="category_type_name" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label  class="label">数量</label>
+                  <input type="number" class="form-control"   name="assets_count" [(ngModel)]="assets_count" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label  class="label">计量单位</label>
+                  <input type="text" class="form-control"  name="assets_unit" [(ngModel)]="assets_unit" >
+                </div>
+
+                <div class="form-group col-sm-12">
+                  <label class="label">备注</label>
+                  <textarea class="form-control"  rows="3"   name="assets_note" [(ngModel)]="assets_note"></textarea>
+                </div>
+
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="isPermission(menu_id,'edit')" class="btn btn-success btn-sm  ml-2" type="button" (click)="onSubmit(2)"><span class="fa-fw fa fa-plus"></span>保存并新增</button>
+        <button *ngIf="isPermission(menu_id,'edit')" type="button" class="btn btn-primary  ml-2" (click)="onSubmit(1)">保存</button>
+        <button type="button" class="btn btn-default  ml-2" (click)="clear_('edit')">返回</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-xl" bsModal #detailModal="bs-modal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- 标题 -->
+        <h3 class="modal-title" data-ng-bind='results.title'></h3>
+        <h4 class="modal-title">库存信息</h4>
+        <!-- 关闭按钮 -->
+        <button type="button" class="close" (click)="clear_('detail')">
+          ×
+        </button>
+
+      </div>
+      <div class="modal-body height-overflow-380">
+        <div class="row ">
+          <div class="col-sm-12">
+            <div class="" >
+              <P class="alert alert-info">基本信息</P>
+              <table class="table table-striped table-forum">
+                <tbody>
+                <tr>
+                  <td class="width-120">编号:</td>
+                  <td class="">{{assetsInfo?.result?.assets_number}}</td>
+                  <td class="width-120">商品名称:</td>
+                  <td >{{assetsInfo?.result?.assets_name}}</td>
+                </tr>
+                <tr>
+                  <td class="width-120">商品类型:</td>
+                  <td class="">{{category_type_name}}</td>
+                  <td class="width-120">数量:</td>
+                  <td >{{assetsInfo?.result?.assets_count}}</td>
+                </tr>
+                <tr>
+                  <td class="width-120">计量单位:</td>
+                  <td class="" colspan="3">{{assetsInfo?.result?.assets_unit}}</td>
+                </tr>
+                <tr>
+                  <td class="width-120">备注:</td>
+                  <td class="" colspan="3">{{assetsInfo?.result?.assets_note}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="clear_('detail')">返回</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,186 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12 ">
+        <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+          <header>
+            <span class="widget-icon"> <i class="fa {{menuInfos?.menu_icon}}"></i> </span>
+            <h2>{{menuInfos?.menu_name}}</h2>
+          </header>
+          <div>
+            <div class="widget-body no-padding">
+              <article>
+                <div class="navbar navbar-default">
+                  <form  class="navbar-form " novalidate="" role="search" >
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'add')">
+                      <button type="button" class="btn btn-primary"  (click)="isDemo('/equipment/phonics','0')"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
+                    </div>
+                    <div class="btn-group"   *ngIf="isPermission(menu_id,'edit')">
+                      <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':editStatusBId == 0}"  (click)="isDemo('/equipment/phonics','1','edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                    </div>
+                    <div class="btn-group" *ngIf="isPermission(menu_id,'delete')">
+                      <button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':editStatusBId == 0}"  (click)="deleteBroadcast('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                    </div>
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'detail')">
+                      <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':editStatusBId == 0}"  (click)="getBroadcastInfo('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                    </div>
+
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'delete')">
+                      <button type="button" class="btn btn-secondary"   (click)="showAllCheck()"><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>
+                      <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                        <span class="sr-only"></span>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item"  (click)="deleteBroadcast('all')">批量删除</a>
+                      </div>
+                    </div>
+                  </form>
+                  <form  class="navbar-form" novalidate="" role="search"  [formGroup]="formModel" (ngSubmit)="onSubmit()">
+
+                    <div class="btn-group">
+                      <input type="text" class="form-control"   name="keyword" maxlength="15" formControlName="keyword" class="form-control" placeholder="请输入搜索内容">
+                    </div>
+                    <div class="btn-group">
+                      <button type="submit" class="btn default-btn" >搜索</button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </article>
+              <div style="padding:0;">
+                <div *ngIf="isAll != 0" [ngStyle]="{'padding': '0','z-index': '2','width':width,'float':'left'}" class="table-responsive">
+                <table class="table table-striped smart-form">
+                  <thead>
+                  <tr style="height:37px;">
+                    <td>
+                      <label class="checkbox">
+                        <input type="checkbox" [checked]="check" (change)="changeCheckAll($event)">
+                        <i></i>
+                      </label>
+                    </td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let bl of broadcastList.result?.data" style="height:34px;">
+                    <td>
+                      <label class="checkbox">
+                        <input type="checkbox" value="{{ bl.b_id }}" [checked]="selects[bl.b_id]" (change)="handle($event)">
+                        <i></i>
+                      </label>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+                <div [ngStyle]="{'padding': '0','z-index': '1','width':width_1,'float':'left'}" class="table-responsive">
+
+                <table class="table table-striped smart-form">
+                    <thead>
+                    <tr >
+                      <th>设备ID</th>
+                      <th>警报类型 </th>
+                      <th>文字输入 </th>
+                      <th>闪烁 </th>
+                      <th>警报 </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let bl of broadcastList.result?.data" (click)="isStatusShow(bl.b_id)" [ngClass]="{'table-color':editStatusBId == bl.b_id}">
+                      <td>{{ bl.i3otp_pid }}</td>
+                      <td [ngSwitch]="bl.b_category">
+                        <span *ngSwitchCase="1">文字</span>
+                        <span *ngSwitchCase="2">语音</span>
+                        <span *ngSwitchCase="3">文字，语言</span>
+                        <span *ngSwitchDefault>未知</span>
+                      </td>
+                      <td>{{ bl.b_info }}</td>
+                      <td>{{ bl.b_led }}</td>
+                      <td>{{ bl.b_buzzer }}</td>
+                     <!-- <td><a class="btn btn-warning btn-xs" (click)="isDemo('/equipment/phonics',bl.b_id)"><span class="glyphicon glyphicon-pencil"></span>修改</a>
+                        <a class="btn btn-danger btn-xs" (click)="deleteBroadcast(bl.b_id ,broadcastList.result?.current_page)"><span class="glyphicon glyphicon-remove"></span>删除</a>
+                        <a class="btn btn-success btn-xs" (click)="getBroadcastInfo(bl.b_id);lgModal.show();" ><span class="fa-fw fa fa-list-alt"></span>详情</a>&lt;!&ndash;data-toggle="modal" data-target="#myModal" &ndash;&gt;
+                      </td>-->
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 底部-（分页部分）-->
+              <div class="footer-size flex-justify-end">
+                <ul class="pagination" >
+                  <li *ngFor="let p of broadcastList?.page" class="{{p.class}}">
+                    <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                    <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>
+                  </li>
+                  <li class="page-item disabled">
+                    <a  class="page-link" disabled>共{{broadcastList.result?.total}}条</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+
+
+  <div  bsModal #lgModal="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- 标题 -->
+          <h4 class="modal-title">读取设备ID</h4>
+          <!-- 关闭按钮 -->
+          <button type="button" class="close"  (click)="lgModal.hide()">
+            ×
+          </button>
+
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="text-overflow-y" >
+                <P class="alert alert-info">基本信息</P>
+                <table class="table table-striped table-forum">
+                  <tbody>
+                  <tr>
+                    <td class="width-120">设备ID:</td>
+                    <td>{{broadcastInfo.result?.i3otp_pid}}</td>
+                  </tr>
+                  <tr><td class="width-120">警报类型:</td>
+                    <td [ngSwitch]="broadcastInfo.result?.b_category">
+                      <span *ngSwitchCase="1">文字</span>
+                      <span *ngSwitchCase="2">语音</span>
+                      <span *ngSwitchCase="3">文字,语音</span>
+                      <span *ngSwitchDefault>未知</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="width-120">文字输入:</td>
+                    <td >{{broadcastInfo.result?.b_info}}</td>
+                  </tr>
+                  <tr><td class="width-120">闪烁：</td>
+                    <td >{{broadcastInfo.result?.b_led}}</td>
+                  </tr>
+                  <tr>
+                    <td class="width-120">闪烁：</td>
+                    <td >{{broadcastInfo.result?.b_buzzer}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default"  (click)="lgModal.hide()">返回</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+</div>
+

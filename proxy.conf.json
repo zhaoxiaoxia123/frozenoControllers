@@ -1,0 +1,6 @@
+{
+  "/ip":{
+    "target":"http://ifconfig.me",
+    "secure":false
+  }
+}

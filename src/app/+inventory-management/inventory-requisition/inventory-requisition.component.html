@@ -1,0 +1,205 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12 ">
+        <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+          <header>
+            <span class="widget-icon"><i class="fa {{menuInfos?.menu_icon}}"></i> </span>
+            <h2>{{menuInfos?.menu_name}}</h2>
+          </header>
+          <div>
+            <div class="widget-body no-padding">
+              <article>
+                <div class="navbar navbar-default">
+                  <form  class="navbar-form " novalidate="" role="search" >
+                    <div class="btn-group" *ngIf="isPermission(menu_id,'add')">
+                      <button type="button" class="btn btn-primary"   (click)="isDemo('/inventory-management/add-requisition','0','')"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
+                    </div>
+                    <div class="btn-group" *ngIf="isPermission(menu_id,'edit')">
+                      <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':editStatusStockallotId == 0}"  (click)="isDemo('/inventory-management/add-requisition','1','edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                    </div>
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'delete')">
+                      <button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':editStatusStockallotId == 0}"   (click)="deleteStockallot('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                    </div>
+                    <div class="btn-group" *ngIf="isPermission(menu_id,'detail')">
+                      <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':editStatusStockallotId == 0}"  (click)="isDemo('/inventory-management/add-requisition','1','detail')" ><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                    </div>
+                    <!--<div class="btn-group" *ngIf="isStatus == 2">-->
+                      <!--<button type="button" class="btn btn-success" (click)="editStatus(1,'id')" ><span class="fa-fw fa fa-play mr-5 "></span>启用</button>-->
+                    <!--</div>-->
+                    <!--<div class="btn-group" *ngIf="isStatus == 1">-->
+                      <!--<button type="button" class="btn btn-danger" (click)="editStatus(2,'id')" ><span class="fa-fw fa fa-stop mr-5 "></span>无效</button>-->
+                    <!--</div>-->
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'verify')">
+                      <div class="btn-group" (click)="showModal('operation','operation','')" *ngIf="uid == sa_status">
+                        <button type="button" class="btn btn-primary" ><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>
+                      </div>
+                      <div class="btn-group"  (click)="showModal('operation','cancel','')" *ngIf="uid == sa_u_id && sa_status != 'yes' && sa_status != 'no' && sa_status != 'cancel'">
+                        <button type="button" class="btn btn-warning" ><span class="fa-fw fa fa-trash-o mr-5 "></span>作废</button>
+                      </div>
+                      <div class="btn-group" (click)="showModal('operation','back_cancel','')" *ngIf="uid == sa_u_id && sa_status == 'cancel'">
+                        <button type="button" class="btn btn-danger" ><span class="fa-fw fa fa-mail-reply-all mr-5 "></span>弃废</button>
+                      </div>
+
+                    </div>
+
+                    <div class="btn-group" *ngIf="isPermission(menu_id,'verify') || isPermission(menu_id,'delete')">
+                      <button type="button" class="btn btn-secondary"  (click)="showAllCheck()"><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>
+                      <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                        <span class="sr-only"></span>
+                      </button>
+                      <div class="dropdown-menu">
+                        <!--<a class="dropdown-item"  (click)="editStatus(1,'all')">批量设为启动</a>-->
+                        <!--<a class="dropdown-item"  (click)="editStatus(2,'all')">批量设为无效</a>-->
+                        <!--<div class="dropdown-divider"></div>-->
+                        <a class="dropdown-item"  *ngIf="isPermission(menu_id,'verify')"   (click)="showModal('operation','operation','all')">批量审核</a>
+                        <a class="dropdown-item"  *ngIf="isPermission(menu_id,'verify')"  (click)="showModal('operation','cancel','all')">批量作废</a>
+                        <a class="dropdown-item"  *ngIf="isPermission(menu_id,'verify')"  (click)="showModal('operation','back_cancel','all')" >批量弃废</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"  *ngIf="isPermission(menu_id,'delete')"  (click)="deleteStockallot('all')">批量删除</a>
+                      </div>
+                    </div>
+                  </form>
+                  <form  class="navbar-form" novalidate="" role="search" >
+
+                    <div class="btn-group">
+                      <input type="text" class="form-control"   maxlength="15" name="keyword" [(ngModel)]="keyword" placeholder="请输入搜索内容">
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn default-btn"   (click)="getStockallotList('1')">搜索</button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </article>
+              <div class="padding0 height-overflow" >
+                <div *ngIf="isAll != 0" [ngStyle]="{'padding': '0','z-index': '2','width':width,'float':'left'}" class="table-scrolling padding0">
+                  <table class="table table-striped  smart-form table-height-20">
+                    <thead>
+                    <tr>
+                      <td><label class="checkbox mt-8">
+                        <input type="checkbox" name="checkbox-inline" [checked]="check" (change)="changeCheckAll($event)" >
+                        <i></i>
+                      </label>
+                      </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let s of stockallotList?.result?.stockallotList?.data">
+                      <td>
+                        <label class="checkbox mt-8">
+                          <input type="checkbox" value="{{s.stock_allot_id}}" [checked]="selects[s.stock_allot_id]" (change)="handle($event)">
+                          <i></i>
+                        </label>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style="z-index: 2;width:30%;float:left;" class="table-scrolling padding0">
+                  <table class="table table-striped  smart-form table-height-20">
+                    <thead>
+                    <tr >
+                      <!--<td *ngIf="isAll != 0"><label class="checkbox mt-8">-->
+                        <!--<input type="checkbox" name="checkbox-inline" [checked]="check" (change)="changeCheckAll($event)" >-->
+                        <!--<i></i>-->
+                      <!--</label>-->
+                      <!--</td>-->
+                      <th>单据状态 </th>
+                      <th>单据号</th>
+                      <th>单据日期 </th>
+                      <!--<th>单据状态</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let s of stockallotList?.result?.stockallotList?.data" (click)="isStatusShow(s.stock_allot_id,s.stock_allot_status,s.u_id,s.u_username,s.stock_allot_number)" [ngClass]="{'table-color':editStatusStockallotId == s.stock_allot_id}">
+                      <!--<td *ngIf="isAll != 0">-->
+                        <!--<label class="checkbox mt-8">-->
+                          <!--<input type="checkbox" value="{{s.stock_allot_id}}" [checked]="selects[s.stock_allot_id]" (change)="$event.preventDefault();$event.stopPropagation();handle($event)">-->
+                          <!--<i></i>-->
+                        <!--</label>-->
+                      <!--</td>-->
+                      <td>
+                        <div>
+                          <span class="label-maintain" *ngIf="s.stock_allot_status != uid && s.stock_allot_status != 'yes' && s.stock_allot_status != 'no' && s.stock_allot_status != 'cancel'">审核中</span>
+                          <span class="label-maintain maintain-style" (click)="showModalInList('operation','operation','',s.stock_allot_id)" *ngIf="s.stock_allot_status == uid && s.stock_allot_status != 'yes' && s.stock_allot_status != 'no' && s.stock_allot_status != 'cancel'">审核中</span>
+
+                          <span class="label-normal" *ngIf="s.stock_allot_status == 'yes'">已同意</span>
+                          <span  class="label-full" *ngIf="s.stock_allot_status == 'no'">已拒绝</span>
+                          <span  class="label-full" *ngIf="s.stock_allot_status == 'cancel'">已作废</span>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="click-a"><a>{{s.stock_allot_number}}</a></div>
+                        </td>
+                      <td>{{s.stock_allot_date}}</td>
+                      <!--<td>-->
+                        <!--<span [ngSwitch]="s.stock_allot_status">-->
+                          <!--<span class="label-normal" *ngSwitchCase="1">正常</span>-->
+                          <!--<span class="label-invalid" *ngSwitchCase="2">失效</span>-->
+                          <!--<span class="label-unknown" *ngSwitchDefault>未知</span>-->
+                        <!--</span>-->
+                      <!--</td>-->
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div  [ngStyle]="{'padding': '0','z-index': '1','width':width_1,'float':'left'}" class="table-responsive">
+                  <table class="table table-striped   smart-form table-height-20">
+                    <thead>
+                    <tr>
+                      <th>调拨状态</th>
+                      <!--<th>调入仓库</th>-->
+                      <!--<th>调出仓库</th>-->
+                      <th>经手人</th>
+                      <th>经手部门 </th>
+                      <th>制单人</th>
+                      <th>创建时间 </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let s of stockallotList?.result?.stockallotList?.data" (click)="isStatusShow(s.stock_allot_id,s.stock_allot_status,s.u_id,s.u_username,s.stock_allot_number)" [ngClass]="{'table-color':editStatusStockallotId == s.stock_allot_id}">
+                      <td>
+                        <span [ngSwitch]="s.stock_allot_type">
+                            <span class="label-normal" *ngSwitchCase="1">等价调拨</span>
+                            <span class="label-invalid" *ngSwitchCase="2">差价调拨</span>
+                            <span class="label-unknown" *ngSwitchDefault>未知</span>
+                        </span>
+                      </td>
+                      <!--<td>{{s.storehouse_name}}</td>-->
+                      <!--<td>{{s.out_storehouse_name}}</td>-->
+                      <td>{{s.user_name}}</td>
+                      <td>{{s.stock_allot_date}}</td>
+                      <td>{{s.u_username}}</td>
+                      <td>{{s.created_at | date:'yyyy-MM-dd'}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 底部-（分页部分）-->
+              <div class="footer-size flex-justify-end">
+                <ul class="pagination" >
+                  <li *ngFor="let p of stockallotList?.result?.page" class="{{p.class}}" >
+                    <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                    <a class="page-link"  *ngIf="p.method==''">{{p.text}}</a>
+                  </li>
+                  <li class="page-item disabled">
+                    <a  class="page-link" disabled>共{{stockallotList?.result?.stockallotList?.total}}条</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>
+
+<app-verify-frame [log_type]="log_type" [log_table_name]="log_table_name" [select_count]="select_count" [selects]="selects" [operate_type]="operate_type" [username]="sa_u_username" [order_number]="sa_order" [pr_id]="editStatusStockallotId" [create_user_id]="sa_u_id" [operate_button_type]="operate_button_type" [operate_button_type_is_more]="operate_button_type_is_more"  (operate_types)="getOperateTypes($event)" *ngIf="operate_type"></app-verify-frame>
+

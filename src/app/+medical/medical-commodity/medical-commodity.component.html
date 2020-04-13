@@ -1,0 +1,369 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12 ">
+        <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+          <header>
+            <span class="widget-icon"> <i class="fa {{menuInfos?.menu_icon}}"></i> </span>
+            <h2>{{menuInfos?.menu_name}}</h2>
+          </header>
+          <div>
+            <div class="widget-body no-padding" >
+              <article>
+                <div class="navbar navbar-default">
+                  <form  class="navbar-form " novalidate="" role="search" >
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'add')">
+                      <button type="button" class="btn btn-primary" (click)="getAddProductDefault(0);" ><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
+                    </div>
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'edit')">
+                      <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':isStatus == 0}"   (click)="detailProduct('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                    </div>
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'delete')">
+                      <button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':isStatus == 0}"  (click)="deleteProduct('id')" ><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                    </div>
+                    <div class="btn-group"  *ngIf="isPermission(menu_id,'detail')">
+                      <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':isStatus == 0}"  (click)="detailProduct('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                    </div>
+
+                    <div class="btn-group"   *ngIf="isPermission(menu_id,'delete')">
+                      <button type="button" class="btn btn-secondary"   (click)="showAllCheck()"><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>
+                      <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                        <span class="sr-only"></span>
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item"  (click)="deleteProduct('all')">批量删除</a>
+                      </div>
+                    </div>
+                  </form>
+                  <form  class="navbar-form" novalidate="" role="search" >
+                    <div class="btn-group">
+                      <input type="text" class="form-control"  maxlength="15" [(ngModel)]="keyword"  name="keyword" placeholder="请输入搜索内容">
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn default-btn" (click)="getProductList('1',0)">搜索</button>
+                    </div>
+
+                  </form>
+                </div>
+              </article>
+
+              <div class="row table-box-pd">
+                <article class="form-group col-sm-4 col-12">
+                  <sa-widget class="jarviswidget" [colorbutton]="false" [editbutton]="false" [togglebutton]="false"
+                             [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+                    <div>
+                      <div class="widget-body no-padding">
+                        <div type="info" class="no-margin alert alert-primary">
+                          <i class="fa-fw fa fa-sitemap"></i>
+                          商品分类
+                        </div>
+                        <div class="pd-10  height-overflow">
+                          <div class="widget-body">
+                            <div class="tree smart-form">
+                              <ul class="">
+                                <li class=" parent_li">
+                                  <span><label class="checkbox inline-block tree-label pt-12 ">
+                                          <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[0]" (click)="selectCategoryAll()"><i></i>
+                                        </label>
+                                    <i class="fa fa-lg fa-folder-open"></i>全部
+                                    <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUl == 0" (click)="showLeftUl(1)"></i>
+                                    <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUl == 1" (click)="showLeftUl(0)"></i>
+                                  </span>
+                                  <ul class="" *ngIf="showUl == 1">
+                                    <li class=" parent_li" *ngFor="let c of productDefault?.result?.categoryList;let ind = index;">
+                                    <span>
+                                      <label class="checkbox inline-block tree-label ">
+                                        <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id]" (click)="selectDepartment(c.category_id,ind,0,1)">
+                                        <i></i>{{c.category_desc}}
+                                        <em class="txt-color-blue">({{c.child_count}})</em>
+                                      </label>
+                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlChild == c.category_id && c.has_child != 0" (click)="showLeftUlChild(0)"></i>
+                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlChild != c.category_id && c.has_child != 0" (click)="showLeftUlChild(c.category_id)"></i>
+                                    </span>
+                                      <ul class="" *ngIf="showUlChild == c.category_id">
+                                        <li *ngFor="let dc of c.child;let indChild = index;">
+                                        <span>
+                                          <label class="checkbox inline-block tree-label">
+                                            <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id] || select_category_ids[dc.category_id]" (click)="selectDepartment(dc.category_id,ind,indChild,c.category_id)">
+                                            <i></i>{{dc.category_desc}}
+                                            <em class="txt-color-blue">({{dc.child_count}})</em>
+                                          </label>
+                                        </span>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="dt-toolbar">
+                        </div>
+                      </div>
+                    </div>
+                  </sa-widget>
+                </article>
+                <article class="form-group col-sm-8 col-12">
+                  <sa-widget class="jarviswidget" [colorbutton]="false" [editbutton]="false" [togglebutton]="false"
+                             [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+                    <div>
+                      <div class="widget-body no-padding">
+                        <div type="info" class="no-margin alert alert-primary" >
+                          <i class="fa-fw fa fa-table"></i>
+                          商品列表
+                        </div>
+                        <div class=" height-overflow" style="padding:0;">
+                          <div *ngIf="isAll != 0" [ngStyle]="{'padding': '0','z-index': '2','width':width,'float':'left'}" class="table-scrolling">
+                            <table class="table table-striped smart-form table-height-20">
+                              <thead>
+                              <tr>
+                                <td><label class="checkbox padding-top-10" >
+                                  <input type="checkbox" name="checkbox-inline" [checked]="check" (change)="changeCheckAll($event)" >
+                                  <i></i>
+                                </label>
+                                </td>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr *ngFor="let p of productList.result?.productList?.data">
+                                <td >
+                                  <div class="">
+                                    <label class="checkbox padding-top-10">
+                                      <input type="checkbox" name="checkbox-inline" value="{{ p.p_id }}" [checked]="selects[p.p_id]" (change)="handle($event)">
+                                      <i></i>
+                                    </label>
+                                  </div>
+                                </td>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div style="padding: 0;z-index: 2;width:20%;float:left;" class="table-scrolling">
+                            <table class="table table-striped smart-form table-height-20">
+                              <thead>
+                              <tr >
+                                <th><span class="">商品编号</span></th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr *ngFor="let p of productList.result?.productList?.data" (click)="isStatusShow(p.p_id,p.p_status)" [ngClass]="{'table-color':editStatusProductId == p.p_id}"><!--class="table-color"-->
+                                <td><span class="">{{p.p_product_id}}</span></td>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="table-responsive"  [ngStyle]="{'padding': '0','z-index': '1','width':width_1,'float':'left'}">
+                            <table class="table table-striped  smart-form ">
+                              <thead>
+                              <tr >
+                                <th>商品名称</th>
+                                <th>商品类型</th>
+                                <th>数量</th>
+                                <th>计量单位</th>
+                                <th>售价(元)</th>
+                                <th>入库时间</th>
+                                <!--<th>备注</th>-->
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr *ngFor="let p1 of productList.result?.productList?.data" (click)="isStatusShow(p1.p_id,p1.p_status)" [ngClass]="{'table-color':editStatusProductId == p1.p_id}"><!-- class="table-color"-->
+                                <td><span class="">{{p1.p_name}}</span></td>
+                                <td><span class="">{{p1.category}}</span></td>
+                                <td><span class="">{{p1.p_quantity}}</span></td>
+                                <td><span class="">{{p1.p_unit}}</span></td>
+                                <td><span class="">{{p1.p_sales_price}}</span></td>
+                                <td>{{p1.p_storage_time ? p1.p_storage_time:p1.created_at}}  </td>
+                                <!--<td> {{p1.p_notes}} </td>-->
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- 底部-（分页部分）-->
+                        <div class="footer-size flex-justify-end">
+                          <ul class="pagination"  *ngIf="productList?.result?.page" >
+                            <li *ngFor="let p of productList?.result?.page" class="{{p.class}}">
+                              <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                              <a class="page-link"  *ngIf="p.method==''">{{p.text}}</a>
+                            </li>
+                            <li class="page-item disabled">
+                              <a  class="page-link" disabled>共{{productList.result?.productList?.total}}条</a>
+                            </li>
+                          </ul>
+                        </div>
+
+                      </div>
+                    </div>
+                  </sa-widget>
+                  <!-- end widget -->
+                </article>
+              </div>
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-xl"  bsModal #lgModal="bs-modal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- 标题 -->
+        <h3 *ngIf="editStatusProductId == 0" class="modal-title txt-color-blue" data-ng-bind='results.title'><i class="fa-fw fa fa-plus"></i>添加商品信息</h3>
+        <h3 *ngIf="editStatusProductId != 0" class="modal-title  color-yellow" data-ng-bind='results.title'><i class="fa-fw fa fa-pencil"></i>修改商品信息</h3>
+        <!-- 关闭按钮 -->
+        <button type="button" class="close" (click)="clear_();lgModal.hide()">
+          ×
+        </button>
+
+      </div>
+      <div class="modal-body height-overflow-380">
+        <div class="row mt-20">
+          <form class="form-distance">
+            <fieldset>
+              <div class="form-row">
+                <div class="form-group col-sm-4">
+                  <label class="label">编号</label>
+                  <input type="text" class="form-control"  name="p_product_id" [(ngModel)]="p_product_id" placeholder="商品编号" [disabled]="isDetail=='detail'">
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label  class="label txt-color-blue">商品名称<span  class="asterisk-color">*</span></label>
+                  <input type="text" class="form-control" name="p_name" [(ngModel)]="p_name" [disabled]="isDetail=='detail'" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">商品类型</label>
+                  <select class="form-control" name="p_category_id" [(ngModel)]="p_category_id" [disabled]="isDetail=='detail'">
+                    <option [selected]="p_id == 0" value="0">--请选择--</option>
+                    <option *ngFor="let c of addProductDefault?.result?.categoryListForAdd" [selected]="productInfo?.result?.p_category_id == c.category_id" value="{{ c.category_id }}" [disabled]="(c.category_depth == 0 && c.child_count > 0) ? 'disabled' : false" [ngStyle]="{'font-weight':((c.category_depth == 0) ? 'bold' : 'normal'),'color':((c.category_depth == 0 && c.child_count > 0) ? 'black' : '#404040')}">
+                      <strong *ngIf="c.category_depth == 0">{{c.category_desc}}</strong>
+                      <span *ngIf="c.category_depth != 0">--{{c.category_desc}}</span>
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">数量</label>
+                  <input type="text" class="form-control"  placeholder="" name="p_quantity" [(ngModel)]="p_quantity" [disabled]="isDetail=='detail'" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">计量单位</label>
+                  <input type="text" class="form-control"  placeholder="" name="p_unit" [(ngModel)]="p_unit" [disabled]="isDetail=='detail'" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">成本单价</label>
+                  <input  class="form-control"  type="number" name="p_cost_price" [(ngModel)]="p_cost_price" [disabled]="isDetail=='detail'" >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">销售单价</label>
+                  <input  class="form-control"  type="number" name="p_sales_price" [(ngModel)]="p_sales_price" [disabled]="isDetail=='detail'"  >
+                </div>
+
+                <div class="form-group col-sm-4">
+                  <label class="label">入库时间</label>
+                  <input type="text" class="form-control"   name="p_storage_time" [(ngModel)]="p_storage_time" [disabled]="isDetail=='detail'" [dpDayPicker]="datePickerConfig" [theme]="'dp-material'" [mode]="'day'"  placeholder="选择日期">
+                </div>
+
+                <div class="form-group col-sm-12">
+                  <label class="label">备注</label>
+                  <textarea class="form-control"  rows="3"  name="p_notes" [(ngModel)]="p_notes" [disabled]="isDetail=='detail'"></textarea>
+                </div>
+
+              </div>
+            </fieldset>
+          </form>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="isPermission(menu_id,'add') || isPermission(menu_id,'edit')" class="btn btn-success btn-sm  ml-2" type="button" (click)="onSubmit(2);"><span class="fa-fw fa fa-plus"></span>保存并新增</button>
+        <button *ngIf="isPermission(menu_id,'add') || isPermission(menu_id,'edit')" type="button" class="btn btn-primary  ml-2" (click)="onSubmit(1);">保存</button>
+        <button type="button" class="btn btn-default  ml-2" (click)="clear_();lgModal.hide()">返回</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-xl" bsModal #detailModal="bs-modal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- 标题 -->
+        <h3 class="modal-title" data-ng-bind='results.title'></h3>
+        <h4 class="modal-title">商品信息</h4>
+        <!-- 关闭按钮 -->
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          ×
+        </button>
+
+      </div>
+      <div class="modal-body height-overflow-380">
+        <div class="row ">
+          <div class="col-sm-12">
+            <div class="" >
+              <P class="alert alert-info">基本信息</P>
+              <table class="table table-striped table-forum">
+                <tbody>
+                <tr>
+                  <td class="width-120">编号:</td>
+                  <td class=""></td>
+                  <td class="width-120">商品名称:</td>
+                  <td >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="width-120">商品类型:</td>
+                  <td class=""></td>
+                  <td class="width-120">数量:</td>
+                  <td >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="width-120">计量单位:</td>
+                  <td class=""></td>
+                  <td class="width-120">成本单价:</td>
+                  <td >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="width-120">销售单价:</td>
+                  <td class=""></td>
+                  <td class="width-120">入库时间:</td>
+                  <td >
+                  </td>
+                </tr>
+                <tr>
+                  <td class="width-120">备注:</td>
+                  <td class="" colspan="3"></td>
+
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

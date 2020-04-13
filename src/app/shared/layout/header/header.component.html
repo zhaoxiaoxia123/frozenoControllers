@@ -1,0 +1,91 @@
+<header id="header">
+  <div id="logo-group">
+
+    <!-- 放置你的标志在这里 -->
+    <span id="logo"> <img src="assets/img/logo.png" alt="I3OT"> </span>
+    <!-- END 标志的占位符 -->
+
+    <!-- 注意：单击时活动徽章颜色会更改，并将该数字重置为0
+建议：您可能需要设置一个标志，当发生这种情况，剔掉所有选中的消息/通知 -->
+    <sa-activities></sa-activities>
+
+  </div>
+  <div class="pd-10 ">
+    <h4>{{customer_name}}</h4>
+  </div>
+
+
+
+  <!-- 右拉：导航区 -->
+  <div class="pull-right">
+
+    <sa-collapse-menu></sa-collapse-menu>
+
+    <!-- #移动 -->
+    <!-- 顶级菜单配置文件链接：仅当顶级菜单处于活动状态时才显示 -->
+    <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+      <li class="">
+        <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+          <img src="assets/img/avatars/male.png" alt="John Doe" class="online"/>
+        </a>
+        <ul class="dropdown-menu pull-right">
+          <li>
+            <a routerLink="/account/account-company" (click)="(null)" class="pd-10 padding-top-0 padding-bottom-0"><i
+              class="fa fa-cog"></i> 公司信息</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a routerLink="/account/account-personal" class="pd-10 padding-top-0 padding-bottom-0"> <i
+              class="fa fa-user"></i>
+              个人信息</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a routerLink="/account/account-password" class="pd-10 padding-top-0 padding-bottom-0"
+               data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> 修改密码</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="(null)" class="pd-10 padding-top-0 padding-bottom-0"
+               data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> 全屏</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a (click)="showPopup()" class="pd-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i
+              class="fa fa-sign-out fa-lg"></i> <strong>退出</strong></a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- logout button -->
+    <sa-logout></sa-logout>
+    <!-- end logout button -->
+
+    <!-- search mobile button (this is hidden till mobile view port) -->
+    <div id="search-mobile" class="btn-header transparent pull-right">
+      <span> <a (click)="toggleSearchMobile()" title="Search"><i class="fa fa-search"></i></a> </span>
+    </div>
+    <!-- end search mobile button -->
+
+
+
+    <!-- fullscreen button -->
+    <sa-full-screen></sa-full-screen>
+    <!-- end fullscreen button -->
+
+    <!-- #Voice Command: Start Speech -->
+    <!--<sa-speech-button></sa-speech-button>   xxx注释-->
+    <!-- end voice command -->
+
+
+    <!-- multiple lang dropdown : find all flags in the flags page -->
+    <!--<sa-language-selector></sa-language-selector>-->
+    <!-- end multiple lang -->
+
+
+
+  </div>
+  <!-- end pulled right: nav area -->
+
+</header>

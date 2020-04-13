@@ -1,0 +1,132 @@
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="no-margin no-padding">
+      <div class="row margin-bottom-40">
+        <div class="col-sm-12">
+          <div class="air air-right pd-20 text-align-center">
+            <!--<a href="" class="btn txt-color-white bg-color-teal btn-sm"><i class="fa fa-check"></i> 关注</a>&#xA0;-->
+            <a *ngIf="isPermission(menu_id,'edit')" (click)="editPersonal('edit')" class="btn txt-color-white bg-color-lightBlue btn-sm"><!--<i class="fa fa-link"></i>--> 编辑个人信息</a>
+          </div>
+          <h1 class="no-margin  title-h1">姓名<span class="padding-left-5" href="" style="font-size:16px;">({{userInfo?.result?.u_username}})</span></h1><hr />
+        </div>
+        <div class="col-sm-6" (click)="editPersonal('edit')">
+          <div class="editor padding-left-20 line-2">
+            <h4 class="no-margin size-bold">{{userInfo?.result?.c_name}}</h4>
+          </div>
+          <div class="editor padding-left-20 line-2 cml-c margin-top-10">
+            <span>助记码：{{userInfo?.result?.name}}</span>
+            <span>所属部门：{{userInfo?.result?.category_desc}}</span>
+            <span>职称：{{userInfo?.result?.u_position}}</span>
+          </div>
+          <div class="padding-left-20 margin-top-40 ">
+            <h4 class="no-margin size-bold">其他信息</h4>
+            <hr/>
+            <div class="editor  line-2 cml-c">
+              <span>联系电话：{{userInfo?.result?.u_phone}}</span>
+              <span>Email： {{userInfo?.result?.email}}</span>
+              <span>联系地址： {{userInfo?.result?.u_address}}</span> <br/>
+              <!--<span>备注： {{userInfo?.result?.u_notes}}</span>-->
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-align-center">
+            <span class="user-image">
+              <img *ngIf="!userInfo?.result?.u_avatar" style="width: 160px; height: 160px;" src="assets/img/default_user.png">
+              <img *ngIf="userInfo?.result?.u_avatar" style="width: 160px; height: 160px;" src="{{domain_url}}{{userInfo?.result?.u_avatar}}">
+            </span>
+            <p class="pd-10">*图片不能超过300k</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-xl" bsModal #lgModal="bs-modal">
+<div class="modal-dialog modal-xl">
+  <div class="modal-content">
+    <div class="modal-header">
+      <!-- 标题 -->
+      <h3 class="modal-title" data-ng-bind='results.title'>个人信息</h3>
+      <!-- 关闭按钮 -->
+      <button type="button" class="close" (click)="lgModal.hide()">×</button>
+    </div>
+    <div class="modal-body">
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">基本信息</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">其他信息</a>
+        </li>
+
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+          <form [formGroup]="formModel" class="form-distance ">
+            <div class="form-row">
+              <div class="form-group col-sm-4">
+                <label class="label">单位编码</label>
+                <input type="text" class="form-control"  name="c_number" formControlName="c_number" disabled="disabled">
+              </div>
+
+              <div class="form-group col-sm-4">
+                <label class="label">姓名</label>
+                <input type="text" class="form-control"  name="u_username" formControlName="u_username" >
+              </div>
+
+              <div class="form-group col-sm-4">
+                <label class="label">助记码</label>
+                <input type="text" class="form-control" name="employee_id" formControlName="employee_id" >
+              </div>
+
+              <div class="form-group col-sm-4">
+                <label class="label">所属部门</label>
+                <input type="text" class="form-control"  name="u_department" formControlName="u_department" disabled="disabled">
+              </div>
+
+              <div class="form-group col-sm-4">
+                <label class="label">职称</label>
+                <input type="text" class="form-control"   name="u_position" formControlName="u_position" disabled="disabled">
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+          <form [formGroup]="formModel1" class="form-distance ">
+            <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label class="label">联系电话</label>
+                <input type="text" class="form-control"  name="u_phone" formControlName="u_phone">
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label class="label">Email</label>
+                <input type="text" class="form-control"  name="email" formControlName="email" >
+              </div>
+
+              <div class="form-group col-sm-12">
+                <label class="label">联系地址</label>
+                <input type="text" class="form-control"  name="u_address" formControlName="u_address" >
+              </div>
+              <div class="form-group col-sm-12">
+                <label class="label">备注</label>
+                <textarea class="form-control"  rows="2" name="u_notes" formControlName="u_notes"></textarea>
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="onSubmit();">确定</button>
+      <button type="button" class="btn btn-default" (click)="lgModal.hide()">关闭</button>
+    </div>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>

@@ -1,0 +1,283 @@
+<div id="content">
+  <!--<div class="row">
+    <sa-big-breadcrumbs [items]="['物联网管理', '基站传感数据']" icon="file-text-o" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></sa-big-breadcrumbs>
+  </div>-->
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12">
+        <sa-widget  [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+          <header><span class="widget-icon"> <i class="fa fa-table"></i></span>
+            <h2>基站传感数据</h2>
+            <div class="jarviswidget-ctrls" role="menu">
+              <a routerLink="/equipment/chart-setting" href="javascript:void(0);" class="button-icon jarviswidget-edit-btn" rel="tooltip" title="Edit" data-placement="bottom">
+                <i class="fa fa-cog"></i></a>
+            </div>
+            <div class="widget-toolbar">
+              <button class="btn btn-save"  routerLink="/iot/station-block">切换布局</button>
+
+            </div>
+          </header>
+          <div>
+            <div class="widget-body no-padding">
+              <div class="row">
+                <article class="col-sm-12">
+                  <div class="navbar navbar-default">
+                    <div class="collapse navbar-collapse" >
+                      <form class="navbar-form navbar-left" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" novalidate >
+                        <div class="form-group">
+                          <input type="text" name="keyword" maxlength="15" formControlName="keyword" class="form-control" placeholder="请输入搜索内容">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                          <i class="glyphicon glyphicon-search"></i>
+                          搜索
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </article>
+              </div>
+              <div class="dataTables_wrapper">
+                <table class="dataTable responsive table table-striped table-bordered table-hover" >
+                  <thead>
+                  <tr  role="row">
+                    <th class="details-control sorting_disabled percent-6"></th>
+                    <th class="percent-12">
+                      设备
+                    </th>
+                    <th  class="percent-12">
+                      设备名称
+                    </th>
+                    <th class="percent-34">
+                      检测数据
+                    </th>
+                    <th class="percent-10">
+                      状态
+                    </th>
+                    <th class="percent-10">
+                      采集数据时间
+                    </th>
+                    <th class="percent-16">操作</th>
+                  </tr>
+                  </thead>
+                </table>
+                <table *ngFor="let il of i3otpList.result?.i3otpList?.data;let ind = index;" class="dataTable responsive table table-striped table-bordered table-hover">
+                  <tbody *ngIf="il.i3otp_attribute1.length!=0 && newList.length != 0">
+                  <tr role="row" *ngIf="status.indexOf(','+ind+',') === -1" [ngClass]="{ 'odd' : (ind%2 == 0), 'even': (ind%2 != 0) }"><!-- shown-->
+                    <td class=" details-control percent-6" (click)="changeStatus(ind,'+')" *ngIf="il.i3otp_attribute1.length!=0">
+                    </td>
+                    <td class="percent-6" *ngIf="il.i3otp_attribute1.length==0">
+                    </td>
+                    <td class="percent-12">
+                      {{il.i3otp_address}}
+                      <br>
+                      <small class="text-muted">
+                        <i>ID: {{il.i3otp_pid}}</i>
+                      </small>
+                    </td>
+                    <td class="percent-12">
+                      {{il.i3otp_name}}
+                    </td>
+                    <td class="percent-34">
+                      <a (click)="showLine(ind,i1)" class="btn btn-success btn-xs" *ngFor="let i1 of il.i3otp_attribute1;let in1 = index;">
+                        {{i1}}({{newList[ind][in1].value}}
+                        <sub *ngIf="newList[ind][in1].name == 'ch4' || newList[ind][in1].name == 'co2' || newList[ind][in1].name == 'o2' || newList[ind][in1].name == 'humi'">%</sub>
+                        <sub *ngIf="newList[ind][in1].name == 'co'">PPM</sub>
+                        <sub *ngIf="newList[ind][in1].name == 'tem'">°C</sub>)</a>
+                    </td>
+                    <td class="percent-10">
+                      <i *ngIf="il.i3otp_status == 0" class="fa fa-circle txt-color-darken font-xs">未激活</i>
+                      <i *ngIf="il.i3otp_status == 1" class="fa fa-circle text-danger font-xs">使用中</i>
+                      <i *ngIf="il.i3otp_status == 2" class="fa fa-circle txt-color-darken font-xs">返厂维修</i>
+                      <i *ngIf="il.i3otp_status == 3" class="fa fa-circle txt-color-darken font-xs">报废</i>
+                    </td>
+                    <!--il.i3otp_sensor_intervan-->
+                    <td class="percent-10">{{newList[ind][(newList[ind].length-1)].time}}</td>
+                    <td class="percent-16" *ngIf="il.i3otp_attribute1.length!=0">
+                      <a (click)="notificationExample2( il.i3otp_pid,il.i3otp_str)" class="btn btn-primary"><i class="fa-fw fa fa-plus"></i> 添加对比</a>
+                    </td>
+                    <td class="percent-16" *ngIf="il.i3otp_attribute1.length==0">
+                    </td>
+                  </tr>
+                  <tr role="row" *ngIf="status.indexOf(','+ind+',') != -1" [ngClass]="{ 'odd' : (ind%2 == 0), 'even': (ind%2 != 0) ,'shown':true} "><!-- shown-->
+                    <td class=" details-control percent-6" (click)="changeStatus(ind,'-')"  *ngIf="il.i3otp_attribute1.length!=0">
+                    </td>
+                    <td class="percent-6" *ngIf="il.i3otp_attribute1.length==0 ">
+                    </td>
+                    <td class="percent-12">
+                      {{il.i3otp_address}}
+                      <br>
+                      <small class="text-muted">
+                        <i>ID: {{il.i3otp_pid}}</i>
+                      </small>
+                    </td>
+                    <td class="percent-12">
+                      {{il.i3otp_name}}
+                    </td>
+                    <td class="percent-34">
+                      <a (click)="showLine(ind,i1)" class="btn btn-success btn-xs" *ngFor="let i1 of il.i3otp_attribute1;let in1 = index;">
+                      {{i1}}({{newList[ind][in1].value}}
+                      <sub *ngIf="newList[ind][in1].name == 'ch4' || newList[ind][in1].name == 'co2' || newList[ind][in1].name == 'o2' || newList[ind][in1].name == 'humi'">%</sub>
+                      <sub *ngIf="newList[ind][in1].name == 'co'">PPM</sub>
+                      <sub *ngIf="newList[ind][in1].name == 'tem'">°C</sub>)</a>
+                      <!--<a (click)="showLine(ind,i2)" class="btn btn-success btn-xs" *ngFor="let i2 of il.i3otp_attribute2">{{i2}}</a>-->
+                      <!--<a (click)="showLine(ind,i3)" class="btn btn-success btn-xs" *ngFor="let i3 of il.i3otp_attribute3">{{i3}}</a>-->
+                    </td>
+                    <td class="percent-10">
+                      <i *ngIf="il.i3otp_status == 0" class="fa fa-circle txt-color-darken font-xs">未激活</i>
+                      <i *ngIf="il.i3otp_status == 1" class="fa fa-circle text-danger font-xs">使用中</i>
+                      <i *ngIf="il.i3otp_status == 2" class="fa fa-circle txt-color-darken font-xs">返厂维修</i>
+                      <i *ngIf="il.i3otp_status == 3" class="fa fa-circle txt-color-darken font-xs">报废</i>
+                    </td>
+                    <!--il.i3otp_sensor_intervan-->
+                    <td class="percent-10">{{newList[ind][(newList[ind].length-1)].time}}</td>
+                    <td class="percent-16" *ngIf="il.i3otp_attribute1.length!=0"><!-- || il.i3otp_attribute2.length!=0 || il.i3otp_attribute3.length!=0-->
+                      <a (click)="notificationExample2( il.i3otp_pid,il.i3otp_str)" class="btn btn-primary"><i class="fa-fw fa fa-plus"></i> 添加对比</a>
+                      <!--<a (click)="showJoinPic();" class="btn btn-warning btn-xs" ><span class="glyphicon glyphicon-adjust"></span>查看对比图</a>-->
+                    </td>
+                    <td class="percent-16" *ngIf="il.i3otp_attribute1.length==0"><!-- && il.i3otp_attribute2.length==0 && il.i3otp_attribute3.length==0-->
+                    </td>
+                  </tr>
+                  <tr *ngIf="status.indexOf(','+ind+',') != -1">
+                    <td colspan="7">
+                      <table class="table table-hover table-condensed">
+                        <tbody>
+                        <!--加载完成隐藏-->
+                        <tr *ngIf="!chartOption1[ind]">
+                          <td  colspan="2" class="text-align-center" ><img  src="assets/img/select2-spinner.gif" >
+                            <h4 class="txt-color-darken" >加载中</h4></td>
+                        </tr>
+                        <!--<tr *ngIf="chartOption1[ind].legend.data.length == 0">-->
+                          <!--<td colspan="2">-->
+                            <!--<h4 class="text-align-center" >-->
+                              <!--无检测信息-->
+                            <!--</h4>-->
+                          <!--</td>-->
+                        <!--</tr>-->
+                        <tr *ngFor="let pc1 of chartOption1[ind];let pic1 = index;">
+                          <td class="percent-50" style="border-right:1px solid #ccc;" *ngIf="pic1%2==0">
+                            <h4 class="text-align-center" *ngIf="chartOption1[ind]['l'+pic1]== 0">
+                              {{chartOption1[ind][pic1].legend.data[0]}}无检测信息
+                            </h4>
+                            <div *ngIf="chartOption1[ind]['l'+pic1] > 0" echarts [options]="chartOption1[ind][pic1]" class="demo-chart" ></div>
+                          </td>
+                          <td  class="percent-50" *ngIf="pic1%2==0 && ((pic1+1) <= chartOption1[ind].length)">
+                            <h4 class="text-align-center" *ngIf="chartOption1[ind]['l'+pic1] == 0">
+                              {{chartOption1[ind][pic1+1].legend.data[0]}}无检测信息
+                            </h4>
+                            <div *ngIf="chartOption1[ind]['l'+pic1] > 0" echarts [options]="chartOption1[ind][pic1+1]" class="demo-chart" ></div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="alert-warning" colspan="2" >
+                            <h4 class="text-align-center" >
+                              该基站下有<strong>{{il.location_count}}</strong>人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;异常人员有<a ><strong data-toggle="modal" data-target="#myModal" style="color: #a90329;">&nbsp;&nbsp;4&nbsp;&nbsp;</strong></a>人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;占总人数的30/4
+                            </h4>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- 底部-（分页部分）-->
+              <div class="dt-toolbar-footer" *ngIf="newList.length == 0">
+                <div class="row text-align-center">
+                  <img  src="assets/img/select2-spinner.gif" >
+                  <h4 class="txt-color-darken" >加载中</h4>
+                </div>
+              </div>
+              <div class="dt-toolbar-footer">
+                <div class="col-sm-6 col-xs-12 hidden-xs">
+                  <div class="dataTables_info"  role="status" aria-live="polite">
+                  </div>
+                </div>
+                <div class="col-sm-6 col-xs-12 hidden-xs text-right" *ngIf="newList.length != 0">
+                  <ul class="pagination pagination-sm">
+                    <li *ngFor="let p of i3otpList?.page" class="{{p.class}}">
+                      <a (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                      <a *ngIf="p.method==''">{{p.text}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+
+  <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+      <div class="modal-content" *ngIf="isFull == 'none'">
+        <div class="modal-header">
+          <button type="button" class="close" (click)="ngOnClose();lgModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">数据对比图</h4>
+        </div>
+        <div class="modal-body">
+          <!--加载中-->
+          <div class="row text-align-center" *ngIf="loading != ''">
+            <img  src="assets/img/select2-spinner.gif" >
+            <h4 class="txt-color-darken" >{{loading}}</h4>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div *ngFor="let char of chartOption2;let inde = index;">
+                <h4 class="alert alert-info"> {{metric_title[inde]}}对比图</h4>
+                <div echarts [options]="chartOption2[inde]" class="demo-chart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="ngOnClose();lgModal.hide()">
+            返回
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-content" *ngIf="isFull == 'block'">
+        <div class="modal-header">
+          <button type="button" class="close" (click)="ngOnClose();lgModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">全屏图</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+                <div echarts [options]="full_screen" class="demo-chart" [ngStyle]="{'width':f_width}"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="ngOnClose();lgModal.hide()">
+            返回
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--数据对比-->
+    <div  class="bigBox animated fadeIn fast" style="border:6px solid #3276b1;" *ngIf="isShowJoin">
+        <h4 (click)="closePid()">设备数据对比 <i class="botClose fa fa-times" ></i></h4>
+      <ul *ngIf="join_pid.length > 0">
+        <li *ngFor="let p of join_pid"> <i class="fa fa-times" (click)="outPid(p)"></i>ID: {{p}}</li>
+      </ul>
+      <ul *ngIf="join_pid.length == 0">
+        <li> 还没有可对比的数据！</li>
+      </ul>
+        <p class="text-align-center">
+          <a class="btn btn-info" (click)="showJoinPic();">详情</a>
+        </p>
+    </div>
+
+</div>

@@ -1,0 +1,248 @@
+<div id="content">
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12 ">
+        <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+          <header>
+            <span class="widget-icon"> <i class="fa {{menuInfos?.menu_icon}}"></i> </span>
+            <h2>{{menuInfos?.menu_name}}</h2>
+          </header>
+          <div>
+            <div class="widget-body no-padding" >
+              <article>
+                <div class="navbar navbar-default">
+                  <form  class="navbar-form " novalidate="" role="search" >
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary"  (click)="refreshPage()" ><span class="fa-fw fa fa-refresh mr-5"></span>刷新</button>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':editStatusOpeningInventoryId == 0}" (click)="showDetail('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                    </div>
+
+                  </form>
+                  <form  class="navbar-form" novalidate="" role="search" >
+
+                    <div class="btn-group">
+                      <h5> 筛选：</h5>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{property_title}}
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" (click)="setProperty('','全部')">全部</a>
+                        <a class="dropdown-item" (click)="setProperty('1','销售')">销售</a>
+                        <a class="dropdown-item" (click)="setProperty('2','外购')">外购</a>
+                      </div>
+                    </div>
+                    <div class="btn-group">
+                      <select  class="form-control"  name="search_storehouse_id" [(ngModel)]="search_storehouse_id" (change)="setStorehouse($event)">
+                        <option value="0">全部</option>
+                        <option *ngFor="let sh of productDefault?.result?.storeHouseList" value="{{sh.storehouse_id}}" >{{sh.storehouse_name}}</option>
+                      </select>
+                    </div>
+
+                    <div class="btn-group">
+                      <input type="text" class="form-control"  maxlength="15" [(ngModel)]="keyword" name="keyword" placeholder="请输入搜索内容" >
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn default-btn"  (click)="searchOpeninventory(1)">搜索</button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </article>
+
+              <div class="row table-box-pd">
+                <article class="form-group col-sm-4 col-12">
+                  <sa-widget class="jarviswidget" [colorbutton]="false" [editbutton]="false" [togglebutton]="false"
+                             [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+                    <div>
+                      <div class="widget-body no-padding">
+                        <div type="info" class="no-margin alert alert-primary">
+                          <i class="fa-fw fa fa-sitemap"></i>
+                          商品分类
+                        </div>
+                        <div class="pd-10  height-overflow">
+                          <div class="widget-body">
+                            <div class="tree smart-form">
+                              <ul class="">
+                                <li class=" parent_li">
+                                <span>
+                                  <label class="checkbox inline-block tree-label pt-12 ">
+                                    <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[0]" (click)="selectCategoryAll()"><i></i>
+                                  </label>
+                                  <i class="fa fa-lg fa-folder-open"></i>全部
+                                  <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUl == 0" (click)="showLeftUl(1)"></i>
+                                  <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUl == 1" (click)="showLeftUl(0)"></i>
+                                </span>
+                                  <ul class="" *ngIf="showUl == 1">
+                                    <li class=" parent_li" *ngFor="let c of productDefault?.result?.categoryList;let ind = index;">
+                                    <span>
+                                      <label class="checkbox inline-block tree-label ">
+                                        <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id]" (click)="selectCategory(c.category_id,ind,0,1)">
+                                        <i></i>{{c.category_desc}}
+                                        <em class="txt-color-blue">({{c.child_count}})</em>
+                                      </label>
+                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlChild == c.category_id && c.has_child != 0" (click)="showLeftUlChild(0)"></i>
+                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlChild != c.category_id && c.has_child != 0" (click)="showLeftUlChild(c.category_id)"></i>
+                                    </span>
+                                      <ul class="" *ngIf="showUlChild == c.category_id">
+                                        <li *ngFor="let dc of c.child;let indChild = index;">
+                                        <span>
+                                          <label class="checkbox inline-block tree-label">
+                                            <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id] || select_category_ids[dc.category_id]" (click)="selectCategory(dc.category_id,ind,indChild,c.category_id)">
+                                            <i></i>{{dc.category_desc}}
+                                            <em class="txt-color-blue">({{c.child_count}})</em>
+                                          </label>
+                                        </span>
+                                        </li>
+                                      </ul>
+                                    </li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="footer-size">
+                        </div>
+                      </div>
+                    </div>
+                  </sa-widget>
+                </article>
+                <article class="form-group col-sm-8 col-12">
+                  <sa-widget class="jarviswidget" [colorbutton]="false" [editbutton]="false" [togglebutton]="false"
+                             [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+                    <div>
+                      <div class="widget-body no-padding">
+                        <div type="info" class="no-margin alert alert-primary">
+                          <i class="fa-fw fa fa-table"></i>
+                          库存量列表
+                        </div>
+                        <div class=" height-overflow" style="padding:0;">
+                          <div style="padding: 0;z-index: 2;" class="table-responsive">
+                            <table class="table table-striped  smart-form">
+                              <thead>
+                              <tr >
+                                <th>商品编号</th>
+                                <th>商品名称</th>
+                                <th>仓库名称</th>
+                                <th>总库存量</th>
+                                <th>剩余库存量</th>
+                                <th>商品分类</th>
+                                <th>商品属性</th>
+                                <th>规格型号</th>
+                                <th>单位</th>
+                                <th>生产厂家</th>
+                                <th>状态</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr *ngFor="let p of searchProductList?.result?.productList?.data" (click)="isStatusShow(p.openinginventory_id,p.openinginventory_status)" [ngClass]="{'table-color':editStatusOpeningInventoryId == p.openinginventory_id}">
+                                <td>{{p.p_product_id}}</td>
+                                <td>{{p.p_name}}</td>
+                                <td>{{p.storehouse_name}}</td>
+                                <td>{{p.openinginventory_count}}</td>
+                                <td>{{p.openinginventory_surplus_count}}</td>
+                                <td>{{p.category}}</td>
+                                <td>{{p.p_property==1?'销售':'外购'}}</td>
+                                <td>{{p.p_specification}}</td>
+                                <td>{{p.p_unit}}</td>
+                                <td>{{p.c_name}}</td>
+                                <td><span class="">{{p.openinginventory_status == 1?'正常':'已删除'}}</span></td>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- 底部-（分页部分）-->
+                        <div class="footer-size flex-justify-end">
+                          <ul class="pagination" *ngIf="searchProductList?.result?.page" >
+                            <li  *ngFor="let p of searchProductList?.result?.page" class="{{p.class}}">
+                              <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                              <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>
+                            </li>
+                            <li class="page-item disabled">
+                              <a  class="page-link" disabled>共{{ searchProductList?.result?.productList?.total}}条</a>
+                            </li>
+                          </ul>
+                        </div>
+
+                      </div>
+                    </div>
+                  </sa-widget>
+                  <!-- end widget -->
+                </article>
+              </div>
+            </div>
+          </div>
+        </sa-widget>
+      </article>
+    </div>
+  </sa-widgets-grid>
+</div>
+
+<div class="modal fade bd-example-modal-xl" bsModal #detailModal="bs-modal">
+  <div class="modal-dialog  modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- 标题 -->
+        <h3 class="modal-title" data-ng-bind='results.title'></h3>
+        <h4 class="modal-title">{{productInfo?.result?.p_name}}-{{productInfo?.result?.p_product_id}}</h4>
+        <!-- 关闭按钮 -->
+        <button type="button" class="close" (click)="clear_('detail')">
+          ×
+        </button>
+
+      </div>
+      <div class="modal-body height-overflow-380">
+        <div class="row ">
+          <div class="col-sm-12">
+            <div class="" >
+              <P class="alert alert-info">基本信息</P>
+              <table class="table table-striped table-forum">
+                <tbody>
+                <tr>
+                  <td class="width-120">商品名称:</td>
+                  <td class="">{{productInfo?.result?.p_name}}</td>
+                  <td class="width-120">商品编码:</td>
+                  <td >{{productInfo?.result?.p_product_id}}</td>
+                </tr>
+                <tr>
+                  <td class="width-120">商品型号:</td>
+                  <td class="">{{productInfo?.result?.p_specification}}</td>
+                  <td class="width-120">仓库名称:</td>
+                  <td >{{productInfo?.result?.storehouse_name}}</td>
+                </tr>
+                <tr>
+                  <td class="width-120">单位:</td>
+                  <td class="">{{productInfo?.result?.p_unit}}</td>
+                  <td class="width-120">总数量:</td>
+                  <td >{{productInfo?.result?.openinginventory_count}}</td>
+                </tr>
+                <tr>
+                  <td class="width-120">剩余库存量:</td>
+                  <td class="">{{productInfo?.result?.openinginventory_surplus_count}}</td>
+                  <td class="width-120">条码:</td>
+                  <td class="" colspan="3">{{productInfo?.result?.p_qrcode}}</td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="clear_('detail')">返回</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

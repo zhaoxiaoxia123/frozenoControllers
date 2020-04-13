@@ -1,0 +1,142 @@
+<!-- MAIN CONTENT -->
+<div id="content">
+  <!--<div class="row">-->
+    <!--<sa-big-breadcrumbs *ngIf="storehouse_id == 0" [items]="['仓库管理', '添加仓库']" icon="pencil-square-o" ></sa-big-breadcrumbs>-->
+    <!--<sa-big-breadcrumbs *ngIf="storehouse_id != 0" [items]="['仓库管理', '修改仓库']" icon="pencil-square-o" ></sa-big-breadcrumbs>-->
+  <!--</div>-->
+  <sa-widgets-grid>
+    <div class="row">
+      <article class="col-sm-12 ">
+        <!-- Widget ID (each widget will need unique ID)-->
+        <sa-widget  [editbutton]="false" [deletebutton]="false" [colorbutton]="false" >
+          <header  *ngIf="storehouse_id == 0">
+            <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+            <h2>添加仓库</h2>
+          </header>
+          <header *ngIf="storehouse_id != 0">
+            <span class="widget-icon"> <i class="glyphicon glyphicon-pencil"></i> </span>
+            <h2 >修改仓库 </h2>
+          </header>
+          <div>
+            <!-- widget content -->
+            <div class="widget-body no-padding">
+              <!--(ngSubmit)="onSubmit()"-->
+              <form id="smart-form-register" class="form-distance" [formGroup]="formModel" novalidate>
+                <fieldset>
+                  <legend>基本信息</legend>
+                  <input type="hidden" name="storehouse_id" formControlName="storehouse_id" >
+                  <div class="form-row">
+
+                    <div class="form-group col-sm-4">
+                      <label class="label txt-color-blue">仓库编号<span class="asterisk-color">*</span></label>
+                      <input type="text" class="form-control"  name="storehouse_number" formControlName="storehouse_number" maxlength="15" placeholder="自动编号"/>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label txt-color-blue">仓库名称<span class="asterisk-color">*</span></label>
+                      <input type="text" class="form-control"  name="storehouse_name" formControlName="storehouse_name" maxlength="15" placeholder="请输入仓库名称"/>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label ">助记码</label>
+                      <input type="text" class="form-control"  (blur)="showPinyin()" disabled="disabled" name="storehouse_shortcode" formControlName="storehouse_shortcode" placeholder="手工录入或自动生成 " maxlength="20" />
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label "> 负责人</label>
+                      <div class="input-group mb-2 mr-sm-2">
+
+                        <select  class="form-control" name="u_id" formControlName="u_id" [(ngModel)]="u_id_default">
+                          <option *ngFor="let u of storehouseList.result?.userList" [selected]="storehouse_info.result?.u_id == u.id || this.storehouse_id == 0" value="{{u.id}}">{{u.u_username}}</option>
+                        </select>
+
+                        <div class="input-group-prepend">
+                          <a   class="input-group-text" type="button" href="http://cn.i3ot.com/#/forms/employees/0" target="_blank" (click)="smartModEg1()">添加
+                          </a>
+                        </div>
+                        <div class="input-group-prepend">
+                          <a class="input-group-text refresh-page" type="button"  (click)="getStorehouseDefault()" >
+                            刷新
+                          </a>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label ">地址</label>
+                      <div class="input-group">
+                        <select  class="form-control" name="address1"  formControlName="address1" [(ngModel)]="address1_default" (change)="getCity()">
+                          <option value="0">--请选择省--</option>
+                          <option *ngFor="let p of province" [selected]="storehouse_info.result?.address1 == p" value="{{p}}">{{p}}</option>
+                        </select>
+                        <select  class="form-control" name="address2"  formControlName="address2" [(ngModel)]="address2_default" (change)="getArea()">
+                          <option value="0">--请选择市--</option>
+                          <option *ngFor="let c of city" [selected]="storehouse_info.result?.address2 == c" value="{{c}}">{{c}}</option>
+                        </select>
+                        <select  class="form-control" name="address3"  formControlName="address3" [(ngModel)]="address3_default">
+                          <option value="0">--请选择区--</option>
+                          <option *ngFor="let a of area" [selected]="storehouse_info.result?.address3 == a" value="{{a}}">{{a}}</option>
+                        </select>
+
+                      </div>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label ">详细地址</label>
+                      <input type="text" class="form-control"  name='storehouse_address' formControlName="storehouse_address" placeholder="请输入详细地址"   maxlength="20" >
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label "> 仓库状态</label>
+                      <select class="form-control" name="storehouse_status" formControlName="storehouse_status" [(ngModel)]="storehouse_status_default">
+                        <option value="1" [selected]="storehouse_info.result?.storehouse_status == 1">正常</option>
+                        <option value="2" [selected]="storehouse_info.result?.storehouse_status == 2">维修</option>
+                        <option value="3" [selected]="storehouse_info.result?.storehouse_status == 3">满仓</option>
+                        <option value="0" >无效</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                      <label class="label"> 固定电话</label>
+                      <input   class="form-control"  formControlName="storehouse_phone" maxlength="13" name="storehouse_phone" placeholder="请输入保管室座机" samaskedinput="(999) 999-9999" type="tel" ng-reflect-sa-masked-input="(999) 999-9999" aria-required="true"  aria-invalid="false" >
+                    </div>
+
+                    <div class="form-group col-sm-12">
+                      <label class="label">备注</label>
+                      <textarea class="form-control"  rows="3" formControlName="storehouse_notes" name="storehouse_notes"></textarea>
+                    </div>
+
+
+                  </div>
+
+
+                </fieldset>
+                <div class="footer-size flex-justify-end">
+
+
+                  <div *ngIf="isPermission(menu_id,'add') || isPermission(menu_id,'edit')">
+                    <button type="button" class="btn btn-primary  ml-2" (click)="onSubmit(1)">
+                      保存
+                    </button>
+                    <button class="btn btn-success  ml-2" type="button" (click)="onSubmit(2)">保存并新增</button>
+
+                  </div>
+                  <button type="button" class="btn btn-default ml-2" >
+                    返回
+                  </button>
+                </div>
+              </form>
+
+            </div>
+            <!-- end widget content -->
+          </div>
+          <!-- end widget div -->
+        </sa-widget>
+      </article>
+      <!-- END COL -->
+    </div>
+    <!-- END ROW -->
+  </sa-widgets-grid>
+  <!-- end widget grid -->
+</div>

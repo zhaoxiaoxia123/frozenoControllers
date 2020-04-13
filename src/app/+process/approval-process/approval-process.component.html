@@ -1,0 +1,1107 @@
+<div id="content">
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 ">
+                <sa-widget  [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+                    <header>
+                        <ul class="nav nav-tabs pull-left in">
+                            <li [class.active]="state.tabs.demo5=='iss1'" class="active">
+                                <a (click)="showTab('iss1')">待我审批的<span class="badge bg-color-red txt-color-white" *ngIf="count_">{{count_}}</span></a>
+                            </li>
+                            <li [class.active]="state.tabs.demo5=='iss2'">
+                                <a (click)="showTab('iss2')">我已审批的 </a>
+                            </li>
+                            <li [class.active]="state.tabs.demo5=='iss3'">
+                                <a (click)="showTab('iss3')">我发起的 </a>
+                            </li>
+                            <li [class.active]="state.tabs.demo5=='iss4'">
+                                <a (click)="showTab('iss4')">抄送我的 </a>
+                            </li>
+                        </ul>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding">
+                            <tabset>
+                                <tab [active]="state.tabs.demo5 == 'iss1'">
+                                    <app-process-await (isShowDetail)="getStatus($event,0)" (count_)="getData($event)" [rollback_url]="rollback_url" *ngIf="isInTabs('iss1')"></app-process-await>
+                                </tab>
+                                <tab [active]="state.tabs.demo5 == 'iss2'">
+                                    <app-process-already (isShowDetail)="getStatus($event,0)" [rollback_url]="rollback_url" *ngIf="isInTabs('iss2')"></app-process-already>
+                                </tab>
+                                <tab [active]="state.tabs.demo5 == 'iss3'">
+                                    <app-process-my (isShowDetail)="getStatus($event,0)" [rollback_url]="rollback_url" *ngIf="isInTabs('iss3')"></app-process-my>
+                                </tab>
+                                <tab [active]="state.tabs.demo5 == 'iss4'">
+                                    <app-process-copy (isShowDetail)="getStatus($event,0)" [rollback_url]="rollback_url" *ngIf="isInTabs('iss4')"></app-process-copy>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>
+
+<div class="slide-content" *ngIf="select_propertys == 'approval'" [ngStyle]="{'position':'fixed','display': (isShowDetail == 0 ?'none':'block'),'z-index': '9991'}" >
+    <div class="entity-well entity-well--tasks">
+        <div class="entity-well-header" >
+            <span  class="approval-head" >{{approvalInfo?.result?.u_username}}
+                <span [ngSwitch]="approvalInfo?.result?.approval_type">
+                  <span *ngSwitchCase="1">的请假</span>
+                  <span *ngSwitchCase="2">的出差</span>
+                  <span *ngSwitchCase="3">的外出</span>
+                  <span *ngSwitchCase="4">的报销</span>
+                  <span *ngSwitchCase="5">的通用审批</span>
+                </span>
+            </span>
+            <ul class="entity-well-header-nav nav s pull-right">
+                <li class="divider-v"></li>
+                <li><a class="entity-well-header-close" (click)="closeDetail()" >
+                    <i class="fa fa-times"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="entity-well-scroll height-nonav height-nonav--notab ng-scope wt-scroll select-y-auto"  >
+            <div class="approve-top approve-intro" >
+                <div class="approve-head" >
+                    <a class="approval-size" title="{{approvalInfo?.result?.u_username}}">
+                        {{approvalInfo?.result?.u_username}}
+                        <span [ngSwitch]="approvalInfo?.result?.approval_type">
+                          <span *ngSwitchCase="1">的请假</span>
+                          <span *ngSwitchCase="2">的出差</span>
+                          <span *ngSwitchCase="3">的外出</span>
+                          <span *ngSwitchCase="4">的报销</span>
+                          <span *ngSwitchCase="5">的通用审批</span>
+                        </span>
+                    </a>
+                    <p class="username" >{{approvalInfo?.result?.u_username}}</p>
+                    <p class="text-warning" *ngIf="approvalInfo?.result?.approval_status != 'no' && approvalInfo?.result?.approval_status != 'yes' && approvalInfo?.result?.approval_status != 'cancel'" >
+                    等待{{approvalInfo?.result?.assigin_user_name}}审批
+                    </p>
+                    <p class="text-success" *ngIf="approvalInfo?.result?.approval_status == 'yes'" >
+                     已同意
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.approval_status == 'no'">
+                        已拒绝
+                    </p>
+                    <p class="text-primary" *ngIf="approvalInfo?.result?.approval_status == 'cancel'">
+                        已撤销
+                    </p>
+                    <p class="text-danger" >
+                        已作废
+                    </p>
+                </div>
+               <!-- 已同意-->
+                <div class="approve-result agree pullout" *ngIf="approvalInfo?.result?.approval_status == 'yes'" ></div>
+                <!--已拒绝-->
+                <div class="approve-result refuse pullout" *ngIf="approvalInfo?.result?.approval_status == 'no'"></div>
+                <!--已撤销-->
+                <div class="approve-result revoke pullout" *ngIf="approvalInfo?.result?.approval_status == 'cancel'"></div>
+                <div [ngSwitch]="approvalInfo?.result?.approval_type">
+                    <!--请假-->
+                    <div class="approve-formschema" *ngSwitchCase="1">
+                        <div class="line component-textareafield">
+                            <label class="label" >所在部门:</label>
+                            <span >{{approvalInfo?.result?.department_name}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >请假类型:</label>
+                            <span >{{approvalInfo?.result?.detail.type}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >开始时间:</label>
+                            <span >{{approvalInfo?.result?.approval_start_date}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >结束时间:</label>
+                            <span >{{approvalInfo?.result?.approval_end_date}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >请假天数:</label>
+                            <span >{{approvalInfo?.result?.detail?.day}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >请假事由:</label>
+                            <span >{{approvalInfo?.result?.detail?.reason}}</span>
+                        </div>
+                        <div class="line component-ddphotofield">
+                            <label class="label" >图片:</label>
+                            <div class="picture mb-20">
+                                <div class="picture-list " *ngFor="let i of approvalInfo?.result?.img" (click)="showBigPic(domain+i)">
+                                    <img alt="" src="{{domain}}{{i}}" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <!--出差-->
+                    <div class="approve-formschema"  *ngSwitchCase="2">
+                        <div class="line component-textareafield">
+                            <label class="label" >所在部门:</label>
+                            <span >{{approvalInfo?.result?.department_name}}</span>
+                        </div>
+                        <div class="line approve-formschema" *ngIf="approvalInfo?.result?.detail">
+                            <div class="subs-row" *ngFor="let dt of approvalInfo?.result?.detail?.trip;let ind = index;">
+                                <label class="label row-label-title" >
+                                    <span >行程明细{{ind}}</span>
+                                </label>
+                                <div class="line component-textfield" >
+                                    <label class="label" >出差地点</label>
+                                    <span class="component-content" >{{dt.address}}</span>
+                                </div>
+                                <div class="line component-textfield">
+                                    <label class="label" >开始时间:</label>
+                                    <span >{{dt.start}}</span>
+                                </div>
+                                <div class="line component-textfield">
+                                    <label class="label" >结束时间:</label>
+                                    <span >{{dt.end}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line component-ddphotofield">
+                            <label class="label" >图片:</label>
+                            <div class="picture mb-20">
+                                <div class="picture-list " *ngFor="let i of approvalInfo?.result?.img" (click)="showBigPic(domain+i)">
+                                    <img alt="" src="{{domain}}{{i}}" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--外出-->
+                    <div class="approve-formschema" *ngSwitchCase="3" >
+                        <div class="line component-textareafield">
+                            <label class="label" >所在部门:</label>
+                            <span >{{approvalInfo?.result?.department_name}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >开始时间:</label>
+                            <span >{{approvalInfo?.result?.approval_start_date}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >结束时间:</label>
+                            <span >{{approvalInfo?.result?.approval_end_date}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >外出时间（小时）:</label>
+                            <span >{{approvalInfo?.result?.detail?.day}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >外出事由:</label>
+                            <span >{{approvalInfo?.result?.detail?.reason}}</span>
+                        </div>
+                        <div class="line component-ddphotofield">
+                            <label class="label" >图片:</label>
+                            <div class="picture mb-20">
+                                <div class="picture-list " *ngFor="let i of approvalInfo?.result?.img" (click)="showBigPic(domain+i)">
+                                    <img alt="" src="{{domain}}{{i}}" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--报销-->
+                    <div class="approve-formschema" *ngSwitchCase="4">
+                        <div class="line component-textareafield">
+                            <label class="label" >所在部门:</label>
+                            <span >{{approvalInfo?.result?.department_name}}</span>
+                        </div>
+
+                        <div class="line approve-formschema" *ngIf="approvalInfo?.result?.detail?.detail">
+                            <div class="subs-row" *ngFor="let dt1 of approvalInfo?.result?.detail?.detail;let ind1 = index;">
+                                <label class="label row-label-title" >
+                                    <span >报销明细{{ind1}}</span>
+                                </label>
+                                <div class="line component-textfield" >
+                                    <label class="label" >报销金额(元)</label>
+                                    <span class="component-content" >{{dt1.price}}</span>
+                                </div>
+                                <div class="line component-textfield">
+                                    <label class="label" >报销类别:</label>
+                                    <span >{{dt1.type}}</span>
+                                </div>
+                                <div class="line component-textfield">
+                                    <label class="label" >费用明细:</label>
+                                    <span >{{dt1.reason}}</span>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="line component-textfield">
+                                <label class="label" >总报销金额(元):</label>
+                                <span class="text-warning">{{approvalInfo?.result?.detail?.total}}</span>
+                            </div>
+                        </div>
+                        <div class="line component-ddphotofield">
+                            <label class="label" >图片:</label>
+                            <div class="picture mb-20">
+                                <div class="picture-list " *ngFor="let i of approvalInfo?.result?.img" (click)="showBigPic(domain+i)">
+                                    <!--<a class="fa fa-times-circle picture-a" style="display:block;"></a>-->
+                                    <img alt="" src="{{domain}}{{i}}" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!--通用审批-->
+                    <div class="approve-formschema"  *ngSwitchCase="5">
+                        <div class="line component-textareafield">
+                            <label class="label" >所在部门:</label>
+                            <span >{{approvalInfo?.result?.department_name}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <label class="label" >申请内容:</label>
+                            <span >{{approvalInfo?.result?.detail?.title}}</span>
+                        </div>
+                        <div class="component-textfield " >
+                            <label class="label" >审批详情:</label>
+                            <span >{{approvalInfo?.result?.detail?.reason}}</span>
+                        </div>
+                        <div class="line component-ddphotofield">
+                            <label class="label" >图片:</label>
+                            <div class="picture mb-20">
+                                <div class="picture-list " *ngFor="let i of approvalInfo?.result?.img" (click)="showBigPic(domain+i)">
+                                    <!--<a class="fa fa-times-circle picture-a" style="display:block;"></a>-->
+                                    <img alt="" src="{{domain}}{{i}}" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="cl-mcont">
+                <ul class="cbp_tmtimeline" *ngIf="approvalInfo?.result?.log">
+                    <li *ngFor="let lg of approvalInfo?.result?.log;let ind2 = index;">
+                        <time class="cbp_tmtime">
+                            <span>{{lg.created_at | date:'yyyy-MM-dd'}}</span> <span>{{lg.created_at | date:'HH:mm'}}</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-phone" *ngIf="ind2%2 == 0"></div>
+                        <div class="cbp_tmicon cbp_tmicon-screen" *ngIf="ind2%2 != 0"></div>
+
+                        <div class="cbp_tmlabel" [ngSwitch]="lg.log_operation_type">
+                          <span *ngSwitchCase="'create'"><h2>{{lg.u_username}}发起了申请</h2></span>
+                          <span *ngSwitchCase="'ok'"><h2>{{lg.u_username}}已同意</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                          <span *ngSwitchCase="'no'"> <h2> {{lg.u_username}}已拒绝</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                          <span *ngSwitchCase="'comment'"><h2>{{lg.u_username}}的评论</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                          <span *ngSwitchCase="'urge'"><h2>{{lg.u_username}}的催办</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'cancel'"><h2>{{lg.u_username}}撤销了申请</h2></span>
+                            <span *ngSwitchCase="'transfer'"><h2>{{lg.u_username}}转交了申请</h2></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="entity-well-content">
+                <div class="entity-members peopel-bg">
+                    <dl class="pd-10">
+                        <dt class="ng-binding"><span class="peopel-span">抄送人<small>审批通过后，通知抄送人</small></span></dt>
+                        <dd >
+                            <ul class="avatars" *ngIf="approvalInfo?.result?.copy_user">
+                                <li *ngFor="let cu of approvalInfo?.result?.copy_user">
+                                    <a class="portrait-size"  title="{{cu.u_username}}">
+                                        {{cu.u_username}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <hr class="entity-hr">
+                <div class="entity-content-footer">
+                    <div  class="ng-binding ng-scope">{{approvalInfo?.result?.u_username}} {{approvalInfo?.result?.created_at}}，创建了审核</div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="approve-foot show ">
+               <!-- 当我发起审批时页面显示：
+                1、审批人是自己：同意、拒绝、撤销、评论、转交
+                2、审批人是其他人：催办、撤销、评论
+                3、完成审批：评论
+                当其他人发起审批时页面显示：
+                1、我审批时：同意、拒绝、转交、评论
+                2、他人审批中：评论-->
+                <div class="tFlexbox tAlignCenter tJustifyCenter" >
+                    <div class="tFlex1 approval-action tTap agree" (click)="showModal('operation','ok')" *ngIf="uid == approvalInfo?.result?.approval_status">同意</div>
+                    <div class="tFlex1 approval-action tTap refuse" (click)="showModal('operation','no')" *ngIf="uid == approvalInfo?.result?.approval_status">拒绝</div>
+                    <div class="tFlex1 approval-action tTap reminders" (click)="showModal('urge','urge')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.approval_status != 'yes' && approvalInfo?.result?.approval_status != 'no' && approvalInfo?.result?.approval_status != 'cancel'">催办</div>
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.approval_status != 'yes' && approvalInfo?.result?.approval_status != 'no' && approvalInfo?.result?.approval_status != 'cancel'">撤销</div>
+                    <div class="tFlex1 approval-action tTap  comment " (click)="showModal('operation','comment')" *ngIf="approvalInfo?.result?.approval_status != 'yes' && approvalInfo?.result?.approval_status != 'no' && approvalInfo?.result?.approval_status != 'cancel' ">评论</div>
+                    <div class="tFlex1 approval-action tTap" (click)="showModal('transfer','transfer')" *ngIf="uid == approvalInfo?.result?.approval_status">转交</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--采购和销售审批-->
+<div class="slide-content" *ngIf="select_propertys == 'purchase_cg_after'||select_propertys == 'purchase_sale'" [ngStyle]="{'position':'fixed','display': (isShowDetail == 0 ?'none':'block'),'z-index': '9991'}" >
+    <div class="entity-well entity-well--tasks">
+        <div class="entity-well-header" >
+            <span  class="approval-head" >{{approvalInfo?.result?.u_username}}
+                <span [ngSwitch]="approvalInfo?.result?.pr_type">
+                  <span *ngSwitchCase="1">的采购进货单审批</span>
+                  <span *ngSwitchCase="2">的采购退货单审批</span>
+                  <span *ngSwitchCase="4">的销售销货单审批</span>
+                  <span *ngSwitchCase="5">的销售退货单审批</span>
+                </span>
+            </span>
+            <ul class="entity-well-header-nav nav s pull-right">
+                <li class="divider-v"></li>
+                <li><a class="entity-well-header-close" (click)="closeDetail()" >
+                    <i class="fa fa-times"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="entity-well-scroll height-nonav height-nonav--notab ng-scope wt-scroll select-y-auto"  >
+            <div class="approve-top approve-intro" >
+                <div class="approve-head" >
+                    <a class="approval-size" title="{{approvalInfo?.result?.u_username}}">
+                        {{approvalInfo?.result?.u_username}}
+                        <span [ngSwitch]="approvalInfo?.result?.pr_type">
+                          <span *ngSwitchCase="1">的采购进货单申请</span>
+                          <span *ngSwitchCase="2">的采购退货单申请</span>
+                          <span *ngSwitchCase="4">的销售销货单申请</span>
+                          <span *ngSwitchCase="5">的销售退货单申请</span>
+                        </span>
+                    </a>
+                    <p class="username" >{{approvalInfo?.result?.u_username}}</p>
+                    <p class="text-warning" *ngIf="approvalInfo?.result?.pr_status != 'no' && approvalInfo?.result?.pr_status != 'yes' && approvalInfo?.result?.pr_status != 'cancel'" >
+                        等待{{approvalInfo?.result?.assigin_user_name}}审批
+                    </p>
+                    <p class="text-success" *ngIf="approvalInfo?.result?.pr_status == 'yes'" > 已同意 </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.pr_status == 'no'">已拒绝</p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.pr_status == 'cancel'"> 已作废 </p>
+                </div>
+                <!-- 已同意-->
+                <div class="approve-result agree pullout" *ngIf="approvalInfo?.result?.pr_status == 'yes'" ></div>
+                <!--已拒绝-->
+                <div class="approve-result refuse pullout" *ngIf="approvalInfo?.result?.pr_status == 'no'"></div>
+                <!--已作废-->
+                <div class="approve-result invalid pullout" *ngIf="approvalInfo?.result?.pr_status == 'cancel'"></div>
+                <div >
+                    <div class="approve-formschema" >
+                        <div class="line component-textareafield">
+                            <label class="label" >
+                                <span>单据号:</span>
+                            </label>
+                            <span >{{approvalInfo?.result?.pr_order}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <a class="btn btn-primary btn-block mb-20" (click)="showPage(approvalInfo?.result?.pr_id)">
+                                <strong>查看详情</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="cl-mcont">
+                <ul class="cbp_tmtimeline" *ngIf="approvalInfo?.result?.log">
+                    <li *ngFor="let lg of approvalInfo?.result?.log;let ind2 = index;">
+                        <time class="cbp_tmtime">
+                            <span>{{lg.created_at | date:'yyyy-MM-dd'}}</span> <span>{{lg.created_at | date:'HH:mm'}}</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-phone" *ngIf="ind2%2 == 0"></div>
+                        <div class="cbp_tmicon cbp_tmicon-screen" *ngIf="ind2%2 != 0"></div>
+
+                        <div class="cbp_tmlabel" [ngSwitch]="lg.log_operation_type">
+                            <span *ngSwitchCase="'create'"><h2>{{lg.u_username}}发起了申请</h2></span>
+                            <span *ngSwitchCase="'ok'"><h2>{{lg.u_username}}已同意</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'no'"> <h2> {{lg.u_username}}已拒绝</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <!--<span *ngSwitchCase="'comment'"><h2>{{lg.u_username}}的评论</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <!--<span *ngSwitchCase="'urge'"><h2>{{lg.u_username}}的催办</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <span *ngSwitchCase="'yes'"><h2>{{lg.u_username}}已完成审批</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'back_cancel'"><h2>{{lg.u_username}}已弃废</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'cancel'"><h2>{{lg.u_username}}作废了申请</h2></span>
+                            <span *ngSwitchCase="'transfer'"><h2>{{lg.u_username}}转交了申请</h2></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="entity-well-content">
+                <div class="entity-members peopel-bg">
+                    <dl class="pd-10">
+                        <dt class="ng-binding"><span class="peopel-span">抄送人<small>审批通过后，通知抄送人</small></span></dt>
+                        <dd >
+                            <ul class="avatars" *ngIf="approvalInfo?.result?.copy_user">
+                                <li *ngFor="let cu of approvalInfo?.result?.copy_user">
+                                    <a class="portrait-size"  title="{{cu.u_username}}">
+                                        {{cu.u_username}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <hr class="entity-hr">
+                <div class="entity-content-footer">
+                    <div  class="ng-binding ng-scope">{{approvalInfo?.result?.u_username}} {{approvalInfo?.result?.created_at}}，创建了审核</div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="approve-foot show ">
+                <div class="tFlexbox tAlignCenter tJustifyCenter" >
+                    <div class="tFlex1 approval-action tTap agree" (click)="showModal('operation','ok')" *ngIf="uid == approvalInfo?.result?.pr_status">同意</div>
+                    <div class="tFlex1 approval-action tTap refuse" (click)="showModal('operation','no')" *ngIf="uid == approvalInfo?.result?.pr_status">拒绝</div>
+                    <!--<div class="tFlex1 approval-action tTap reminders" (click)="showModal('urge','urge')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.pr_status != 'yes' && approvalInfo?.result?.pr_status != 'no' && approvalInfo?.result?.pr_status != 'cancel'">催办</div>-->
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.pr_status != 'yes' && approvalInfo?.result?.pr_status != 'no' && approvalInfo?.result?.pr_status != 'cancel'">作废</div>
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','back_cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.pr_status == 'cancel'">弃废</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--其他出入库审批-->
+<div class="slide-content" *ngIf="select_propertys == 'otherorder_in'||select_propertys == 'otherorder_out'" [ngStyle]="{'position':'fixed','display': (isShowDetail == 0 ?'none':'block'),'z-index': '9991'}" >
+    <div class="entity-well entity-well--tasks">
+        <div class="entity-well-header" >
+            <span  class="approval-head" >{{approvalInfo?.result?.create_user_name}}
+                <span [ngSwitch]="approvalInfo?.result?.otherorder_type">
+                  <span *ngSwitchCase="1">的其他入库单审批</span>
+                  <span *ngSwitchCase="2">的其他出库单审批</span>
+                </span>
+            </span>
+            <ul class="entity-well-header-nav nav s pull-right">
+                <li class="divider-v"></li>
+                <li><a class="entity-well-header-close" (click)="closeDetail()" >
+                    <i class="fa fa-times"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="entity-well-scroll height-nonav height-nonav--notab ng-scope wt-scroll select-y-auto"  >
+            <div class="approve-top approve-intro" >
+                <div class="approve-head" >
+                    <a class="approval-size" title="{{approvalInfo?.result?.create_user_name}}">
+                        {{approvalInfo?.result?.create_user_name}}
+                        <span [ngSwitch]="approvalInfo?.result?.otherorder_type">
+                          <span *ngSwitchCase="1">的其他入库单申请</span>
+                          <span *ngSwitchCase="2">的其他出库单申请</span>
+                        </span>
+                    </a>
+                    <p class="username" >{{approvalInfo?.result?.create_user_name}}</p>
+                    <p class="text-warning" *ngIf="approvalInfo?.result?.otherorder_status != 'no' && approvalInfo?.result?.otherorder_status != 'yes' && approvalInfo?.result?.otherorder_status != 'cancel'" >
+                        等待{{approvalInfo?.result?.assigin_user_name}}审批
+                    </p>
+                    <p class="text-success" *ngIf="approvalInfo?.result?.otherorder_status == 'yes'" >
+                        已同意
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.otherorder_status == 'no'">
+                        已拒绝
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.otherorder_status == 'cancel'">
+                        已作废
+                    </p>
+                </div>
+                <!-- 已同意-->
+                <div class="approve-result agree pullout" *ngIf="approvalInfo?.result?.otherorder_status == 'yes'" ></div>
+                <!--已拒绝-->
+                <div class="approve-result refuse pullout" *ngIf="approvalInfo?.result?.otherorder_status == 'no'"></div>
+                <!--已作废-->
+                <div class="approve-result invalid pullout" *ngIf="approvalInfo?.result?.otherorder_status == 'cancel'"></div>
+
+                <div >
+                    <div class="approve-formschema" >
+                        <div class="line component-textareafield">
+                            <label class="label" >
+                                <span>单据号:</span>
+                                <!--<span>资产编号:</span>-->
+                            </label>
+                            <span >{{approvalInfo?.result?.otherorder_order}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <a class="btn btn-primary btn-block mb-20" (click)="showPage(approvalInfo?.result?.otherorder_id)">
+                                <strong>查看详情</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="cl-mcont">
+                <ul class="cbp_tmtimeline" *ngIf="approvalInfo?.result?.log">
+                    <li *ngFor="let lg of approvalInfo?.result?.log;let ind2 = index;">
+                        <time class="cbp_tmtime">
+                            <span>{{lg.created_at | date:'yyyy-MM-dd'}}</span> <span>{{lg.created_at | date:'HH:mm'}}</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-phone" *ngIf="ind2%2 == 0"></div>
+                        <div class="cbp_tmicon cbp_tmicon-screen" *ngIf="ind2%2 != 0"></div>
+
+                        <div class="cbp_tmlabel" [ngSwitch]="lg.log_operation_type">
+                            <span *ngSwitchCase="'create'"><h2>{{lg.u_username}}发起了申请</h2></span>
+                            <span *ngSwitchCase="'ok'"><h2>{{lg.u_username}}已同意</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'no'"> <h2> {{lg.u_username}}已拒绝</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <!--<span *ngSwitchCase="'comment'"><h2>{{lg.u_username}}的评论</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <!--<span *ngSwitchCase="'urge'"><h2>{{lg.u_username}}的催办</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <span *ngSwitchCase="'yes'"><h2>{{lg.u_username}}已完成审批</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'back_cancel'"><h2>{{lg.u_username}}已弃废</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'cancel'"><h2>{{lg.u_username}}作废了申请</h2></span>
+                            <span *ngSwitchCase="'transfer'"><h2>{{lg.u_username}}转交了申请</h2></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="entity-well-content">
+                <div class="entity-members peopel-bg">
+                    <dl class="pd-10">
+                        <dt class="ng-binding"><span class="peopel-span">抄送人<small>审批通过后，通知抄送人</small></span></dt>
+                        <dd >
+                            <ul class="avatars" *ngIf="approvalInfo?.result?.copy_user">
+                                <li *ngFor="let cu of approvalInfo?.result?.copy_user">
+                                    <a class="portrait-size"  title="{{cu.u_username}}">
+                                        {{cu.u_username}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <hr class="entity-hr">
+                <div class="entity-content-footer">
+                    <div  class="ng-binding ng-scope">{{approvalInfo?.result?.create_user_name}} {{approvalInfo?.result?.created_at}}，创建了审核</div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="approve-foot show ">
+                <div class="tFlexbox tAlignCenter tJustifyCenter" >
+                    <div class="tFlex1 approval-action tTap agree" (click)="showModal('operation','ok')" *ngIf="uid == approvalInfo?.result?.otherorder_status">同意</div>
+                    <div class="tFlex1 approval-action tTap refuse" (click)="showModal('operation','no')" *ngIf="uid == approvalInfo?.result?.otherorder_status">拒绝</div>
+                    <!--<div class="tFlex1 approval-action tTap reminders" (click)="showModal('urge','urge')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.otherorder_status != 'yes' && approvalInfo?.result?.otherorder_status != 'no' && approvalInfo?.result?.otherorder_status != 'cancel'">催办</div>-->
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.otherorder_status != 'yes' && approvalInfo?.result?.otherorder_status != 'no' && approvalInfo?.result?.otherorder_status != 'cancel'">作废</div>
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','back_cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.otherorder_status == 'cancel'">弃废</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!---调拨单-->
+<div class="slide-content" *ngIf="select_propertys == 'stockallot'" [ngStyle]="{'position':'fixed','display': (isShowDetail == 0 ?'none':'block'),'z-index': '9991'}" >
+    <div class="entity-well entity-well--tasks">
+        <div class="entity-well-header" >
+            <span  class="approval-head" >{{approvalInfo?.result?.u_username}}
+                <span [ngSwitch]="approvalInfo?.result?.stock_allot_type">
+                  <span *ngSwitchCase="1">的等价调拨单审批</span>
+                  <span *ngSwitchCase="2">的差价调拨单审批</span>
+                </span>
+            </span>
+            <ul class="entity-well-header-nav nav s pull-right">
+                <li class="divider-v"></li>
+                <li><a class="entity-well-header-close" (click)="closeDetail()" >
+                    <i class="fa fa-times"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="entity-well-scroll height-nonav height-nonav--notab ng-scope wt-scroll select-y-auto"  >
+            <div class="approve-top approve-intro" >
+                <div class="approve-head" >
+                    <a class="approval-size" title="{{approvalInfo?.result?.u_username}}">
+                        {{approvalInfo?.result?.u_username}}
+                        <span [ngSwitch]="approvalInfo?.result?.stock_allot_type">
+                          <span *ngSwitchCase="1">的等价调拨单申请</span>
+                          <span *ngSwitchCase="2">的差价调拨单申请</span>
+                        </span>
+                    </a>
+                    <p class="username" >{{approvalInfo?.result?.u_username}}</p>
+                    <p class="text-warning" *ngIf="approvalInfo?.result?.stock_allot_status != 'no' && approvalInfo?.result?.stock_allot_status != 'yes' && approvalInfo?.result?.stock_allot_status != 'cancel'" >
+                        等待{{approvalInfo?.result?.assigin_user_name}}审批
+                    </p>
+                    <p class="text-success" *ngIf="approvalInfo?.result?.stock_allot_status == 'yes'" >
+                        已同意
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.stock_allot_status == 'no'">
+                        已拒绝
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.stock_allot_status == 'cancel'">
+                        已作废
+                    </p>
+                </div>
+                <!-- 已同意-->
+                <div class="approve-result agree pullout" *ngIf="approvalInfo?.result?.stock_allot_status == 'yes'" ></div>
+                <!--已拒绝-->
+                <div class="approve-result refuse pullout" *ngIf="approvalInfo?.result?.stock_allot_status == 'no'"></div>
+                <!--已作废-->
+                <div class="approve-result invalid pullout" *ngIf="approvalInfo?.result?.stock_allot_status == 'cancel'"></div>
+
+                <div >
+                    <div class="approve-formschema" >
+                        <div class="line component-textareafield">
+                            <label class="label" >
+                                <span>单据号:</span>
+                            </label>
+                            <span >{{approvalInfo?.result?.stock_allot_number}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <a class="btn btn-primary btn-block mb-20" (click)="showPage(approvalInfo?.result?.stock_allot_id)">
+                                <strong>查看详情</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="cl-mcont">
+                <ul class="cbp_tmtimeline" *ngIf="approvalInfo?.result?.log">
+                    <li *ngFor="let lg of approvalInfo?.result?.log;let ind2 = index;">
+                        <time class="cbp_tmtime">
+                            <span>{{lg.created_at | date:'yyyy-MM-dd'}}</span> <span>{{lg.created_at | date:'HH:mm'}}</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-phone" *ngIf="ind2%2 == 0"></div>
+                        <div class="cbp_tmicon cbp_tmicon-screen" *ngIf="ind2%2 != 0"></div>
+
+                        <div class="cbp_tmlabel" [ngSwitch]="lg.log_operation_type">
+                            <span *ngSwitchCase="'create'"><h2>{{lg.u_username}}发起了申请</h2></span>
+                            <span *ngSwitchCase="'ok'"><h2>{{lg.u_username}}已同意</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'no'"> <h2> {{lg.u_username}}已拒绝</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <!--<span *ngSwitchCase="'comment'"><h2>{{lg.u_username}}的评论</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <!--<span *ngSwitchCase="'urge'"><h2>{{lg.u_username}}的催办</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <span *ngSwitchCase="'yes'"><h2>{{lg.u_username}}已完成审批</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'back_cancel'"><h2>{{lg.u_username}}已弃废</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'cancel'"><h2>{{lg.u_username}}作废了申请</h2></span>
+                            <span *ngSwitchCase="'transfer'"><h2>{{lg.u_username}}转交了申请</h2></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="entity-well-content">
+                <div class="entity-members peopel-bg">
+                    <dl class="pd-10">
+                        <dt class="ng-binding"><span class="peopel-span">抄送人<small>审批通过后，通知抄送人</small></span></dt>
+                        <dd >
+                            <ul class="avatars" *ngIf="approvalInfo?.result?.copy_user">
+                                <li *ngFor="let cu of approvalInfo?.result?.copy_user">
+                                    <a class="portrait-size"  title="{{cu.u_username}}">
+                                        {{cu.u_username}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <hr class="entity-hr">
+                <div class="entity-content-footer">
+                    <div  class="ng-binding ng-scope">{{approvalInfo?.result?.u_username}} {{approvalInfo?.result?.created_at}}，创建了审核</div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="approve-foot show ">
+                <div class="tFlexbox tAlignCenter tJustifyCenter" >
+                    <div class="tFlex1 approval-action tTap agree" (click)="showModal('operation','ok')" *ngIf="uid == approvalInfo?.result?.stock_allot_status">同意</div>
+                    <div class="tFlex1 approval-action tTap refuse" (click)="showModal('operation','no')" *ngIf="uid == approvalInfo?.result?.stock_allot_status">拒绝</div>
+                    <!--<div class="tFlex1 approval-action tTap reminders" (click)="showModal('urge','urge')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.stock_allot_status != 'yes' && approvalInfo?.result?.stock_allot_status != 'no' && approvalInfo?.result?.stock_allot_status != 'cancel'">催办</div>-->
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.stock_allot_status != 'yes' && approvalInfo?.result?.stock_allot_status != 'no' && approvalInfo?.result?.stock_allot_status != 'cancel'">作废</div>
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','back_cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.stock_allot_status == 'cancel'">弃废</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!---资产发放 和 资产报废-->
+<div class="slide-content" *ngIf="select_propertys == 'assets_ff'||select_propertys == 'assets_bf'" [ngStyle]="{'position':'fixed','display': (isShowDetail == 0 ?'none':'block'),'z-index': '9991'}" >
+    <div class="entity-well entity-well--tasks">
+        <div class="entity-well-header" >
+            <span  class="approval-head" >{{approvalInfo?.result?.u_username}}
+                <span [ngSwitch]="select_propertys">
+                  <span *ngSwitchCase="'assets_ff'">的资产发放申请审批</span>
+                  <span *ngSwitchCase="'assets_bf'">的资产报废申请审批</span>
+                </span>
+            </span>
+            <ul class="entity-well-header-nav nav s pull-right">
+                <li class="divider-v"></li>
+                <li><a class="entity-well-header-close" (click)="closeDetail()" >
+                    <i class="fa fa-times"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="entity-well-scroll height-nonav height-nonav--notab ng-scope wt-scroll select-y-auto"  >
+            <div class="approve-top approve-intro" >
+                <div class="approve-head" >
+                    <a class="approval-size" title="{{approvalInfo?.result?.u_username}}">
+                        {{approvalInfo?.result?.u_username}}
+                        <span [ngSwitch]="select_propertys">
+                          <span *ngSwitchCase="'assets_ff'">的资产发放申请</span>
+                          <span *ngSwitchCase="'assets_bf'">的资产报废申请</span>
+                        </span>
+                    </a>
+                    <p class="username" >{{approvalInfo?.result?.u_username}}</p>
+                    <p class="text-warning" *ngIf="approvalInfo?.result?.assets_verify_status != 'no' && approvalInfo?.result?.assets_verify_status != 'yes' && approvalInfo?.result?.assets_verify_status != 'cancel'" >
+                        等待{{approvalInfo?.result?.assigin_user_name}}审批
+                    </p>
+                    <p class="text-success" *ngIf="approvalInfo?.result?.assets_verify_status == 'yes'" >
+                        已同意
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.assets_verify_status == 'no'">
+                        已拒绝
+                    </p>
+                    <p class="text-danger" *ngIf="approvalInfo?.result?.assets_verify_status == 'cancel'">
+                        已作废
+                    </p>
+                </div>
+                <!-- 已同意-->
+                <div class="approve-result agree pullout" *ngIf="approvalInfo?.result?.assets_verify_status == 'yes'" ></div>
+                <!--已拒绝-->
+                <div class="approve-result refuse pullout" *ngIf="approvalInfo?.result?.assets_verify_status == 'no'"></div>
+                <!--已作废-->
+                <div class="approve-result invalid pullout" *ngIf="approvalInfo?.result?.assets_verify_status == 'cancel'"></div>
+                <div >
+                    <div class="approve-formschema" >
+                        <div class="line component-textareafield">
+                            <label class="label" >
+                                <span>资产编号:</span>
+                            </label>
+                            <span >{{approvalInfo?.result?.assets_number}}</span>
+                        </div>
+                        <div class="line component-textfield">
+                            <a class="btn btn-primary btn-block mb-20" (click)="showPage(approvalInfo?.result?.assets_id)">
+                                <strong>查看详情</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="cl-mcont">
+                <ul class="cbp_tmtimeline" *ngIf="approvalInfo?.result?.log">
+                    <li *ngFor="let lg of approvalInfo?.result?.log;let ind2 = index;">
+                        <time class="cbp_tmtime">
+                            <span>{{lg.created_at | date:'yyyy-MM-dd'}}</span> <span>{{lg.created_at | date:'HH:mm'}}</span>
+                        </time>
+                        <div class="cbp_tmicon cbp_tmicon-phone" *ngIf="ind2%2 == 0"></div>
+                        <div class="cbp_tmicon cbp_tmicon-screen" *ngIf="ind2%2 != 0"></div>
+                        <div class="cbp_tmlabel" [ngSwitch]="lg.log_operation_type">
+                            <span *ngSwitchCase="'create'"><h2>{{lg.u_username}}发起了申请</h2></span>
+                            <span *ngSwitchCase="'ok'"><h2>{{lg.u_username}}已同意</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'no'"> <h2> {{lg.u_username}}已拒绝</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <!--<span *ngSwitchCase="'comment'"><h2>{{lg.u_username}}的评论</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <!--<span *ngSwitchCase="'urge'"><h2>{{lg.u_username}}的催办</h2>-->
+                            <!--<p>{{lg.log_detail}}</p></span>-->
+                            <span *ngSwitchCase="'yes'"><h2>{{lg.u_username}}已完成审批</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'back_cancel'"><h2>{{lg.u_username}}已弃废</h2>
+                            <p>{{lg.log_detail}}</p></span>
+                            <span *ngSwitchCase="'cancel'"><h2>{{lg.u_username}}作废了申请</h2></span>
+                            <span *ngSwitchCase="'transfer'"><h2>{{lg.u_username}}转交了申请</h2></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="entity-well-content">
+                <div class="entity-members peopel-bg">
+                    <dl class="pd-10">
+                        <dt class="ng-binding"><span class="peopel-span">抄送人<small>审批通过后，通知抄送人</small></span></dt>
+                        <dd >
+                            <ul class="avatars" *ngIf="approvalInfo?.result?.copy_user">
+                                <li *ngFor="let cu of approvalInfo?.result?.copy_user">
+                                    <a class="portrait-size"  title="{{cu.u_username}}">
+                                        {{cu.u_username}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+                <hr class="entity-hr">
+                <div class="entity-content-footer">
+                    <div  class="ng-binding ng-scope">{{approvalInfo?.result?.u_username}} {{approvalInfo?.result?.created_at}}，创建了审核</div>
+                </div>
+            </div>
+        </div>
+        <div class="body">
+            <div class="approve-foot show ">
+                <div class="tFlexbox tAlignCenter tJustifyCenter" >
+                    <div class="tFlex1 approval-action tTap agree" (click)="showModal('operation','ok')" *ngIf="uid == approvalInfo?.result?.assets_verify_status">同意</div>
+                    <div class="tFlex1 approval-action tTap refuse" (click)="showModal('operation','no')" *ngIf="uid == approvalInfo?.result?.assets_verify_status">拒绝</div>
+                    <!--<div class="tFlex1 approval-action tTap reminders" (click)="showModal('urge','urge')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.assets_verify_status != 'yes' && approvalInfo?.result?.assets_verify_status != 'no' && approvalInfo?.result?.assets_verify_status != 'cancel'">催办</div>-->
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.assets_verify_status != 'yes' && approvalInfo?.result?.assets_verify_status != 'no' && approvalInfo?.result?.assets_verify_status != 'cancel'">作废</div>
+                    <div class="tFlex1 approval-action tTap revoke" (click)="showModal('cancel','back_cancel')" *ngIf="uid == approvalInfo?.result?.u_id && approvalInfo?.result?.assets_verify_status == 'cancel'">弃废</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 审批同意意见  审批拒绝意见   评论-->
+<div class="modal fade" bsModal #operationModel="bs-modal" style="z-index:9992">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="hideModal()">&times;</button>
+                <!-- 标题 -->
+                <h3 class="modal-title " data-ng-bind='results.title' *ngIf="operate_button_type == 'ok'">审批同意意见</h3>
+                <h3 class="modal-title " data-ng-bind='results.title' *ngIf="operate_button_type == 'no'">审批拒绝意见</h3>
+                <h3 class="modal-title " data-ng-bind='results.title' *ngIf="operate_button_type == 'comment'">评论</h3>
+            </div>
+            <div class="modal-body">
+                <form  class="smart-form" >
+                    <div class="form-group col col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <section>
+                            <label class="textarea textarea-resizable">
+                                <textarea class="custom-scroll" rows="8" name="content_operation" [(ngModel)]="content_operation"></textarea>
+                            </label>
+                        </section>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn btn-primary" (click)="setModal()">确定</button>
+                <button type="button" class="btn btn-default" (click)="hideModal()">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- 撤销 -->
+<div class="modal fade" id="revocation" bsModal #cancelModel="bs-modal" style="z-index:9992">
+    <div class="modal-dialog" style="width:400px;">
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="hideModal()">&times;</button>
+                <!-- 标题 -->
+                <h3 class="modal-title " data-ng-bind='results.title'>提示</h3>
+            </div>
+            <div class="pd-20">
+                <div class="text-center pd-20">
+                    <h4>你确定要撤销申请吗？</h4>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn btn-primary btn-lg" (click)="setModal()">确定</button>
+                <button type="button" class="btn btn-danger  btn-lg" (click)="hideModal()">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- 催办 -->
+<div class="modal fade" id="rush" bsModal #urgeModel="bs-modal" style="z-index:9992">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="hideModal()">&times;</button>
+                <!-- 标题 -->
+                <h3 class="modal-title " data-ng-bind='results.title'>催办</h3>
+            </div>
+            <div class="modal-body">
+                <form  class="smart-form" >
+                    <div class="form-group col col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <section>
+                            <label class="textarea textarea-resizable">
+                                <textarea class="custom-scroll" rows="8" name="content_urge" [(ngModel)]="content_urge"></textarea>
+                            </label>
+                        </section>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="setModal()">确定</button>
+                <button type="button" class="btn btn-default" (click)="hideModal()">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!--添加员工  转交-->
+<div class="modal fade" bsModal #transferModel="bs-modal" style="z-index:9992">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- 关闭按钮 -->
+                <button type="button" class="close" (click)="hideModal()">×</button>
+                <!-- 标题 -->
+                <h3 class="modal-title txt-color-blue" data-ng-bind='results.title'><i class="fa-fw fa fa-plus"></i>选择人</h3>
+            </div>
+            <div class="modal-body ">
+                <div  class="row">
+                    <article  class="col-sm-12">
+                        <div class="navbar navbar-default">
+                            <div class="collapse navbar-collapse">
+                                <form  class="navbar-form navbar-left " novalidate="" role="search" >
+                                    <div class="form-group pdlr-4">
+                                        <div class="form-group padding-left-10">
+                                            <input  class="form-control ng-pristine ng-valid ng-touched" maxlength="15" [(ngModel)]="keyword" name="keyword" placeholder="请输入搜索内容" type="text">
+                                        </div>
+                                        <button class="btn btn-default" type="button" (click)="getUserList('1',0)">
+                                            <i  class="glyphicon glyphicon-search"></i>
+                                            搜索
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="pt">
+                    <div class="row margin-b50" style="padding:0 10px;">
+                        <article class="form-group col col-xs-4 ">
+                            <sa-widget class="jarviswidget well" [colorbutton]="false" [editbutton]="false" [togglebutton]="false"
+                                       [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+                                <div>
+                                    <div class="widget-body no-padding">
+                                        <div type="info" class="no-margin alert alert-primary">
+                                            <i class="fa-fw fa fa-sitemap"></i>
+                                            部门分类
+                                        </div>
+                                        <div class="pd-10 border-overflow-320" style="margin-top: -11px;">
+                                            <div class="widget-body">
+                                                <div class="tree smart-form">
+                                                    <ul class="">
+                                                        <li class=" parent_li">
+                                <span>
+                                  <label class="checkbox inline-block tree-label pt-12 ">
+                                      <input type="checkbox" name="checkbox-inline" [checked]="select_department_ids[0]" (click)="selectDepartmentAll()"><i></i>
+                                    </label>
+
+                                  <i class="fa fa-lg fa-folder-open"></i>{{customer_name}}
+                                  <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUl == 0" (click)="showLeftUl(1)"></i>
+                                  <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUl == 1" (click)="showLeftUl(0)"></i>
+                                </span>
+                                                            <ul *ngIf="showUl == 1">
+                                                                <li class=" parent_li" *ngFor="let d of userDefault?.result?.departmentList;let ind = index;">
+                                  <span>
+                                    <label class="checkbox inline-block tree-label ">
+                                      <input type="checkbox" name="checkbox-inline" [checked]="select_department_ids[d.department_id]" (click)="selectDepartment(d.department_id,ind,0,1)"><i></i>{{d.department_name}}
+                                      <em class="txt-color-blue">({{d.child_count}})</em>
+                                    </label>
+                                    <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlChild == d.department_id && d.has_child != 0" (click)="showLeftUlChild(0)"></i>
+                                    <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlChild != d.department_id && d.has_child != 0" (click)="showLeftUlChild(d.department_id)"></i>
+                                  </span>
+                                                                    <ul class="" *ngIf="showUlChild == d.department_id">
+                                                                        <li *ngFor="let dc of d.child;let indChild = index;">
+                                      <span>
+                                        <label class="checkbox inline-block tree-label">
+                                          <input type="checkbox" name="checkbox-inline" [checked]="select_department_ids[d.department_id] || select_department_ids[dc.department_id]" (click)="selectDepartment(dc.department_id,ind,indChild,d.department_id)">
+                                          <i></i>{{dc.department_name}}
+                                          <em class="txt-color-blue">({{dc.child_count}})</em>
+                                        </label>
+                                      </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dt-toolbar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </sa-widget>
+
+                        </article>
+                        <article class="form-group col col-xs-8 ">
+                            <sa-widget class="jarviswidget well" [colorbutton]="false" [editbutton]="false" [togglebutton]="false"
+                                       [deletebutton]="false" [fullscreenbutton]="false" [custombutton]="false" [sortable]="false">
+                                <div>
+                                    <div class="widget-body no-padding">
+                                        <div type="info" class="no-margin alert alert-primary">
+                                            <i class="fa-fw fa fa-table"></i>
+                                            员工列表
+                                        </div>
+                                        <div class=" "  style="padding:0;">
+                                            <div style="padding: 0;z-index: 1;" class="table-responsive border-overflow-320">
+                                                <table class="table table-striped   smart-form table-height-20">
+                                                    <thead>
+                                                    <tr>
+                                                        <td>
+                                                            <label class="checkbox mt-8">
+                                                                <input type="checkbox" name="checkbox-inline" [checked]="check" (change)="changeCheckAll($event)">
+                                                                <i></i>
+                                                            </label>
+                                                        </td>
+                                                        <th>员工ID </th>
+                                                        <th>姓名</th>
+                                                        <th>所属部门</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr *ngFor="let ul of userList.result?.userList?.data">
+                                                        <td>
+                                                            <label class="checkbox mt-8" >
+                                                                <input type="checkbox" value="{{ul.id}}" [checked]="selected_user[ul.id]" (change)="handle($event);" />
+                                                                <i></i>
+                                                            </label>
+                                                        </td>
+                                                        <td>{{ ul.name }}</td>
+                                                        <td>{{ ul.u_username }}</td>
+                                                        <td>{{ ul.department_name }}</td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                        <!-- 底部-（分页部分）-->
+                                        <div class="dt-toolbar">
+                                            <div class="col-xs-12 col-sm-6">
+                                                <span>共{{userList.result?.userList?.total}}条</span>
+                                            </div>
+                                            <div class="hidden-xs right">
+                                                <ul class="pagination pagination-sm" *ngIf="userList?.result?.page != ''">
+                                                    <li *ngFor="let p of userList?.result?.page" class="{{p.class}}">
+                                                        <a (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                                                        <a *ngIf="p.method==''">{{p.text}}</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </sa-widget>
+                            <!-- end widget -->
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-success" (click)="setModal()"><span class="fa-fw fa fa-plus"></span>选入</button>
+                <button type="button" class="btn btn-default" (click)="hideModal()" >返回</button>
+                <!--<button type="button" class="btn btn-success btn-sm" (click)="submitSelectedUser()"><span class="fa-fw fa fa-plus"></span>选入</button>-->
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeSelectedUser()">返回</button>-->
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!--查看大图-->
+<app-big-pic [select_type]="select_type" [show_big_pic]="show_big_pic" (select_types)="getSelectTypes()"></app-big-pic>
+
+
