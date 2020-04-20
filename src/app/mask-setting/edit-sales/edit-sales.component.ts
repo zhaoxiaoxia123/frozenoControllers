@@ -5,6 +5,7 @@
   import {FormBuilder, FormGroup} from '@angular/forms';
   import {ModalDirective} from "ngx-bootstrap";
   import {NotificationService} from "../../shared/utils/notification.service";
+  import {isUndefined} from "util";
 
   @Component({
   selector: 'app-edit-sales',
@@ -316,7 +317,11 @@
   sumPCount(){
       this.p_pur_prices = 0;
       this.selectProductList.forEach((val, idx, array) => {
-          this.p_pur_prices += (parseInt(val['frozeno_discount_amount'])*parseInt(val['p_count']));
+        let p_count = val['p_count'] ?  val['p_count']:0;
+        console.log('---------',idx);
+        console.log(p_count);
+        console.log(val['frozeno_discount_amount']);
+        this.p_pur_prices += (parseInt(val['frozeno_discount_amount'])*parseInt(p_count));
       });
   }
   //移除商品
@@ -324,15 +329,22 @@
       this.selectProductList.splice(ind, 1);
       this.sumPCount();
   }
-  canInput($event,count1,old_p_count,openinginventory_surplus_count){
-      let count_ = count1 - old_p_count;  //当前输入数量 - 老的数量= 增加或减少的数量
-      if(count_ > openinginventory_surplus_count){
-          alert('库存不足,请修改使用数量在总数量以内。');
-          return false;
-      }
-      if($event.target.value > (openinginventory_surplus_count + old_p_count)){
-          $event.target.value = old_p_count;
-      }
+  canInput(count,index){
+    console.log('canInput:---');
+    console.log(index);
+    console.log(count);
+    let count1 = isUndefined(count) ? 0:count;
+    console.log(count1);
+    console.log(this.selectProductList[index]['frozeno_category_count']);
+    let count_ = this.selectProductList[index]['frozeno_category_count'] - count1;  //库存减去输入的
+    if(count_ <= 0){
+        alert('库存不足,请修改使用数量在总数量以内。');
+        return false;
+    }
+    this.sumPCount();
+      // if($event.target.value > (openinginventory_surplus_count + old_p_count)){
+      //     $event.target.value = old_p_count;
+      // }
   }
 
   //--------------弹框  选择产品--------------
@@ -417,6 +429,8 @@
       });
     }
     this.selectProductList = this.selectProductLists;
+    console.log('this.selectProductList:--------');
+    console.log(this.selectProductList);
     this.isShowProduct = '';
     this.sumPCount();
   }
@@ -540,7 +554,8 @@
         'sid':this.cookieStore.getCookie('sid')
       }).subscribe((data)=>{
         if(data['status'] == 200) {
-          this.getPurchaseInfo(this.pr_id);
+          alert(data['msg']);
+          this.router.navigate(['/mask-setting/user-order']);
         }else if(data['status'] == 202){
           alert(data['msg']);
           this.cookieStore.removeAll(this.rollback_url);

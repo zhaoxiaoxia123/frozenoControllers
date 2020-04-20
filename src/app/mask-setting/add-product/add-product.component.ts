@@ -5,14 +5,15 @@ import {GlobalService} from "../../core/global.service";
 import {ModalDirective} from "ngx-bootstrap";
 import {isUndefined} from "util";
 import {NotificationService} from "../../shared/utils/notification.service";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
-  selector: 'app-setting-archives',
-  templateUrl: './setting-archives.component.html',
+  selector: 'app-add-product',
+  templateUrl: './add-product.component.html',
     encapsulation: ViewEncapsulation.None, //在于不让angular4样式生效
-    styleUrls: ['./setting-archives.scss']
+    styleUrls: ['./add-product.scss']
 })
-export class SettingArchivesComponent implements OnInit {
+export class AddProductComponent implements OnInit {
     public states: Array<any>;
     public state: any = {
         tabs: {
@@ -25,7 +26,7 @@ export class SettingArchivesComponent implements OnInit {
     next : boolean = false;
 
     productDefault : any = [];
-    addProductDefault : any = [];
+    productParent : any = [];
     productList : any = [];
     productInfo : any = [];
     //用作全选和反选
@@ -52,6 +53,7 @@ export class SettingArchivesComponent implements OnInit {
     p_cost: string = '';
     p_retail_method: string = '1';
     p_retail_amout: string = '';
+    frozeno_parent:number = 0;
 
     select_property: any = '0';
     property_title : string = '全部';
@@ -74,7 +76,7 @@ export class SettingArchivesComponent implements OnInit {
     
     p_property_id : number = 1;
     keyword : string = '';
-    category_type : number = 6;
+    category_type : number = 50;
     rollback_url : string = '';
 
     /**--------用选择图片的变量------*/
@@ -91,6 +93,7 @@ export class SettingArchivesComponent implements OnInit {
     permissions : Array<any> = [];
     menuInfos : any = [];
     constructor(
+      private http:HttpClient,
         private router : Router,
         private cookieStore:CookieStoreService,
         private globalService:GlobalService,
@@ -125,54 +128,114 @@ export class SettingArchivesComponent implements OnInit {
     showPinyin(){
         let name = this.p_name;
         if(name.trim() != ''){
-            this.globalService.httpRequest('get','getPinyin?name='+name)
-                .subscribe((data)=>{
-                    this.p_shortcode = data['result'];
-                });
+        this.globalService.httpRequest('get','getPinyin?name='+name)
+            .subscribe((data)=>{
+                this.p_shortcode = data['result'];
+            });
         }
     }
     /**
      * 获取默认参数
      */
     getProductDefault(){
-        this.globalService.httpRequest('get','getProductDefault?type=list&property=1&p_type='+this.p_type+'&category_type='+this.category_type+'&sid='+this.cookieStore.getCookie('sid'))
-            .subscribe((data)=>{
-                this.productDefault = data;
-                if(this.productDefault['status'] == 202){
-                    alert(this.productDefault['msg']);
-                    this.cookieStore.removeAll(this.rollback_url);
-                    this.router.navigate(['/auth/login']);
+        // let options = {
+        //     'Content-Type':'application/json'
+        // };
+        // let httpOpt = {
+        //     headers: new HttpHeaders(options)
+        // };
+        // this.http.get('http://localhost:20201/mallapp?category_type='+this.category_type+'&sid='+this.cookieStore.getCookie('sid'),httpOpt)
+        //   .subscribe((data)=>{
+        //     console.log(data);
+        //   });
+    this.globalService.httpRequest('get','getProductLeftCategory?category_type='+this.category_type+'&sid='+this.cookieStore.getCookie('sid'))
+        .subscribe((data)=>{
+            this.productDefault = data;
+            if(this.productDefault['status'] == 202){
+                alert(this.productDefault['msg']);
+                this.cookieStore.removeAll(this.rollback_url);
+                this.router.navigate(['/auth/login']);
+            }
+            this.select_category_ids[0] = true;
+            this.productDefault['result'].forEach((val, idx, array) => {
+                this.select_category_ids[val['category_id']] = true;
+                if(val['child_count'] >= 1){
+                    val['child'].forEach((val1, idx1, array1) => {
+                        this.select_category_ids[val1['category_id']] = true;
+                    });
                 }
-                this.select_category_ids_preporty[1] = true;
-                this.select_category_ids_preporty[2] = true;
-                this.select_category_ids[0] = true;
-                this.productDefault['result']['categoryList'].forEach((val, idx, array) => {
-                    this.select_category_ids[val['category_id']] = true;
-                    if(val['has_child'] >= 1){
-                        val['child'].forEach((val1, idx1, array1) => {
-                            this.select_category_ids[val1['category_id']] = true;
-                        });
-                    }
-                });
-
-                let depart = '';
-                this.select_category_ids.forEach((val, idx, array) => {
-                    if(val == true) {
-                        depart += idx + ',';
-                    }
-                });
-                this.getProductList('1',depart);
             });
+            let depart = '';
+            this.select_category_ids.forEach((val, idx, array) => {
+                if(val == true) {
+                    depart += idx + ',';
+                }
+            });
+            this.getProductList('1',depart);
+        });
     }
+
+    /**
+     * 获取商品父类  比如盒子
+     */
+    getProductParent(){
+        this.frozeno_parent = 0;
+        this.globalService.httpRequest('get','getProductParent?category_id='+this.p_category_id+'&sid='+this.cookieStore.getCookie('sid'))
+          .subscribe((data)=>{
+              this.productParent = data;
+              if(this.productParent['status'] == 202){
+                  alert(this.productParent['msg']);
+                  this.cookieStore.removeAll(this.rollback_url);
+                  this.router.navigate(['/auth/login']);
+              }
+          });
+    }
+
+    /**
+     * 左边选中所有
+     */
+    selectCategoryAll(){
+        if(this.select_category_ids[0] == true){
+            this.select_category_ids[0] = false;
+            this.productDefault['result'].forEach((val, idx, array) => {
+                this.select_category_ids[val['category_id']] = false;
+                if (val['has_child'] >= 1) {
+                    val['child'].forEach((val1, idx1, array1) => {
+                        this.select_category_ids[val1['category_id']] = false;
+                    });
+                }
+            });
+        }else {
+            this.select_category_ids[0] = true;
+            this.productDefault['result'].forEach((val, idx, array) => {
+                this.select_category_ids[val['category_id']] = true;
+                if (val['has_child'] >= 1) {
+                    val['child'].forEach((val1, idx1, array1) => {
+                        this.select_category_ids[val1['category_id']] = true;
+                    });
+                }
+            });
+        }
+        let depart = '';
+        this.select_category_ids.forEach((val, idx, array) => {
+            if(val == true) {
+                depart += idx + ',';
+            }
+        });
+        this.getProductList('1',depart);
+    }
+
     /**
      * 获取产品列表
      * @param number
      */
     getProductList(number:string,category_id:any) {
+        console.log('getProductList:----');
+        console.log(this.select_category_ids);
         if(!this.select_property){
             this.select_property = '0';
         }
-        let url = 'getProductList?p_type='+this.p_type+'&p_property='+this.select_property+'&page='+number+'&sid='+this.cookieStore.getCookie('sid');
+        let url = 'getDLZMProductList?p_type='+this.p_type+'&page='+number+'&sid='+this.cookieStore.getCookie('sid');
         if(this.keyword.trim() != '') {
             url += '&keyword='+this.keyword.trim();
         }
@@ -308,6 +371,7 @@ export class SettingArchivesComponent implements OnInit {
         this.globalService.httpRequest('post','addProduct',{
             'p_id' : this.p_id,
             'product_id' : this.p_product_id,
+            'frozeno_parent' : this.frozeno_parent,
             'name' : this.p_name,
             'category_id' : this.p_category_id,
             'specification' : this.p_specification,
@@ -512,9 +576,9 @@ export class SettingArchivesComponent implements OnInit {
     selectDepartment(category_id:any,index:number,indexChild:number,num:number,type:string){
         if(num == 1){//点击父类
             if(this.select_category_ids[category_id] == true){
-                if(this.productDefault['result']['categoryListProperty'][type][index]){
-                    if(this.productDefault['result']['categoryListProperty'][type][index]['child_count'] >= 1){
-                        this.productDefault['result']['categoryListProperty'][type][index]['child'].forEach((val, idx, array) => {
+                if(this.productDefault['result'][index]){
+                    if(this.productDefault['result'][index]['child_count'] >= 1){
+                        this.productDefault['result'][index]['child'].forEach((val, idx, array) => {
                             this.select_category_ids[val['category_id']] = false;
                         });
                     }
@@ -522,9 +586,9 @@ export class SettingArchivesComponent implements OnInit {
                 this.select_category_ids[category_id] = false;
             }else{
                 this.select_category_ids[category_id] = true;
-                if(this.productDefault['result']['categoryListProperty'][type][index]){
-                    if(this.productDefault['result']['categoryListProperty'][type][index]['child_count'] >= 1){
-                        this.productDefault['result']['categoryListProperty'][type][index]['child'].forEach((val, idx, array) => {
+                if(this.productDefault['result'][index]){
+                    if(this.productDefault['result'][index]['child_count'] >= 1){
+                        this.productDefault['result'][index]['child'].forEach((val, idx, array) => {
                             this.select_category_ids[val['category_id']] = true;
                         });
                     }
@@ -538,9 +602,9 @@ export class SettingArchivesComponent implements OnInit {
                 this.select_category_ids[category_id] = true;
 
                 let count = 0;
-                if(this.productDefault['result']['categoryListProperty'][type][index]){
-                    if(this.productDefault['result']['categoryListProperty'][type][index]['child_count'] >= 1){
-                        this.productDefault['result']['categoryListProperty'][type][index]['child'].forEach((val, idx, array) => {
+                if(this.productDefault['result'][index]){
+                    if(this.productDefault['result'][index]['child_count'] >= 1){
+                        this.productDefault['result'][index]['child'].forEach((val, idx, array) => {
                             if(this.select_category_ids[val['category_id']] == false ||  isUndefined(this.select_category_ids[val['category_id']])){
                                 count ++;
                             }
@@ -659,43 +723,43 @@ export class SettingArchivesComponent implements OnInit {
         }
     }
 
-    /**
-     * 左边选中所有
-     */
-    selectCategoryAll(){
-        if(this.select_category_ids[0] == true){
-            this.select_category_ids[0] = false;
-            this.select_category_ids_preporty[1] = false;
-            this.select_category_ids_preporty[2] = false;
-            this.productDefault['result']['categoryList'].forEach((val, idx, array) => {
-                this.select_category_ids[val['category_id']] = false;
-                if (val['has_child'] >= 1) {
-                    val['child'].forEach((val1, idx1, array1) => {
-                        this.select_category_ids[val1['category_id']] = false;
-                    });
-                }
-            });
-        }else {
-            this.select_category_ids[0] = true;
-            this.select_category_ids_preporty[1] = true;
-            this.select_category_ids_preporty[2] = true;
-            this.productDefault['result']['categoryList'].forEach((val, idx, array) => {
-                this.select_category_ids[val['category_id']] = true;
-                if (val['has_child'] >= 1) {
-                    val['child'].forEach((val1, idx1, array1) => {
-                        this.select_category_ids[val1['category_id']] = true;
-                    });
-                }
-            });
-        }
-        let depart = '';
-        this.select_category_ids.forEach((val, idx, array) => {
-            if(val == true) {
-                depart += idx + ',';
-            }
-        });
-        this.getProductList('1',depart);
-    }
+    // /**
+    //  * 左边选中所有
+    //  */
+    // selectCategoryAll(){
+    //     if(this.select_category_ids[0] == true){
+    //         this.select_category_ids[0] = false;
+    //         this.select_category_ids_preporty[1] = false;
+    //         this.select_category_ids_preporty[2] = false;
+    //         this.productDefault['result']['categoryList'].forEach((val, idx, array) => {
+    //             this.select_category_ids[val['category_id']] = false;
+    //             if (val['has_child'] >= 1) {
+    //                 val['child'].forEach((val1, idx1, array1) => {
+    //                     this.select_category_ids[val1['category_id']] = false;
+    //                 });
+    //             }
+    //         });
+    //     }else {
+    //         this.select_category_ids[0] = true;
+    //         this.select_category_ids_preporty[1] = true;
+    //         this.select_category_ids_preporty[2] = true;
+    //         this.productDefault['result']['categoryList'].forEach((val, idx, array) => {
+    //             this.select_category_ids[val['category_id']] = true;
+    //             if (val['has_child'] >= 1) {
+    //                 val['child'].forEach((val1, idx1, array1) => {
+    //                     this.select_category_ids[val1['category_id']] = true;
+    //                 });
+    //             }
+    //         });
+    //     }
+    //     let depart = '';
+    //     this.select_category_ids.forEach((val, idx, array) => {
+    //         if(val == true) {
+    //             depart += idx + ',';
+    //         }
+    //     });
+    //     this.getProductList('1',depart);
+    // }
     /**
      * 左边展示效果
      * @param bool

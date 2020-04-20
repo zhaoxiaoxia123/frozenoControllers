@@ -47,7 +47,7 @@
                           <option *ngFor="let cus of purchaseList.result?.supplier" [selected]="purchaseInfo.result?.pr_supplier == cus.c_id" value="{{ cus.c_id }}">{{cus.c_name}}</option>
                         </select>
                         <div class="input-group-prepend"  *ngIf="isDetail!='detail'">
-                          <a   class="input-group-text" type="button"  href="http://cn.i3ot.com/#/medical/medical-patient/add" target="_blank" (click)="smartModEg1()" >添加
+                          <a   class="input-group-text" type="button"  href="{{tempDomain}}medical/medical-patient/add" target="_blank" (click)="smartModEg1()" >添加
                           </a>
                         </div>
                         <div class="input-group-prepend"  *ngIf="isDetail!='detail'">

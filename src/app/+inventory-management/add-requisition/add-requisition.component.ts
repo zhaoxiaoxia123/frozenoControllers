@@ -65,6 +65,7 @@ export class AddRequisitionComponent implements OnInit {
 
     log_type : string = 'stockallot';
     log_table_name : string = 'stockallot';
+    tempDomain:string = '';
     /**菜单id */
     menu_id:any;
     /** 权限 */
@@ -76,9 +77,9 @@ export class AddRequisitionComponent implements OnInit {
       private cookieStore:CookieStoreService,
       private globalService:GlobalService,
       private notificationService: NotificationService) {
-
+      this.tempDomain = this.globalService.tempDomain;
       this.uid = this.cookieStore.getCookie('uid');
-    this.formModel = fb.group({
+      this.formModel = fb.group({
       stock_allot_id:[''],
       stock_allot_type:[''],
       stock_allot_number:[''],

@@ -11,21 +11,21 @@
                         <div class="widget-body no-padding">
                             <article>
                                 <div class="navbar navbar-default">
-                                    <form  class="navbar-form "  role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" novalidate >
+                                    <form  class="navbar-form" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" novalidate >
                                         <div class="btn-group" *ngIf="isPermission(menu_id,'add')">
-                                            <button type="button" class="btn btn-primary"   (click)="isDemo('/forms/inventory1','0')"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
+                                            <button type="button" class="btn btn-primary" (click)="isDemo('/forms/inventory1','0')"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                                         </div>
                                         <div class="btn-group" *ngIf="isPermission(menu_id,'edit')">
-                                            <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                                            <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
                                         </div>
                                         <div class="btn-group" *ngIf="isPermission(menu_id,'delete')" >
-                                            <button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':editStatusUserOrderId == 0}" (click)="deleteUserOrder('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                                            <button type="button" [ngClass]="{'btn btn-danger':true,'not-click':editStatusUserOrderId == 0}" (click)="deleteUserOrder('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
                                         </div>
                                         <div class="btn-group" *ngIf="isPermission(menu_id,'detail')">
-                                            <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                            <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
                                         </div>
-                                        <div class="btn-group"  *ngIf="isPermission(menu_id,'delete')">
-                                            <button type="button" class="btn btn-secondary"   (click)="showAllCheck()" ><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>
+                                        <div class="btn-group" *ngIf="isPermission(menu_id,'delete')">
+                                            <button type="button" class="btn btn-secondary" (click)="showAllCheck()" ><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>
                                             <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                                 <span class="sr-only"></span>
                                             </button>
@@ -33,6 +33,8 @@
                                                 <a class="dropdown-item" (click)="deleteUserOrder('all')">批量删除</a>
                                             </div>
                                         </div>
+
+                                        <input (click)="preview()" type="button" value="点击打印">
                                     </form>
                                     <form  class="navbar-form" novalidate="" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" >
 
@@ -72,16 +74,18 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div [ngStyle]="{'padding': '0','z-index': '2','width':width_1,'float':'left'}" class="table-scrolling padding0">
+
+                                <!--startprint-->
+                                <div [ngStyle]="{'padding': '0','z-index': '2','width':width_1,'float':'left'}" class="table-scrolling padding0 printonly">
                                     <table class="table table-striped smart-form table-height-20">
                                         <thead>
                                         <tr >
                                             <th>名称</th>
                                             <th>编号</th>
-                                            <th>负责人 </th>
-                                            <th>金额 </th>
-                                            <th>状态 </th>
-                                            <th>日期 </th>
+                                            <th>负责人</th>
+                                            <th>金额</th>
+                                            <th>状态</th>
+                                            <th>日期</th>
                                         </tr>
                                         </thead>
                                         <tbody *ngIf="orderList">
@@ -105,6 +109,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <!--endprint-->
                             </div>
 
                             <!-- 底部-（分页部分）-->

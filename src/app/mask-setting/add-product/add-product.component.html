@@ -16,7 +16,8 @@
               <article >
                 <div class="navbar navbar-default">
                   <form  class="navbar-form " novalidate="" role="search" >
-                    <div class="btn-group" *ngIf="isPermission(menu_id,'add')">
+                    <!--*ngIf="isPermission(menu_id,'add')"-->
+                    <div class="btn-group" >
                       <button type="button" class="btn btn-primary"  (click)="lgModal.show()"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                     </div>
                     <div class="btn-group" *ngIf="isPermission(menu_id,'edit')">
@@ -52,20 +53,6 @@
                   </form>
                   <form  class="navbar-form " novalidate="" role="search" >
                     <div class="btn-group">
-                      <h5> 筛选：</h5>
-                    </div>
-                    <div class="btn-group">
-                      <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{property_title}}
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item" (click)="setProperty('','全部')">全部</a>
-                        <a class="dropdown-item" (click)="setProperty('1','销售')">销售</a>
-                        <a class="dropdown-item" (click)="setProperty('2','外购')">外购</a>
-                      </div>
-                    </div>
-                    
-                    <div class="btn-group">
                       <input type="text" class="form-control" maxlength="15" [(ngModel)]="keyword"  name="keyword" placeholder="请输入搜索内容" >
                     </div>
                     <div class="btn-group">
@@ -91,83 +78,33 @@
                                 <li class=" parent_li">
                                   <span>
                                     <label class="checkbox inline-block tree-label pt-12 ">
-                                      <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[0]" (click)="selectCategoryAll()"><i></i>
-                                    </label>
+                                    <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[0]" (click)="selectCategoryAll()" ><i></i>
+                                  </label>
                                     <i class="fa fa-lg fa-folder-open"></i>全部
-                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUl == 0" (click)="showLeftUl(1)"></i>
-                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUl == 1" (click)="showLeftUl(0)"></i>
+                                    <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUl == 0" (click)="showLeftUl(1)"></i>
+                                    <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUl == 1" (click)="showLeftUl(0)"></i>
                                   </span>
                                   <ul class="" *ngIf="showUl == 1">
-                                    <li class=" parent_li" *ngIf="select_property == 1 || select_property == '0'">
+                                    <li *ngFor="let d of productDefault?.result;let ind = index;">
                                     <span>
-                                      <label class="checkbox inline-block tree-label pt-12 ">
-                                        <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids_preporty[1]" (click)="selectPerptyAll(1)"><i></i>
+                                      <label class="checkbox inline-block tree-label">
+                                        <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[d.category_id]" (click)="selectDepartment(d.category_id,ind,0,1)"><i></i>{{d.category_desc}}
+                                            <em class="txt-color-blue">({{d.child_count}})</em>
                                       </label>
-                                      <i class="fa fa-lg fa-folder-open"></i>销售
-                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlProperty == 2  && productDefault?.result?.categoryListProperty?.xs?.length != 0" (click)="showLeftUlProperty(1,0)"></i>
-                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlProperty == 1 && showUlProperty_ == 0" (click)="showLeftUlProperty(1,1)"></i>
-                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlProperty == 1 && showUlProperty_ == 1" (click)="showLeftUlProperty(1,0)"></i>
+                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlChild == d.category_id && d.child_count != 0" (click)="showLeftUlChild(0)"></i>
+                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlChild != d.category_id && d.child_count != 0" (click)="showLeftUlChild(d.category_id)"></i>
                                     </span>
-                                    <ul *ngIf="showUlProperty == 1 && showUlProperty_ == 0">
-                                      <li class=" parent_li" *ngFor="let c of productDefault?.result?.categoryListProperty?.xs;let ind = index;">
-                                        <span>
-                                          <label class="checkbox inline-block tree-label ">
-                                            <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id]" (click)="selectDepartment(c.category_id,ind,0,1,'xs')">
-                                            <i></i>{{c.category_desc}}
-                                            <em class="txt-color-blue">({{c.child_count}})</em>
-                                          </label>
-                                          <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlChild == c.category_id && c.has_child != 0" (click)="showLeftUlChild(0)"></i>
-                                          <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlChild != c.category_id && c.has_child != 0" (click)="showLeftUlChild(c.category_id)"></i>
-                                        </span>
-                                        <ul class="" *ngIf="showUlChild == c.category_id">
-                                          <li *ngFor="let dc of c.child;let indChild = index;">
+                                      <ul class="" *ngIf="showUlChild == d.category_id">
+                                        <li *ngFor="let dc of d.child;let indChild = index;">
                                         <span>
                                           <label class="checkbox inline-block tree-label">
-                                            <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id] || select_category_ids[dc.category_id]" (click)="selectDepartment(dc.category_id,ind,indChild,c.category_id,'xs')">
+                                            <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[d.category_id] || select_category_ids[dc.category_id]" (click)="selectDepartment(dc.category_id,ind,indChild,d.category_id)">
                                             <i></i>{{dc.category_desc}}
-                                            <em class="txt-color-blue">({{dc.child_count}})</em>
-                                          </label>
-                                        </span>
-                                          </li>
-                                        </ul>
-                                      </li>
-                                    </ul>
-                                  </li>
-                                  <li class=" parent_li" *ngIf="select_property == 2 || select_property == '0'">
-                                    <span>
-                                      <label class="checkbox inline-block tree-label pt-12 ">
-                                        <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids_preporty[2]" (click)="selectPerptyAll(2)"><i></i>
-                                      </label>
-                                      <i class="fa fa-lg fa-folder-open"></i>外购
-                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlProperty == 1 && productDefault?.result?.categoryListProperty?.wg?.length != 0" (click)="showLeftUlProperty(2,1)"></i>
-                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlProperty == 2 && showUlProperty_ == 0" (click)="showLeftUlProperty(2,1)"></i>
-                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlProperty == 2 && showUlProperty_ == 1" (click)="showLeftUlProperty(2,0)"></i>
-                                    </span>
-                                  <ul *ngIf="showUlProperty == 2 && showUlProperty_ == 1">
-                                    <li class=" parent_li" *ngFor="let c of productDefault?.result?.categoryListProperty?.wg;let ind = index;">
-                                    <span>
-                                      <label class="checkbox inline-block tree-label ">
-                                        <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id]" (click)="selectDepartment(c.category_id,ind,0,1,'wg')">
-                                        <i></i>{{c.category_desc}}
-                                        <em class="txt-color-blue">({{c.child_count}})</em>
-                                      </label>
-                                      <i class="sa-icon fa fa-lg fa-minus-circle" *ngIf="showUlChild == c.category_id && c.has_child != 0" (click)="showLeftUlChild(0)"></i>
-                                      <i class="sa-icon fa fa-lg fa-plus-circle" *ngIf="showUlChild != c.category_id && c.has_child != 0" (click)="showLeftUlChild(c.category_id)"></i>
-                                    </span>
-                                      <ul class="" *ngIf="showUlChild == c.category_id">
-                                        <li *ngFor="let dc of c.child;let indChild = index;">
-                                        <span>
-                                          <label class="checkbox inline-block tree-label">
-                                            <input type="checkbox" name="checkbox-inline" [checked]="select_category_ids[c.category_id] || select_category_ids[dc.category_id]" (click)="selectDepartment(dc.category_id,ind,indChild,c.category_id,'wg')">
-                                            <i></i>{{dc.category_desc}}
-                                            <em class="txt-color-blue">({{dc.child_count}})</em>
                                           </label>
                                         </span>
                                         </li>
                                       </ul>
-                                      </li>
-                                    </ul>
-                                  </li>
+                                    </li>
                                   </ul>
                                 </li>
                               </ul>
@@ -346,13 +283,9 @@
                     <div class="form-group col-sm-4">
                       <label class="label txt-color-blue">商品分类<span class="asterisk-color">*</span></label>
                       <div class="input-group mb-2 mr-sm-2">
-                        <select class="form-control" name="p_category_id" [(ngModel)]="p_category_id" [disabled]="isDetail=='detail'">
+                        <select class="form-control" name="p_category_id" [(ngModel)]="p_category_id" [disabled]="isDetail=='detail'" (change)="getProductParent()" >
                           <option [selected]="p_id == 0" value="0">--请选择--</option>
-                          <!--<option *ngFor="let c of addProductDefault?.result?.categoryListForAdd" [selected]="productInfo?.result?.p_category_id == c.category_id" value="{{ c.category_id }}" [disabled]="(c.category_depth == 0 && c.child_count > 0) ? 'disabled' : false" [ngStyle]="{'font-weight':((c.category_depth == 0) ? 'bold' : 'normal'),'color':((c.category_depth == 0 && c.child_count > 0) ? 'black' : '#404040')}">-->
-                          <!--<strong *ngIf="c.category_depth == 0">{{c.category_desc}}</strong>-->
-                          <!--<span *ngIf="c.category_depth != 0">&#45;&#45;{{c.category_desc}}</span>-->
-                          <!--</option>-->
-                          <option *ngFor="let c of unitCategoryList?.result?.categoryList" value="{{ c.category_id }}" [selected]="productInfo.result?.p_category_id == c.category_id" [disabled]="(c.category_depth == 0 && c.child_count > 0) ? 'disabled' : false" [ngStyle]="{'font-weight':((c.category_depth == 0) ? 'bold' : 'normal'),'color':((c.category_depth == 0 && c.child_count > 0) ? 'black' : '#404040')}">
+                          <option *ngFor="let c of productDefault?.result[0].child" value="{{ c.category_id }}" [selected]="productInfo.result?.p_category_id == c.category_id" [disabled]="(c.category_depth == 0 && c.child_count > 0) ? 'disabled' : false" [ngStyle]="{'font-weight':((c.category_depth == 0) ? 'bold' : 'normal'),'color':((c.category_depth == 0 && c.child_count > 0) ? 'black' : '#404040')}">
                             <strong *ngIf="c.category_depth == 0">{{c.category_desc}}</strong>
                             <span *ngIf="c.category_depth != 0">--{{c.category_desc}}</span>
                           </option>
@@ -369,7 +302,17 @@
                         </div>
                       </div>
                     </div>
-
+                    <div class="form-group col-sm-4">
+                      <label class="label txt-color-blue">商品父类<span class="asterisk-color">*</span></label>
+                      <div class="input-group mb-2 mr-sm-2">
+                        <select class="form-control" name="frozeno_parent" [(ngModel)]="frozeno_parent" [disabled]="isDetail=='detail'">
+                          <option [selected]="p_id == 0" value="0">--请选择--</option>
+                          <option *ngFor="let c of productParent?.result" value="{{ c.p_id }}" [selected]="productInfo.result?.frozeno_parent == c.frozeno_parent">
+                            <span>{{c.p_name}}</span>
+                          </option>
+                        </select>
+                      </div>
+                    </div>
                     <div class="form-group col-sm-4">
                       <label class="label">规格型号</label>
                       <input type="text" class="form-control"  placeholder=""  name="p_specification" [(ngModel)]="p_specification" [disabled]="isDetail=='detail'">
@@ -693,7 +636,8 @@
           <!--</sa-widget>-->
         </div>
         <div class="modal-footer">
-         <div class="display-inline" *ngIf="(isPermission(menu_id,'add') || isPermission(menu_id,'edit')) && isDetail!='detail'">
+          <!--*ngIf="(isPermission(menu_id,'add') || isPermission(menu_id,'edit')) && isDetail!='detail'"-->
+         <div class="display-inline">
           <button [disabled]="isDetail=='detail'" type="button" class="btn btn-primary  ml-2" (click)="onSubmit(1);">保存</button>
           <button [disabled]="isDetail=='detail'" class="btn btn-success  ml-2" type="button" (click)="onSubmit(2);">保存并新增</button>
          </div>

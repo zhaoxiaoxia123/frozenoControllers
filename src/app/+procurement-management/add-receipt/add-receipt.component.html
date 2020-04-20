@@ -78,11 +78,11 @@
                         </select>
 
                         <div class="input-group-prepend">
-                          <a   class="input-group-text" type="button"   href="http://cn.i3ot.com/#/customer-management/unit-list" target="_blank" (click)="smartModEg1()">添加
+                          <a   class="input-group-text" type="button" href="{{tempDomain}}customer-management/unit-list" target="_blank" (click)="smartModEg1()">添加
                           </a>
                         </div>
                         <div class="input-group-prepend">
-                          <a class="input-group-text refresh-page" type="button"  (click)="getPurchaseDefault('refresh')">
+                          <a class="input-group-text refresh-page" type="button" (click)="getPurchaseDefault('refresh')">
                             刷新
                           </a>
                         </div>
@@ -105,7 +105,7 @@
 
 
                         <div class="input-group-prepend">
-                          <a   class="input-group-text" type="button"  href="http://cn.i3ot.com/#/management/setting-departmentnew" target="_blank" (click)="smartModEg1()">添加
+                          <a   class="input-group-text" type="button"  href="{{tempDomain}}management/setting-departmentnew" target="_blank" (click)="smartModEg1()">添加
                           </a>
                         </div>
                         <div class="input-group-prepend">
@@ -130,7 +130,7 @@
                         </select>
 
                         <div class="input-group-prepend">
-                          <a   class="input-group-text" type="button"  href="http://cn.i3ot.com/#/forms/employees/0" target="_blank" (click)="smartModEg1()">添加
+                          <a   class="input-group-text" type="button"  href="{{tempDomain}}forms/employees/0" target="_blank" (click)="smartModEg1()">添加
                           </a>
                         </div>
                         <div class="input-group-prepend">
@@ -156,7 +156,7 @@
                         <!--</select>-->
 
                         <!--<div class="input-group-prepend">-->
-                          <!--<a   class="input-group-text" type="button"   href="http://cn.i3ot.com/#/forms/inventory1/0" target="_blank" (click)="smartModEg1()">添加-->
+                          <!--<a   class="input-group-text" type="button"   href="{{tempDomain}}forms/inventory1/0" target="_blank" (click)="smartModEg1()">添加-->
                           <!--</a>-->
                         <!--</div>-->
                         <!--<div class="input-group-prepend">-->
@@ -180,7 +180,7 @@
                           <option *ngFor="let ca of purchaseList.result?.category" [selected]="purchaseInfo.result?.pr_category == ca.category_id" value="{{ca.category_id }}">{{ca.category_desc}}</option>
                         </select>
                         <div class="input-group-prepend">
-                          <a   class="input-group-text" type="button"  href="http://cn.i3ot.com/#/procurement-management/procurement-type" target="_blank" (click)="smartModEg1()">添加
+                          <a   class="input-group-text" type="button"  href="{{tempDomain}}procurement-management/procurement-type" target="_blank" (click)="smartModEg1()">添加
                           </a>
                         </div>
                         <div class="input-group-prepend">

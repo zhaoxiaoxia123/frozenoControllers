@@ -86,6 +86,7 @@ export class AssetsIssueComponent implements OnInit {
   log_type:string = 'assets_ff';
   log_table_name:string = 'assets';
 
+  tempDomain:string = '';
   /**菜单id */
   menu_id:any;
   /** 权限 */
@@ -102,6 +103,7 @@ export class AssetsIssueComponent implements OnInit {
     this.super_admin_id = this.globalService.getAdminID();
     this.cid = this.cookieStore.getCookie('cid');
     this.getAssetsListDefault();
+    this.tempDomain = this.globalService.tempDomain;
   }
 
   ngOnInit() {

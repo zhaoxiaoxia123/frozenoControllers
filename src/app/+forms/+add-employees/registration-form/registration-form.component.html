@@ -68,7 +68,7 @@
             </option>
           </select>
           <div class="input-group-prepend">
-            <a  href="http://cn.i3ot.com/#/management/setting-departmentnew" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
+            <a  href="{{tempDomain}}management/setting-departmentnew" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
               <!-- <i class="fa fa-plus "></i>--> 添加
             </a>
           </div>
@@ -109,7 +109,7 @@
             <option *ngFor="let c of userList.result?.titleList" [selected]="user_info.result?.u_title == c.category_id" value="{{c.category_id}}">{{c.category_desc}}</option>
           </select>
           <div class="input-group-prepend">
-            <a  href="http://cn.i3ot.com/#/management/setting-honor" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
+            <a  href="{{tempDomain}}management/setting-honor" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
               <!-- <i class="fa fa-plus "></i>--> 添加
             </a>
           </div>

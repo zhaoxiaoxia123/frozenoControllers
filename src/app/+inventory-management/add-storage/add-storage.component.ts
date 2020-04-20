@@ -74,6 +74,7 @@ export class AddStorageComponent implements OnInit {
 
     log_table_name:string = 'otherorder';
     log_type:string = 'otherorder_in';
+    tempDomain:string = '';
     /**菜单id */
     menu_id:any;
     /** 权限 */
@@ -85,7 +86,7 @@ export class AddStorageComponent implements OnInit {
         private cookieStore:CookieStoreService,
         private globalService:GlobalService,
         private notificationService: NotificationService) {
-
+        this.tempDomain = this.globalService.tempDomain;
         this.uid = this.cookieStore.getCookie('uid');
         this.formModel = fb.group({
             // otherorder_id:[''],

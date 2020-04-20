@@ -91,18 +91,18 @@ export class UserOrderComponent implements OnInit {
             this.router.navigate(['/auth/login']);
           }
           if (this.orderList) {
-            if (this.orderList['result']['orderList']['current_page'] == this.orderList['result']['orderList']['last_page']) {
+            if (this.orderList['result']['current_page'] == this.orderList['result']['last_page']) {
               this.next = true;
             } else {
               this.next = false;
             }
-            if (this.orderList['result']['orderList']['current_page'] == 1) {
+            if (this.orderList['result']['current_page'] == 1) {
               this.prev = true;
             } else {
               this.prev = false;
             }
             this.selects = [];
-            for (let entry of this.orderList['result']['orderList']['data']) {
+            for (let entry of this.orderList['result']['data']) {
               this.selects[entry['o_id']] = false;
             }
             this.check = false;
@@ -176,7 +176,7 @@ export class UserOrderComponent implements OnInit {
     }
     msg = '删除后将不可恢复，您确定要删除吗？';
     if(confirm(msg)) {
-      let url = 'deleteUserOrderById?o_id=' + o_id + '&page=1&type='+type+'&sid='+this.cookieStore.getCookie('sid');
+      let url = 'deleteOrderById?o_id=' + o_id + '&page=1&type='+type+'&sid='+this.cookieStore.getCookie('sid');
       if(this.formModel.value['keyword'].trim() != ''){
         url += '&keyword='+this.formModel.value['keyword'].trim();
       }
@@ -192,19 +192,19 @@ export class UserOrderComponent implements OnInit {
             this.router.navigate(['/auth/login']);
           }
           if (this.orderList) {
-            if (this.orderList['result']['orderList']['current_page'] == this.orderList['result']['orderList']['last_page']) {
+            if (this.orderList['result']['current_page'] == this.orderList['result']['last_page']) {
               this.next = true;
             } else {
               this.next = false;
             }
-            if (this.orderList['result']['orderList']['current_page'] == 1) {
+            if (this.orderList['result']['current_page'] == 1) {
               this.prev = true;
             } else {
               this.prev = false;
             }
 
             this.selects = [];
-            for (let entry of this.orderList['result']['orderList']['data']) {
+            for (let entry of this.orderList['result']['data']) {
               this.selects[entry['o_id']] = false;
             }
             this.check = false;
@@ -229,7 +229,7 @@ export class UserOrderComponent implements OnInit {
       return false;
     }
     this.lgModal.show();
-    this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type='+type)
+    this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type='+type+'&sid='+this.cookieStore.getCookie('sid'))
       .subscribe((data)=>{
         this.orderInfo = data;
       });
@@ -303,6 +303,41 @@ export class UserOrderComponent implements OnInit {
     }
   }
 
+  preview(){
+    this.globalService.httpRequest('post','printPdf',{
+      'o_id':this.editStatusUserOrderId
+    }).subscribe( (data)=>{
+        alert(data['msg']);
+        if(data['status'] == 200){
+          this.orderInfo['result']['frozeno_express_company'] = "顺丰";
+          this.orderInfo['result']['frozeno_express_code'] = this.express_code;
+        }else if(data['status'] == 202){
+          this.cookieStore.removeAll(this.rollback_url);
+          this.router.navigate(['/auth/login']);
+        }
+      },
+      response => {
+        console.log('PATCH call in error', response);
+      }
+    );
+//     var bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+//     var sprnstr="<!--startprint-->";//设置打印开始区域
+//     var eprnstr="<!--endprint-->";//设置打印结束区域
+//     console.log(bdhtml.indexOf(sprnstr));
+//     var prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+//     console.log(prnhtml);
+//     prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+//     console.log(prnhtml);
+//     window.document.body.innerHTML=prnhtml;
+//     // window.document.execCommand("Print");
+//     console.log('----1----------');
+//     console.log(window.document.body.innerHTML);
+//     // window.print();
+//     //prnhtml.print();
+//     window.document.body.innerHTML=bdhtml;
+//     console.log('----2----------');
+//     console.log(window.document.body.innerHTML);
+}
 
   @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;
 }

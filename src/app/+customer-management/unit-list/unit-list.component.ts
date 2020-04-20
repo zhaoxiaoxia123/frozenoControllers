@@ -67,12 +67,14 @@ export class UnitListComponent implements OnInit {
     keyword : string = '';
     cid : any = 0;//当前登录用户的所属公司id
     super_admin_id : any = 0;//超级管理员所属公司id
-    role : string = '3,4';
+    // role : string = '3,4';
+    role : string = '6';   //冻龄智美客户
     category_type : number = 21;
     rollback_url : string = '';
     /**菜单id */
     menu_id:any;
     /** 权限 */
+    tempDomain:string = '';
     permissions : Array<any> = [];
     menuInfos : any = [];
     constructor(
@@ -80,6 +82,7 @@ export class UnitListComponent implements OnInit {
         private cookieStore:CookieStoreService,
         private globalService:GlobalService,
         private notificationService: NotificationService) {
+        this.tempDomain = this.globalService.tempDomain;
         window.scrollTo(0,0);
         this.super_admin_id = this.globalService.getAdminID();
         this.cid = this.cookieStore.getCookie('cid');

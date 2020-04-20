@@ -8,6 +8,50 @@
   /*background: #f9f9f9;*/
 /*}*/
 
+.printonly{
+  display:none
+}
+@media print{
+  input,.noprint{
+    display:none
+  }
+  .printonly{
+    display:block;
+    width:50%
+  }
+  .padding0 {
+    padding: 0 !important;
+  }
+  .table-scrolling {
+    min-height: 400px;
+  }
+  .smart-form {
+    margin: 0;
+    outline: 0;
+    color: #666;
+    position: relative;
+  }
+  .table {
+    width: 100%;
+    /*margin-bottom: 1rem;*/
+    background-color: transparent;
+  }
+  .table-height-20 > thead > tr > th {
+    height: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .table > thead > tr > th, .table > tbody > tr > td {
+    border-left: none;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-top: 0;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+
 body {
   display: flex;
   /*弹性布局,用来为盒状模型提供最大的灵活性。任何一个容器都可以指定为Flex布局。

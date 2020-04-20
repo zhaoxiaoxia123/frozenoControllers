@@ -71,6 +71,7 @@ export class RegistrationFormComponent implements OnInit {
   /** 权限 */
   permissions : Array<any> = [];
 
+  tempDomain:string = '';
   rollback_url :string = '';
   @ViewChild('avatarCropper', /* TODO: add static flag */ undefined) avatarCropper:ImageCropperComponent;
   constructor(
@@ -81,7 +82,7 @@ export class RegistrationFormComponent implements OnInit {
       private globalService:GlobalService,
       private notificationService: NotificationService
   ) {
-    
+    this.tempDomain = this.globalService.tempDomain;
     this.formModel = fb.group({
       u_id:[''],
       employee_id:['',[Validators.required,Validators.minLength(1)]],

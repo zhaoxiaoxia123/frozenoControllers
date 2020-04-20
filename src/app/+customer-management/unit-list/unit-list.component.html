@@ -226,7 +226,7 @@
                       </option>
                     </select>
                     <div class="input-group-prepend">
-                      <a  href="http://cn.i3ot.com/#/customer-management/unit-classify" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
+                      <a  href="{{tempDomain}}customer-management/unit-classify" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
                         <!-- <i class="fa fa-plus "></i>--> 添加
                       </a>
                     </div>
@@ -334,7 +334,7 @@
                       <option *ngFor="let u of customerDefault.result?.userList" [selected]="customerInfo.result?.c_follow_user_id == u.id" value="{{ u.id }}">{{u.u_username}}</option>
                     </select>
                     <div class="input-group-prepend">
-                      <a  href="http://cn.i3ot.com/#/forms/employees/0" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
+                      <a  href="{{tempDomain}}forms/employees/0" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
                         <!-- <i class="fa fa-plus "></i>--> 添加
                       </a>
                     </div>

@@ -58,6 +58,9 @@ export class MedicalBillingComponent implements OnInit {
   rollback_url : string = '';
   p_sales_price : number = 0;
   url:string = '';
+
+  tempDomain:string = '';
+
   /**菜单id */
   menu_id:any;
   /** 权限 */
@@ -69,7 +72,7 @@ export class MedicalBillingComponent implements OnInit {
       private cookieStore:CookieStoreService,
       private globalService:GlobalService,
       private notificationService: NotificationService) {
-
+    this.tempDomain = this.globalService.tempDomain;
     this.url = this.globalService.getDomain();
     this.pr_id = routInfo.snapshot.params['pr_id'];
     if(this.pr_id != '' && this.pr_id != '0'){
