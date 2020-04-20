@@ -34,8 +34,30 @@
                                             </div>
                                         </div>
 
-                                        <input (click)="preview()" type="button" value="点击打印">
+                                        <!--<div>-->
+                                        <!--<essence-ng2-print-->
+                                        <!--[btnText]="'打印'"-->
+                                        <!--[btnClass]="{'btn': true, 'btn-success': true}"-->
+                                        <!--[printHTML]="print_div"-->
+                                        <!--[printStyle]="printStyle"-->
+                                        <!--[printCSS]="printCSS"-->
+                                        <!--(printComplete)="printComplete()">-->
+                                        <!--</essence-ng2-print>-->
+                                        <!--</div>-->
+                                        <div>
+                                            <essence-ng2-print
+                                                [mode]="'popup'"
+                                                [popTitle]="'用户订单表格打印'"
+                                                [btnText]="'打印'"
+                                                [btnClass]="{'btn': true, 'btn-warning': true}"
+                                                [printHTML]="print_div"
+                                                [printStyle]="printStyle"
+                                                [printCSS]="printCSS"
+                                                (printComplete)="printComplete()">
+                                            </essence-ng2-print>
+                                        </div>
                                     </form>
+                                    <iframe style="display: none;"></iframe>
                                     <form  class="navbar-form" novalidate="" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" >
 
                                         <div class="btn-group">
@@ -75,8 +97,8 @@
                                     </table>
                                 </div>
 
-                                <!--startprint-->
-                                <div [ngStyle]="{'padding': '0','z-index': '2','width':width_1,'float':'left'}" class="table-scrolling padding0 printonly">
+
+                                <div [ngStyle]="{'padding': '0','z-index': '2','width':width_1,'float':'left'}" class="table-scrolling padding0 printonly" #print_div>
                                     <table class="table table-striped smart-form table-height-20">
                                         <thead>
                                         <tr >
@@ -109,7 +131,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <!--endprint-->
                             </div>
 
                             <!-- 底部-（分页部分）-->
@@ -124,7 +145,6 @@
                                     </li>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
                 </sa-widget>

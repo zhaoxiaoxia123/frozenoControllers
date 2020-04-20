@@ -53,6 +53,7 @@
     "core-js": "2.4.1",
     "echarts": "^4.2.1",
     "echarts-gl": "^1.1.1",
+    "essence-ng2-print": "^1.1.0",
     "font-awesome": "^4.7.0",
     "he": "1.1.1",
     "highcharts": "5.0.12",

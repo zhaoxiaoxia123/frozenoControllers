@@ -31,6 +31,11 @@ export class UserOrderComponent implements OnInit {
   orderInfo : any = [];
   express_code:string = '';
 
+
+  printCSS: string[];
+  printStyle: string;
+
+
   rollback_url : string = '';
   /**菜单id */
   menu_id:any;
@@ -60,8 +65,21 @@ export class UserOrderComponent implements OnInit {
       this.permissions = this.globalService.getPermissions();
       this.menuInfos = this.globalService.getMenuInfos();
     },this.globalService.getMenuPermissionDelayTime())
+
+
+    this.printCSS = ['http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css'];
+    this.printStyle =
+      `
+        th, td {
+            color: red !important;
+        }
+        `;
   }
 
+
+  printComplete () {
+    console.log('打印完成！');
+  }
   /**
    * 是否有该元素
    */
@@ -302,42 +320,6 @@ export class UserOrderComponent implements OnInit {
       this.width_1 = '90%';
     }
   }
-
-  preview(){
-    this.globalService.httpRequest('post','printPdf',{
-      'o_id':this.editStatusUserOrderId
-    }).subscribe( (data)=>{
-        alert(data['msg']);
-        if(data['status'] == 200){
-          this.orderInfo['result']['frozeno_express_company'] = "顺丰";
-          this.orderInfo['result']['frozeno_express_code'] = this.express_code;
-        }else if(data['status'] == 202){
-          this.cookieStore.removeAll(this.rollback_url);
-          this.router.navigate(['/auth/login']);
-        }
-      },
-      response => {
-        console.log('PATCH call in error', response);
-      }
-    );
-//     var bdhtml=window.document.body.innerHTML;//获取当前页的html代码
-//     var sprnstr="<!--startprint-->";//设置打印开始区域
-//     var eprnstr="<!--endprint-->";//设置打印结束区域
-//     console.log(bdhtml.indexOf(sprnstr));
-//     var prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
-//     console.log(prnhtml);
-//     prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
-//     console.log(prnhtml);
-//     window.document.body.innerHTML=prnhtml;
-//     // window.document.execCommand("Print");
-//     console.log('----1----------');
-//     console.log(window.document.body.innerHTML);
-//     // window.print();
-//     //prnhtml.print();
-//     window.document.body.innerHTML=bdhtml;
-//     console.log('----2----------');
-//     console.log(window.document.body.innerHTML);
-}
 
   @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;
 }
