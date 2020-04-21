@@ -4,47 +4,16 @@ import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {GlobalService} from '../../core/global.service';
 
 @Component({
-  selector: 'app-sales',
-  templateUrl: './sales.component.html',
+  selector: 'app-single-product',
+  templateUrl: './single-product.component.html',
 })
-export class SalesComponent implements OnInit {
-  purchaseList : any = [];
-  purchaseInfo : any = [];
-  page : any;
-  prev : boolean = false;
-  next : boolean = false;
-  //用作全选和反选
-  selects : Array<any> = [];
-  check : boolean = false;
+export class SingleProductComponent implements OnInit {
+  code:string = '';
+  count:string = '';
+  isShowCount:boolean = false;
 
-  //顶部启动 和无效是否启用显示
-  editStatusPurchaseId : any = 0;
-  isStatus : any = 0;
-  //处理批量
-  isAll : number = 0;
-  width : string = '0%';
-  width_1 : string = '70%';
-
-  type : number = 7;
-  keyword:string = '';
-  rollback_url : string = '';
-
-  /**
-   * 用作审核的变量
-   */
-  uid : any = '';//当前登录用户id
-  pr_status : any = '';//当前选中的状态值
-  pr_u_id : any = '';//当前选中的创建者id
-  pr_u_username: any = '';//当前选中的创建者昵称
-  pr_order: any = '';//当前选中的单据号
-
-  operate_type : string = '';//操作弹框类型
-  operate_button_type : string = '';//操作按钮类型
-  operate_button_type_is_more : string = '';//是否是批量操作
-  select_count : any = '';//批量选中的操作条数
-  operate_types : string = '';//操作弹框类型
-  log_type:string = 'purchase_sale';
-  log_table_name:string = 'purchase';
+  uid:string;
+  rollback_url:string;
   /**菜单id */
   menu_id:any;
   /** 权限 */
@@ -81,12 +50,28 @@ export class SalesComponent implements OnInit {
     return this.cookieStore.in_array(key, this.permissions);
   }
 
+  isShowCount(){
+    if(this.code.indexOf('96') == 0){
+      this.isShowCount = true;
+    }else{
+      this.isShowCount = false;
+    }
+  }
+  /**
+   * 录入单品
+   */
+  addSingleProduct(){
+    if(this.count){
+
+    }
+  }
+
   /**
    * 获取列表
    * @param number
    */
   getPurchaseList(number:string) {
-    let url = 'getPurchaseList?pr_type='+this.type+'&page='+number+'&sid='+this.cookieStore.getCookie('sid');
+    let url = 'getProductList?pr_type='+this.type+'&page='+number+'&sid='+this.cookieStore.getCookie('sid');
     if(this.keyword.trim() != '') {
       url += '&keyword='+this.keyword.trim();
     }

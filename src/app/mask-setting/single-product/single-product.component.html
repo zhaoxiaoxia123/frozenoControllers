@@ -1,0 +1,175 @@
+<div id="content">
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 ">
+                <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa {{menuInfos?.menu_icon}}"></i> </span>
+                        <h2>{{menuInfos?.menu_name}}</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body  no-padding">
+                            <article>
+                                <div class="navbar navbar-default">
+                                    <form  class="navbar-form " novalidate="" role="search" >
+                                        <!--<div class="btn-group" *ngIf="isPermission(menu_id,'add')">-->
+                                            <!--<button type="button" class="btn btn-primary"  (click)="isDemo('/mask-setting/edit-sales','0','')" ><span class="fa-fw fa fa-plus  mr-5"></span>添加销售单</button>-->
+                                        <!--</div>-->
+                                        <div class="btn-group" *ngIf="isPermission(menu_id,'edit')">
+                                            <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':isStatus == 0}" (click)="isDemo('/mask-setting/edit-sales','1','edit')" ><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                                        </div>
+                                        <div class="btn-group" *ngIf="isPermission(menu_id,'delete')">
+                                            <button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':isStatus == 0}" (click)="deletePurchase('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                                        </div>
+                                        <div class="btn-group"  *ngIf="isPermission(menu_id,'detail')">
+                                            <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':isStatus == 0}"  (click)="isDemo('/mask-setting/edit-sales','1','detail')" ><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                        </div>
+                                        <!--<div class="btn-group" *ngIf="isPermission(menu_id,'verify')">-->
+                                            <!--<div class="btn-group" (click)="showModal('operation','operation','')" *ngIf="uid == pr_status">-->
+                                                <!--<button type="button" class="btn btn-primary" ><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>-->
+                                            <!--</div>-->
+                                            <!--<div class="btn-group" (click)="showModal('operation','cancel','')" *ngIf="uid == pr_u_id && pr_status != 'yes' && pr_status != 'no' && pr_status != 'cancel'">-->
+                                                <!--<button type="button" class="btn btn-warning" ><span class="fa-fw fa fa-trash-o mr-5 "></span>作废</button>-->
+                                            <!--</div>-->
+                                            <!--<div class="btn-group"  (click)="showModal('operation','back_cancel','')" *ngIf="uid == pr_u_id && pr_status == 'cancel'">-->
+                                                <!--<button type="button" class="btn btn-danger" ><span class="fa-fw fa fa-mail-reply-all mr-5 "></span>弃废</button>-->
+                                            <!--</div>-->
+
+                                        <!--</div>-->
+
+                                        <!--<div class="btn-group"  *ngIf="isPermission(menu_id,'verify') || isPermission(menu_id,'delete')">-->
+                                            <!--<button type="button" class="btn btn-secondary"  (click)="showAllCheck()"><span class="fa-fw fa fa-th-large mr-5"></span>批处理</button>-->
+                                            <!--<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">-->
+                                                <!--<span class="sr-only"></span>-->
+                                            <!--</button>-->
+                                            <!--<div class="dropdown-menu">-->
+                                                <!--<a class="dropdown-item" *ngIf="isPermission(menu_id,'verify')"  (click)="showModal('operation','operation','all')">批量审核</a>-->
+                                                <!--<div class="dropdown-divider"></div>-->
+                                                <!--<a class="dropdown-item"  *ngIf="isPermission(menu_id,'verify')"  (click)="showModal('operation','cancel','all')">批量作废</a>-->
+                                                <!--<a class="dropdown-item"  *ngIf="isPermission(menu_id,'verify')"  (click)="showModal('operation','back_cancel','all')">批量弃废</a>-->
+                                                <!--<div class="dropdown-divider"></div>-->
+                                                <!--<a class="dropdown-item" *ngIf="isPermission(menu_id,'delete')"  (click)="deletePurchase('all')">批量删除</a>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    </form>
+                                    <!--<form  class="navbar-form" novalidate="" role="search" >-->
+                                        <!--<div class="btn-group">-->
+                                            <!--<input type="text" class="form-control"  maxlength="15" [(ngModel)]="keyword" name="keyword" placeholder="请输入搜索内容">-->
+                                        <!--</div>-->
+                                        <!--<div class="btn-group">-->
+                                            <!--<button type="button" class="btn default-btn"  (click)="getPurchaseList('1')">搜索</button>-->
+                                        <!--</div>-->
+                                    <!--</form>-->
+                                </div>
+                            </article>
+                            <div  class="padding0 height-overflow">
+                                <!--<div *ngIf="isAll != 0" [ngStyle]="{'padding': '0','z-index': '2','width':width,'float':'left'}" class="table-scrolling padding0">-->
+                                    <!--<table class="table table-striped   smart-form table-height-20">-->
+                                        <!--<thead>-->
+                                        <!--<tr>-->
+                                            <!--<td><label class="checkbox mt-8">-->
+                                                <!--<input type="checkbox" name="checkbox-inline"  [checked]="check" (change)="changeCheckAll($event)" >-->
+                                                <!--<i></i>-->
+                                            <!--</label>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody>-->
+                                        <!--<tr *ngFor="let p of purchaseList.result?.purchaseList?.data">-->
+                                            <!--<td>-->
+                                                <!--<label class="checkbox mt-8">-->
+                                                    <!--<input type="checkbox" value="{{p.pr_id}}" [checked]="selects[p.pr_id]" (change)="handle($event)">-->
+                                                    <!--<i></i>-->
+                                                <!--</label>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                                <div>
+                                    <div class="btn-group">
+                                        <input type="text" class="form-control" [(ngModel)]="code" name="code" placeholder="请扫码" (change)="isShowCount()">
+                                    </div>
+                                    <div class="btn-group">
+                                        <input type="text" class="form-control" [(ngModel)]="count" name="count" placeholder="个数">
+                                    </div>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn default-btn"  (click)="addSingleProduct()">录入</button>
+                                    </div>
+                                </div>
+                                <div style="z-index: 2;width:30%;float:left;" class="table-scrolling padding0">
+                                    <table class="table table-striped   smart-form table-height-20">
+                                        <thead>
+                                        <tr>
+                                            <th>单据状态 </th>
+                                            <th>单据号</th>
+                                            <th>单据日期 </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let p of purchaseList.result?.purchaseList?.data" (click)="isStatusShow(p.pr_id,p.pr_status,p.u_id,p.u_username,p.pr_order)" [ngClass]="{'table-color':editStatusPurchaseId == p.pr_id}"><!--class="table-color" --->
+                                            <td>
+                                                <div>
+                                                    <span class="label-maintain" *ngIf="p.pr_status != uid && p.pr_status != 'yes' && p.pr_status != 'no' && p.pr_status != 'cancel'">审核中</span>
+                                                    <span class="label-maintain maintain-style" (click)="showModalInList('operation','operation','',p.pr_id)" *ngIf="p.pr_status == uid && p.pr_status != 'yes' && p.pr_status != 'no' && p.pr_status != 'cancel'">审核中</span>
+                                                    <span class="label-normal" *ngIf="p.pr_status == 'yes'">已同意</span>
+                                                    <span  class="label-full" *ngIf="p.pr_status == 'no'">已拒绝</span>
+                                                    <span  class="label-full" *ngIf="p.pr_status == 'cancel'">已作废</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="click-a">
+                                                    <a>{{p.pr_order}}</a>
+                                                </div>
+                                            </td>
+                                            <td>{{p.pr_date}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div [ngStyle]="{'padding': '0','z-index': '1','width':width_1,'float':'left'}" class="table-responsive">
+                                    <table class="table table-striped   smart-form table-height-20">
+                                        <thead>
+                                        <tr>
+                                            <th>销售状态</th>
+                                            <th>销售对象 </th>
+                                            <th>制单人</th>
+                                            <th>创建时间 </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let p1 of purchaseList.result?.purchaseList?.data" (click)="isStatusShow(p1.pr_id,p1.pr_status,p1.u_id,p1.u_username,p1.pr_order)" [ngClass]="{'table-color':editStatusPurchaseId == p1.pr_id}"><!--class="table-color" --->
+                                            <td>
+                                             <span [ngSwitch]="p1.pr_type">
+                                                <span class="label-normal" *ngSwitchCase="7">销货单</span>
+                                                <span class="label-unknown" *ngSwitchDefault>未知</span>
+                                             </span>
+                                            </td>
+                                            <td>{{p1.supplier}}</td>
+                                            <td>{{p1.name}}</td>
+                                            <td>{{p1.created_at}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 底部-（分页部分）-->
+                            <div class="footer-size flex-justify-end">
+                                <ul class="pagination" >
+                                    <li  *ngFor="let p of purchaseList?.result?.page" class="{{p.class}}">
+                                        <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                                        <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <a  class="page-link" disabled>共{{purchaseList?.result?.purchaseList?.total}}条</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>
