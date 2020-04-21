@@ -84,7 +84,6 @@ export class UnitListComponent implements OnInit {
         this.super_admin_id = this.globalService.getAdminID();
         this.cid = this.cookieStore.getCookie('cid');
         console.log(this.cookieStore.getCookie('cid'));
-        console.log(this.globalService.adminIdDLZM);
         // if(this.cookieStore.getCookie('cid') == this.globalService.adminIdDLZM){
         //     this.role = '6';
         // }
