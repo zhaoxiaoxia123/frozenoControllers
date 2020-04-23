@@ -18,6 +18,15 @@ export class AddProductComponent implements OnInit {
     prev : boolean = false;
     next : boolean = false;
 
+    productDefault : any = [];
+    select_category_ids: Array<any> = [];
+    showUl : number  = 1;//一级分类
+    showUlChild : number  = 0;//二级
+    //处理批量
+    isAll : number = 0;
+    width : string = '0%';
+    width_1 : string = '80%';
+
     productList : any = [];
     //用作全选和反选
     selects : Array<any> = [];
@@ -55,7 +64,7 @@ export class AddProductComponent implements OnInit {
         private globalService:GlobalService,
         private notificationService: NotificationService) {
         window.scrollTo(0,0);
-        this.getScanProductList(1);
+        this.getProductDefault();
         this.getCategoryList();
         this.tempDomain = this.globalService.tempDomain;
     }
@@ -81,10 +90,55 @@ export class AddProductComponent implements OnInit {
         }
         return this.cookieStore.in_array(key, this.permissions);
     }
+    /**
+     * 获取默认参数
+     */
+    getProductDefault(){
+        this.globalService.httpRequest('get','getProductLeftCategory?category_type='+this.category_type+'&sid='+this.cookieStore.getCookie('sid'))
+          .subscribe((data)=>{
+              this.productDefault = data;
+              if(this.productDefault['status'] == 202){
+                  alert(this.productDefault['msg']);
+                  this.cookieStore.removeAll(this.rollback_url);
+                  this.router.navigate(['/auth/login']);
+              }
+              this.select_category_ids[0] = true;
+              this.productDefault['result'].forEach((val, idx, array) => {
+                  this.select_category_ids[val['category_id']] = true;
+                  if(val['child_count'] >= 1){
+                      val['child'].forEach((val1, idx1, array1) => {
+                          this.select_category_ids[val1['category_id']] = true;
+                      });
+                  }
+              });
+              let depart = '';
+              this.select_category_ids.forEach((val, idx, array) => {
+                  if(val == true) {
+                      depart += idx + ',';
+                  }
+              });
+              this.getScanProductList('1',depart);
+          });
+    }
 
     //获取入库为完成的商品列表信息
-    getScanProductList (page) {
-        this.globalService.httpRequest('get','getScanProductList?state='+this.p_state+'&code='+this.code+'&page='+page+'&sid='+this.cookieStore.getCookie('sid'))
+    getScanProductList (page:string,category_id:any) {
+        // if(!this.select_property){
+        //     this.select_property = '0';
+        // }
+        let url = 'getScanProductList?state='+this.p_state+'&code='+this.code+'&p_type='+this.p_type+'&page='+page+'&sid='+this.cookieStore.getCookie('sid');
+        if(category_id != 0){
+            url += '&category_ids='+category_id;
+        }else{
+            let category_ids = '';
+            this.select_category_ids.forEach((val, idx, array) => {
+                if(val == true) {
+                    category_ids += idx + ',';
+                }
+            });
+            url += '&category_ids='+category_ids;
+        }
+        this.globalService.httpRequest('get',url)
         .subscribe((data)=>{
             this.productList = data;
             if(this.productList['status'] == 202){
@@ -195,14 +249,56 @@ export class AddProductComponent implements OnInit {
           }
         );
     }
-
+    /**
+     * 左边选中所有
+     */
+    selectCategoryAll(){
+        if(this.select_category_ids[0] == true){
+            this.select_category_ids[0] = false;
+            this.productDefault['result'].forEach((val, idx, array) => {
+                this.select_category_ids[val['category_id']] = false;
+                if (val['has_child'] >= 1) {
+                    val['child'].forEach((val1, idx1, array1) => {
+                        this.select_category_ids[val1['category_id']] = false;
+                    });
+                }
+            });
+        }else {
+            this.select_category_ids[0] = true;
+            this.productDefault['result'].forEach((val, idx, array) => {
+                this.select_category_ids[val['category_id']] = true;
+                if (val['has_child'] >= 1) {
+                    val['child'].forEach((val1, idx1, array1) => {
+                        this.select_category_ids[val1['category_id']] = true;
+                    });
+                }
+            });
+        }
+        let depart = '';
+        this.select_category_ids.forEach((val, idx, array) => {
+            if(val == true) {
+                depart += idx + ',';
+            }
+        });
+        this.getScanProductList('1',depart);
+    }
+    /**
+     * 左边展示效果
+     * @param bool
+     */
+    showLeftUl(bool:any){
+        this.showUl = bool;
+    }
+    showLeftUlChild(category_id:any){
+        this.showUlChild = category_id;
+    }
     /**
      * 页码分页
      * @param page
      */
     pagination(page : any) {
         this.page = page;
-        this.getScanProductList(this.page);
+        this.getScanProductList(this.page,0);
     }
     //
     //全选，反全选
@@ -232,6 +328,67 @@ export class AddProductComponent implements OnInit {
         }else{
             this.check = true;
         }
+    }
+
+
+    /**
+     * 左侧导航栏 选中显示列表
+     * @param category_id
+     * index 点击的父类 or子类 索引
+     * num  1：父类 2：子类
+     */
+    selectDepartment(category_id:any,index:number,indexChild:number,num:number,type:string){
+        if(num == 1){//点击父类
+            if(this.select_category_ids[category_id] == true){
+                if(this.productDefault['result'][index]){
+                    if(this.productDefault['result'][index]['child_count'] >= 1){
+                        this.productDefault['result'][index]['child'].forEach((val, idx, array) => {
+                            this.select_category_ids[val['category_id']] = false;
+                        });
+                    }
+                }
+                this.select_category_ids[category_id] = false;
+            }else{
+                this.select_category_ids[category_id] = true;
+                if(this.productDefault['result'][index]){
+                    if(this.productDefault['result'][index]['child_count'] >= 1){
+                        this.productDefault['result'][index]['child'].forEach((val, idx, array) => {
+                            this.select_category_ids[val['category_id']] = true;
+                        });
+                    }
+                }
+            }
+        }else if(num != 1){//点击子类
+            if(this.select_category_ids[category_id] == true){
+                this.select_category_ids[num] = false;
+                this.select_category_ids[category_id] = false;
+            }else{
+                this.select_category_ids[category_id] = true;
+
+                let count = 0;
+                if(this.productDefault['result'][index]){
+                    if(this.productDefault['result'][index]['child_count'] >= 1){
+                        this.productDefault['result'][index]['child'].forEach((val, idx, array) => {
+                            if(this.select_category_ids[val['category_id']] == false ||  isUndefined(this.select_category_ids[val['category_id']])){
+                                count ++;
+                            }
+                        });
+                    }
+                }
+                if(count == 0){//若子类全是true则父类变为选中状态
+                    this.select_category_ids[num] = true;
+                }
+            }
+        }
+        let depart = '';
+        this.select_category_ids.forEach((val, idx, array) => {
+            if(val == true) {
+                depart += idx + ',';
+            }
+        });
+        // this.editStatusProductId = 0;
+        // this.isStatus = 0;
+        this.getScanProductList('1',depart);
     }
 
     /**
