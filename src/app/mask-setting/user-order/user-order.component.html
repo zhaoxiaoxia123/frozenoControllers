@@ -32,6 +32,23 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" (click)="deleteUserOrder('all')">批量删除</a>
                                             </div>
+
+
+
+
+                                        </div>
+
+                                        <div>
+                                            <essence-ng2-print
+                                                    [mode]="'popup'"
+                                                    [popTitle]="'用户订单表格打印'"
+                                                    [btnText]="'打印'"
+                                                    [btnClass]="{'btn': true, 'btn-warning': true}"
+                                                    [printHTML]="print_div"
+                                                    [printStyle]="printStyle"
+                                                    [printCSS]="printCSS"
+                                                    (printComplete)="printComplete()">
+                                            </essence-ng2-print>
                                         </div>
 
                                         <!--<div>-->
@@ -44,18 +61,7 @@
                                         <!--(printComplete)="printComplete()">-->
                                         <!--</essence-ng2-print>-->
                                         <!--</div>-->
-                                        <div>
-                                            <essence-ng2-print
-                                                [mode]="'popup'"
-                                                [popTitle]="'用户订单表格打印'"
-                                                [btnText]="'打印'"
-                                                [btnClass]="{'btn': true, 'btn-warning': true}"
-                                                [printHTML]="print_div"
-                                                [printStyle]="printStyle"
-                                                [printCSS]="printCSS"
-                                                (printComplete)="printComplete()">
-                                            </essence-ng2-print>
-                                        </div>
+
                                     </form>
                                     <iframe style="display: none;"></iframe>
                                     <form  class="navbar-form" novalidate="" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" >

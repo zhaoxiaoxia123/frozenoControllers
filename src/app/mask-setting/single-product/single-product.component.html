@@ -9,33 +9,25 @@
                     </header>
                     <div>
                         <div class="widget-body  no-padding">
-                            <article>
-                                <div class="navbar navbar-default">
-                                    <!--<form  class="navbar-form " novalidate="" role="search" >-->
-                                        <!--<div class="btn-group" *ngIf="isPermission(menu_id,'edit')">-->
-                                            <!--<button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':isStatus == 0}" (click)="isDemo('/mask-setting/edit-sales','1','edit')" ><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>-->
-                                        <!--</div>-->
-                                        <!--<div class="btn-group" *ngIf="isPermission(menu_id,'delete')">-->
-                                            <!--<button type="button"  [ngClass]="{'btn btn-danger':true,'not-click':isStatus == 0}" (click)="deletePurchase('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>-->
-                                        <!--</div>-->
-                                        <!--<div class="btn-group"  *ngIf="isPermission(menu_id,'detail')">-->
-                                            <!--<button type="button"  [ngClass]="{'btn btn-success':true,'not-click':isStatus == 0}"  (click)="isDemo('/mask-setting/edit-sales','1','detail')" ><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>-->
-                                        <!--</div>-->
-                                    <!--</form>-->
-                                    <div>
-                                        <div class="btn-group">
-                                            <input type="text" class="form-control" style="width: 300px" [(ngModel)]="code" name="code" placeholder="请扫码" (ngModelChange)="isShowCountDiv()">
-                                        </div>
-                                        <div class="btn-group" *ngIf="isShowCount">
-                                            <input type="text" class="form-control" [(ngModel)]="count" name="count" placeholder="个数">
-                                        </div>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn default-btn"  (click)="onSubmit()">录入</button>
-                                        </div>
+                            <article style="padding:10px;">
+
+                                <form  class="navbar-form " novalidate="" role="search" >
+                                    <div class="btn-group" (click)="changedetails()">
+                                        <button type="button" class="btn btn-primary"  >查看单品库存量</button>
                                     </div>
-                                </div>
+                                    <div class="btn-group">
+                                        <input type="text" class="form-control" style="width: 300px" [(ngModel)]="code" name="code" placeholder="请扫码" (ngModelChange)="isShowCountDiv()">
+                                    </div>
+                                    <div class="btn-group" *ngIf="isShowCount">
+                                        <input type="text" class="form-control" [(ngModel)]="count" name="count" placeholder="个数">
+                                    </div>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn default-btn"  (click)="onSubmit()">录入</button>
+                                    </div>
+                                </form>
+
                             </article>
-                            <div  class="padding0 height-overflow">
+                            <div  class="padding0">
                                 <div class="table-responsive">
                                     <table class="table table-striped smart-form table-height-20">
                                         <thead>
@@ -64,12 +56,28 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <div>
-                                        库存数：
-                                        <div *ngFor="let c of productList?.result?.category">
-                                            <span>{{c.category_desc}}:{{c.frozeno_category_count}}</span>
-                                        </div>
-                                    </div>
+
+                                </div>
+
+                                <!-- 底部-（分页部分）-->
+                                <div class="footer-size flex-justify-end">
+
+                                    <ul class="pagination folat-right">
+                                        <li class="page-item disabled">
+                                            <span class="page-link">上一页</span>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item active" aria-current="page"><span class="page-link">2</span>
+                                        </li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">下一页</a>
+                                        </li>
+                                        <li class="page-item disabled">
+                                            <a  class="page-link" disabled>共5445条</a>
+                                        </li>
+                                    </ul>
+
                                 </div>
                             </div>
                         </div>
@@ -91,6 +99,39 @@
                 <span *ngFor="let e of errorCode">
                     {{e}}
                 </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="slide-content"  [ngStyle]="{'display':xy_details?'block':'none'}" style="position: fixed; display: block; z-index: 9991;">
+    <div class="entity-well entity-well--tasks">
+        <div class="entity-well-header">
+      <span class="approval-head">库存数
+        <span ><span></span>
+        </span>
+      </span>
+            <ul class="entity-well-header-nav nav s pull-right">
+                <li class="divider-v"></li>
+                <li><a class="entity-well-header-close"><i class="fa fa-times"></i></a></li>
+            </ul>
+        </div>
+        <div class="entity-well-scroll height-nonav height-nonav--notab ng-scope wt-scroll select-y-auto">
+            <div class="approve-top approve-intro">
+                <div class="approve-formschema">
+                    <table class="table table-striped table-forum smart-form details-table">
+                        <tbody >
+                        <tr>
+                            <th>名称</th>
+                            <th>数量</th>
+                        </tr>
+                        <tr *ngFor="let c of productList?.result?.category"><td class="details-width">{{c.category_desc}}</td><td class="">{{c.frozeno_category_count}}</td></tr>
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

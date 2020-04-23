@@ -15,6 +15,8 @@ export class SingleProductComponent implements OnInit {
   isShowCount:boolean = false;
   isShowErrorCode:boolean = false;
 
+  xy_details: boolean = false;  //单击展开，再次单击隐藏
+
   type:number=1;
   uid:string;
   rollback_url:string;
@@ -43,6 +45,10 @@ export class SingleProductComponent implements OnInit {
     },this.globalService.getMenuPermissionDelayTime())
   }
 
+    //单击展开，再次单击隐藏
+    changedetails(){
+        this.xy_details = (this.xy_details == false);
+    }
   /**
    * 是否有该元素
    */
