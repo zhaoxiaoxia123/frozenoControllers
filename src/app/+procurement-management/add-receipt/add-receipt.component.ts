@@ -73,6 +73,8 @@ export class AddReceiptComponent implements OnInit {
   create_user_id: any = 0;
   log_table_name:string = 'purchase';
   log_type:string = 'purchase_cg_after';
+
+  tempDomain:string = '';
   /**菜单id */
   menu_id:any;
   /** 权限 */
@@ -84,7 +86,7 @@ export class AddReceiptComponent implements OnInit {
       private cookieStore:CookieStoreService,
       private globalService:GlobalService,
       private notificationService: NotificationService) {
-
+    this.tempDomain = this.globalService.tempDomain;
     this.uid = this.cookieStore.getCookie('uid');
     let pr_ids = routInfo.snapshot.params['pr_id'];
     if(pr_ids != '' && pr_ids != '0'){

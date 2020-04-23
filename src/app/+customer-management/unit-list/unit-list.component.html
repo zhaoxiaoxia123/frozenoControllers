@@ -183,6 +183,9 @@
             <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">联系人信息</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" id="pills-address-tab" data-toggle="pill" href="#pills-address" role="tab" aria-controls="pills-address" aria-selected="false">收货信息设置</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">其他信息</a>
           </li>
         </ul>
@@ -226,7 +229,7 @@
                       </option>
                     </select>
                     <div class="input-group-prepend">
-                      <a  href="http://cn.i3ot.com/#/customer-management/unit-classify" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
+                      <a  href="{{tempDomain}}customer-management/unit-classify" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
                         <!-- <i class="fa fa-plus "></i>--> 添加
                       </a>
                     </div>
@@ -316,9 +319,96 @@
                   <label class="label ">地址</label>
                   <input type="text" class="form-control"  name="user_addr" [(ngModel)]="user_addr">
                 </div>
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="pills-address" role="tabpanel" aria-labelledby="pills-address-tab">
+            <form class="form-distance">
+              <a (click)="addList()">增加</a>
+              <div *ngFor="let cae of customerInfo?.result?.customer_addr;let inde=index;">
+                <span>收件人：{{cae.name}}</span>
+                <span>电话：{{cae.phone}}</span>
+                <span>收件地址：{{cae.province}}{{cae.city}}{{cae.area}}{{cae.address}}</span>
+                <span>是否默认：{{cae.is_default == 1?'是':'否'}}</span>
+                <a class="input-group-text" type="button" (click)="editCustomerAddr(inde)">修改</a>
+                <a class="input-group-text" type="button" (click)="deleteCustomerAddr(inde)">删除</a>
+              </div>
+              <div class="form-row" *ngIf="edit_customer_addr.length > 0">
+                <div class="form-group col-sm-4">
+                  <label class="label">收货人姓名</label>
+                  <input type="text" class="form-control" name="edit_customer_addr.customer_addr_name" value="{{edit_customer_addr.customer_addr_name}}" [(ngModel)]="edit_customer_addr.customer_addr_name" [ngModelOptions]="{standalone: true}" >
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label">收货人电话</label>
+                  <input type="text" class="form-control" name="edit_customer_addr.customer_addr_phone" value="{{edit_customer_addr.customer_addr_phone}}" [(ngModel)]="edit_customer_addr.customer_addr_phone" [ngModelOptions]="{standalone: true}" placeholder="请输入手机号码" maxlength="12" >
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label ">发货人地址</label>
+                  <div class="input-group">
+                    <select  class="form-control" name="edit_customer_addr.province" [(ngModel)]="edit_customer_addr.province" value="{{edit_customer_addr.province}}" (change)="getCity(0)" [ngModelOptions]="{standalone: true}">
+                      <option value="">--请选择省--</option>
+                      <option *ngFor="let p of edit_customer_addr.provinces" value="{{p}}">{{p}}</option>
+                    </select>
+                    <select  class="form-control" name="edit_customer_addr.city" [(ngModel)]="edit_customer_addr.city" value="{{edit_customer_addr.city}}" (change)="getArea(0)" [ngModelOptions]="{standalone: true}">
+                      <option value="">--请选择市--</option>
+                      <!--[selected]="storehouse_info.result?.address2 == c"-->
+                      <option *ngFor="let c of edit_customer_addr.citys" value="{{c}}">{{c}}</option>
+                    </select>
+                    <select  class="form-control" name="edit_customer_addr.area" [(ngModel)]="edit_customer_addr.area" value="{{edit_customer_addr.area}}" [ngModelOptions]="{standalone: true}">
+                      <option value="">--请选择区--</option>
+                      <option *ngFor="let a of edit_customer_addr.areas" value="{{a}}">{{a}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label ">具体地址</label>
+                  <input type="text" class="form-control" name="edit_customer_addr.customer_address" value="{{edit_customer_addr.customer_address}}" [(ngModel)]="edit_customer_addr.customer_address" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label">是否默认</label>
+                  <input type="radio" [checked]="edit_customer_addr.is_default" (click)="checkDefault" value="1" name="edit_customer_addr.is_default" [(ngModel)]="edit_customer_addr.is_default" [ngModelOptions]="{standalone: true}">是
+                </div>
+                <button type="button" class="btn btn-primary ml-2" (click)="submitEditCustomerAddr()">确定</button>
+              </div>
 
-
-
+              <div *ngFor="let ca of customer_addr;let ind=index;">
+              <div class="form-row" (click)="clickToEdit(ind)">
+                <div class="form-group col-sm-4">
+                  <label class="label">收货人姓名</label>
+                  <input type="text" class="form-control" name="ca.customer_addr_name" value="{{ca.customer_addr_name}}" [(ngModel)]="ca.customer_addr_name" [ngModelOptions]="{standalone: true}" >
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label">收货人电话</label>
+                  <input type="text" class="form-control" name="ca.customer_addr_phone" value="{{ca.customer_addr_phone}}" [(ngModel)]="ca.customer_addr_phone" [ngModelOptions]="{standalone: true}" placeholder="请输入手机号码" maxlength="12" >
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label ">发货人地址</label>
+                  <div class="input-group">
+                    <select  class="form-control" name="ca.province" [(ngModel)]="ca.province" value="{{ca.province}}" (change)="getCity(ind)" [ngModelOptions]="{standalone: true}">
+                      <option value="">--请选择省--</option>
+                      <option *ngFor="let p of ca.provinces" value="{{p}}">{{p}}</option>
+                    </select>
+                    <select  class="form-control" name="ca.city" [(ngModel)]="ca.city" value="{{ca.city}}" (change)="getArea(ind)" [ngModelOptions]="{standalone: true}">
+                      <option value="">--请选择市--</option>
+                      <!--[selected]="storehouse_info.result?.address2 == c"-->
+                      <option *ngFor="let c of ca.citys" value="{{c}}">{{c}}</option>
+                    </select>
+                    <select  class="form-control" name="ca.area" [(ngModel)]="ca.area" value="{{ca.area}}" [ngModelOptions]="{standalone: true}">
+                      <option value="">--请选择区--</option>
+                      <option *ngFor="let a of ca.areas" value="{{a}}">{{a}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label ">具体地址</label>
+                  <input type="text" class="form-control" name="ca.customer_address" value="{{ca.customer_address}}" [(ngModel)]="ca.customer_address" [ngModelOptions]="{standalone: true}">
+                </div>
+                <div class="form-group col-sm-4">
+                  <label class="label">是否默认</label>
+                  <input type="radio" [checked]="ca.is_default" (click)="checkDefault" value="1" name="ca.is_default" [(ngModel)]="ca.is_default" [ngModelOptions]="{standalone: true}">是
+                </div>
+              </div>
+                <!--<button type="button" class="btn btn-primary  ml-2" (click)="onSubmit(1);">确定</button>-->
               </div>
             </form>
           </div>
@@ -334,7 +424,7 @@
                       <option *ngFor="let u of customerDefault.result?.userList" [selected]="customerInfo.result?.c_follow_user_id == u.id" value="{{ u.id }}">{{u.u_username}}</option>
                     </select>
                     <div class="input-group-prepend">
-                      <a  href="http://cn.i3ot.com/#/forms/employees/0" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
+                      <a  href="{{tempDomain}}forms/employees/0" target="_blank" (click)="smartModEg1()" class="input-group-text" type="button">
                         <!-- <i class="fa fa-plus "></i>--> 添加
                       </a>
                     </div>
@@ -380,8 +470,6 @@
                   <label class="label ">信用额度</label>
                   <input  name="c_credit_amount" [(ngModel)]="c_credit_amount" type="number"  class="form-control" >
                 </div>
-
-
               </div>
             </form>
           </div>

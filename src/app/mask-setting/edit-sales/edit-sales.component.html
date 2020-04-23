@@ -160,7 +160,7 @@
                               <td>
                                 <div class="form-group">
                                   <input  class="form-control"  *ngIf="isDetail=='detail'" disabled="disabled" [ngModelOptions]="{standalone: true}" [(ngModel)]="p.p_count" value="{{p.p_count}}" type="number">
-                                  <input class="form-control"  *ngIf="isDetail!='detail'" [ngModelOptions]="{standalone: true}" [(ngModel)]="p.p_count" value="{{p.p_count}}" type="number" (keyup)="canInput($event,p.p_count,p.old_p_count,p.openinginventory_surplus_count)">
+                                  <input class="form-control"  *ngIf="isDetail!='detail'" [ngModelOptions]="{standalone: true}" [(ngModel)]="p.p_count" value="{{p.p_count}}" type="number" (keyup)="canInput(p.p_count,ind1)">
                                 </div>
                               </td>
                               <td>

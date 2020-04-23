@@ -28,7 +28,7 @@ export class AddInventory1Component implements OnInit {
   address1_default : number;
   address2_default : number;
   address3_default : number;
-
+  tempDomain:string = '';
   rollback_url : string = '';
   /**菜单id */
   menu_id:any;
@@ -42,6 +42,7 @@ export class AddInventory1Component implements OnInit {
       private globalService:GlobalService,
       private notificationService: NotificationService
   ) {
+    this.tempDomain = this.globalService.tempDomain;
     this.province = getProvince(); //住址
     this.formModel = fb.group({
       storehouse_id:[''],

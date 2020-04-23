@@ -26,6 +26,7 @@ export class PostComponent implements OnInit {
   name:string;
   data1:any;
   avatarSettings:CropperSettings;
+
   name2:string;
   data2:any;
   avatarSettings2:CropperSettings;
@@ -174,10 +175,10 @@ export class PostComponent implements OnInit {
     var formData : FormData = new FormData(form);
     //convertBase64UrlToBlob函数是将base64编码转换为Blob
     if(num == 1){
-      formData.append("uploadedfile",this.globalService.convertBase64UrlToBlob(this.data1.image),"head_"+ new Date().getTime() +".png");
+      formData.append("uploadedfile",this.globalService.convertBase64UrlToBlob(this.data1.image),"post_"+ new Date().getTime() +".png");
       console.log(this.data1);
     }else {
-      formData.append("uploadedfile", this.globalService.convertBase64UrlToBlob(this.data2.image), "head_" + new Date().getTime() + ".png");
+      formData.append("uploadedfile", this.globalService.convertBase64UrlToBlob(this.data2.image), "post_" + new Date().getTime() + ".png");
       console.log(this.data2);
     }
     //组建XMLHttpRequest 上传文件

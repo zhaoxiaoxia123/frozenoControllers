@@ -74,6 +74,8 @@ export class AddSalesComponent implements OnInit {
     create_user_id: any = 0;
     log_table_name:string = 'purchase';
     log_type:string = 'purchase_sale';
+
+    tempDomain:string = '';
     /**菜单id */
     menu_id:any;
     /** 权限 */
@@ -85,7 +87,7 @@ export class AddSalesComponent implements OnInit {
       private cookieStore:CookieStoreService,
       private globalService:GlobalService,
       private notificationService: NotificationService) {
-
+      this.tempDomain = this.globalService.tempDomain;
       this.url = this.globalService.getDomain();
       this.uid = this.cookieStore.getCookie('uid');
       let pr_ids = routInfo.snapshot.params['pr_id'];

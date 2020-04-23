@@ -60,7 +60,6 @@ export class SalesComponent implements OnInit {
   }
 
   ngOnInit() {
-
     //顶部菜单读取
     this.globalService.getMenuInfo();
     setTimeout(()=>{

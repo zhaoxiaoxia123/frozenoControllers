@@ -31,6 +31,11 @@ export class UserOrderComponent implements OnInit {
   orderInfo : any = [];
   express_code:string = '';
 
+
+  printCSS: string[];
+  printStyle: string;
+
+
   rollback_url : string = '';
   /**菜单id */
   menu_id:any;
@@ -60,8 +65,98 @@ export class UserOrderComponent implements OnInit {
       this.permissions = this.globalService.getPermissions();
       this.menuInfos = this.globalService.getMenuInfos();
     },this.globalService.getMenuPermissionDelayTime())
+
+
+    this.printCSS = ['http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css'];
+    this.printStyle =
+      `
+       .rt-flex{
+            display: flex;
+            font-size:8px;
+        }
+        .rt-header-img img{
+            width:200px;
+        }
+        .rt-item-hd{
+            padding-bottom:20px;
+        }
+        .rt-font-lg{
+            font-size:16px;
+            font-weight: bold;
+        }
+        .rt-main-doc{
+            width:50%;
+            padding:0 20px;
+            margin-bottom:80px;
+        }
+        .rt-one{
+            text-align: center;
+        }
+        .rt-one-mg{
+            width:240px;
+        }
+        .rt-item{
+            display: flex;
+            justify-content: space-between;
+        }
+        .rt-table-hd{
+            display: flex;
+            justify-content: space-between;
+            margin-top:10px;
+        }
+        table.rt-gridtable {
+            width:100%;
+            color:#333;
+            border-width: 1px;
+            border-color: #666;
+            border-collapse: collapse;
+            margin-top:6px;
+            text-align: center;
+        }
+        table.rt-gridtable th {
+            width:20%;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666;
+            background-color: #333;
+            text-align: center;
+            color:#fff;
+        }
+        table.rt-gridtable td {
+            width:20%;
+            border-width: 1px;
+            padding:8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+            text-align: center;
+        }
+        .ft-left{
+            text-align:left;
+        }
+        .rt-mg{
+            width:240px;
+        }
+        .rt-table-right{
+            text-align:right;
+        }
+        .rt-center{
+            text-align: center;
+        }
+        .rt-ft{
+            text-align:center;
+            padding:20px;
+            font-size:12px;
+        }
+
+        `;
   }
 
+
+  printComplete () {
+    console.log('打印完成！');
+  }
   /**
    * 是否有该元素
    */
@@ -91,18 +186,18 @@ export class UserOrderComponent implements OnInit {
             this.router.navigate(['/auth/login']);
           }
           if (this.orderList) {
-            if (this.orderList['result']['orderList']['current_page'] == this.orderList['result']['orderList']['last_page']) {
+            if (this.orderList['result']['current_page'] == this.orderList['result']['last_page']) {
               this.next = true;
             } else {
               this.next = false;
             }
-            if (this.orderList['result']['orderList']['current_page'] == 1) {
+            if (this.orderList['result']['current_page'] == 1) {
               this.prev = true;
             } else {
               this.prev = false;
             }
             this.selects = [];
-            for (let entry of this.orderList['result']['orderList']['data']) {
+            for (let entry of this.orderList['result']['data']) {
               this.selects[entry['o_id']] = false;
             }
             this.check = false;
@@ -176,7 +271,7 @@ export class UserOrderComponent implements OnInit {
     }
     msg = '删除后将不可恢复，您确定要删除吗？';
     if(confirm(msg)) {
-      let url = 'deleteUserOrderById?o_id=' + o_id + '&page=1&type='+type+'&sid='+this.cookieStore.getCookie('sid');
+      let url = 'deleteOrderById?o_id=' + o_id + '&page=1&type='+type+'&sid='+this.cookieStore.getCookie('sid');
       if(this.formModel.value['keyword'].trim() != ''){
         url += '&keyword='+this.formModel.value['keyword'].trim();
       }
@@ -192,19 +287,19 @@ export class UserOrderComponent implements OnInit {
             this.router.navigate(['/auth/login']);
           }
           if (this.orderList) {
-            if (this.orderList['result']['orderList']['current_page'] == this.orderList['result']['orderList']['last_page']) {
+            if (this.orderList['result']['current_page'] == this.orderList['result']['last_page']) {
               this.next = true;
             } else {
               this.next = false;
             }
-            if (this.orderList['result']['orderList']['current_page'] == 1) {
+            if (this.orderList['result']['current_page'] == 1) {
               this.prev = true;
             } else {
               this.prev = false;
             }
 
             this.selects = [];
-            for (let entry of this.orderList['result']['orderList']['data']) {
+            for (let entry of this.orderList['result']['data']) {
               this.selects[entry['o_id']] = false;
             }
             this.check = false;
@@ -229,7 +324,7 @@ export class UserOrderComponent implements OnInit {
       return false;
     }
     this.lgModal.show();
-    this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type='+type)
+    this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type='+type+'&sid='+this.cookieStore.getCookie('sid'))
       .subscribe((data)=>{
         this.orderInfo = data;
       });
@@ -302,7 +397,6 @@ export class UserOrderComponent implements OnInit {
       this.width_1 = '90%';
     }
   }
-
 
   @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;
 }

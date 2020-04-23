@@ -4,10 +4,11 @@ import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
 import {GlobalService} from "../../core/global.service";
 import {ModalDirective} from "ngx-bootstrap";
 import {NotificationService} from "../../shared/utils/notification.service";
+import {getProvince,getArea,getCity} from "../../shared/common/area";
 
 @Component({
-  selector: 'app-unit-list',
-  templateUrl: './unit-list.component.html',
+    selector: 'app-unit-list',
+    templateUrl: './unit-list.component.html',
 })
 export class UnitListComponent implements OnInit {
     public states: Array<any>;
@@ -56,6 +57,21 @@ export class UnitListComponent implements OnInit {
     c_discount_rate: string = '';
     c_credit_amount: string = '';
 
+    //冻龄智美
+    // provinces : string[] = [];
+    // citys : string[] = [];
+    // areas : string[] = [];
+    checkIndex: number = 0;
+    customer_addr: any = [{'provinces':[],'citys':[],'areas':[],'customer_addr_name':'','customer_addr_phone':'','province':'','city':'','area':'','customer_address':'','is_default':0}];
+    edit_customer_addr: any = [];//修改用户信息时 存储需修改的地址信息
+    // customer_addr_name: string = '';
+    // customer_addr_phone: string = '';
+    // province : string = '';
+    // city: string = '';
+    // area: string = '';
+    // customer_address:string = '';
+    // is_default:number = 0;
+
     //顶部启动 和无效是否启用显示
     editStatusCustomerId : any = 0;
     isStatus : any = 0;
@@ -67,12 +83,14 @@ export class UnitListComponent implements OnInit {
     keyword : string = '';
     cid : any = 0;//当前登录用户的所属公司id
     super_admin_id : any = 0;//超级管理员所属公司id
-    role : string = '3,4';
+    // role : string = '3,4';
+    role : string = '6';   //冻龄智美客户
     category_type : number = 21;
     rollback_url : string = '';
     /**菜单id */
     menu_id:any;
     /** 权限 */
+    tempDomain:string = '';
     permissions : Array<any> = [];
     menuInfos : any = [];
     constructor(
@@ -80,15 +98,14 @@ export class UnitListComponent implements OnInit {
         private cookieStore:CookieStoreService,
         private globalService:GlobalService,
         private notificationService: NotificationService) {
+        this.tempDomain = this.globalService.tempDomain;
         window.scrollTo(0,0);
         this.super_admin_id = this.globalService.getAdminID();
         this.cid = this.cookieStore.getCookie('cid');
-        console.log(this.cookieStore.getCookie('cid'));
-        // if(this.cookieStore.getCookie('cid') == this.globalService.adminIdDLZM){
-        //     this.role = '6';
-        // }
+
         this.getCustomerList('1');
         this.getCustomerDefault();
+        this.customer_addr[this.checkIndex]['provinces'] = getProvince(); //住址
     }
 
     ngOnInit() {
@@ -122,6 +139,31 @@ export class UnitListComponent implements OnInit {
                 });
         }
     }
+
+    getCity(ind){
+        this.checkIndex = ind;
+        let pro = this.customer_addr[this.checkIndex]['province'];
+        this.customer_addr[this.checkIndex]['citys'] = getCity(pro);
+        this.customer_addr[this.checkIndex]['areas'] = [];
+    }
+    getArea(ind){
+        this.checkIndex = ind;
+        let pro = this.customer_addr[this.checkIndex]['province'];
+        let city = this.customer_addr[this.checkIndex]['city'];
+        this.customer_addr[this.checkIndex]['areas'] = getArea(pro,city);
+    }
+    checkDefault(){
+        this.customer_addr[this.checkIndex]['is_default'] = !this.customer_addr[this.checkIndex]['is_default'];
+    }
+    clickToEdit(ind){
+        this.checkIndex = ind;
+    }
+    addList(){
+        this.customer_addr.push({'provinces':[],'citys':[],'areas':[],'customer_addr_name':'','customer_addr_phone':'','province':'','city':'','area':'','customer_address':'','is_default':0});
+        this.checkIndex = this.customer_addr.length - 1;
+        this.customer_addr[this.checkIndex]['provinces'] = getProvince(); //住址
+        console.log( this.customer_addr);
+    }
     /**
      * 获取默认参数
      */
@@ -146,18 +188,18 @@ export class UnitListComponent implements OnInit {
             url += '&keyword='+this.keyword.trim();
         }
         this.globalService.httpRequest('get',url).subscribe((data)=>{
-                this.customerList = data;
-                if(this.customerList['status'] == 202){
-                    this.cookieStore.removeAll(this.rollback_url);
-                    this.router.navigate(['/auth/login']);
-                }
+            this.customerList = data;
+            if(this.customerList['status'] == 202){
+                this.cookieStore.removeAll(this.rollback_url);
+                this.router.navigate(['/auth/login']);
+            }
 
-                this.selects = [];
-                for (let entry of this.customerList['result']['customerList']['data']) {
-                    this.selects[entry['c_id']] = false;
-                }
-                this.check = false;
-            });
+            this.selects = [];
+            for (let entry of this.customerList['result']['customerList']['data']) {
+                this.selects[entry['c_id']] = false;
+            }
+            this.check = false;
+        });
     }
 
     //全选，反全选
@@ -253,28 +295,34 @@ export class UnitListComponent implements OnInit {
             'c_discount_rate' : this.c_discount_rate,
             'c_credit_amount' : this.c_credit_amount,
             'c_status' : 1,
+            'customer_addr':JSON.stringify(this.customer_addr),
+            // 'customer_addr_name' : this.customer_addr_name,
+            // 'customer_addr_phone' : this.customer_addr_phone,
+            // 'province' : this.province,
+            // 'city' : this.city,
+            // 'area' : this.area,
+            // 'customer_address' : this.customer_address,
+            // 'is_default' : this.is_default,
             'sid':this.cookieStore.getCookie('sid')
-        }).subscribe(
-            (data)=>{
-                console.log(data);
-                alert(data['msg']);
-                if(data['status'] == 200) {
-                    this.clear_();
-                    this.customerList = data;
-                    this.selects = [];
-                    for (let entry of this.customerList['result']['customerList']['data']) {
-                        this.selects[entry['c_id']] = false;
-                    }
-                    this.check = false;
-                    if(num == 1){
-                        this.lgModal.hide();
-                    }
-                }else if(data['status'] == 202){
-                    this.cookieStore.removeAll(this.rollback_url);
-                    this.router.navigate(['/auth/login']);
+        }).subscribe((data)=>{
+            console.log(data);
+            alert(data['msg']);
+            if(data['status'] == 200) {
+                this.clear_();
+                this.customerList = data;
+                this.selects = [];
+                for (let entry of this.customerList['result']['customerList']['data']) {
+                    this.selects[entry['c_id']] = false;
                 }
+                this.check = false;
+                if(num == 1){
+                    this.lgModal.hide();
+                }
+            }else if(data['status'] == 202){
+                this.cookieStore.removeAll(this.rollback_url);
+                this.router.navigate(['/auth/login']);
             }
-        );
+        });
     }
 
 
@@ -308,6 +356,8 @@ export class UnitListComponent implements OnInit {
         this.c_discount_rate = '';
         this.c_credit_amount = '';
         this.unitCategoryList = [];
+        this.edit_customer_addr = [];
+        this.customer_addr = [{'provinces':[],'citys':[],'areas':[],'customer_addr_name':'','customer_addr_phone':'','province':'','city':'','area':'','customer_address':'','is_default':0}];
     }
 
 
@@ -342,6 +392,7 @@ export class UnitListComponent implements OnInit {
             this.getUnitCategoryList(this.c_role,2);
         }
         this.c_category_id = info['result']['c_category_id'];
+        this.customer_addr[0]['provinces'] = getProvince(); //住址
     }
 
     /**
@@ -371,6 +422,74 @@ export class UnitListComponent implements OnInit {
                     this.getDepartment(this.customerInfo['result']['c_follow_user_id'],2);
                 }
             });
+    }
+
+    /**
+     * 编辑冻龄智美客户收货地址
+     * @param index
+     */
+    editCustomerAddr(index:number){
+        this.edit_customer_addr['customer_addr_id'] = this.customerInfo['result']['customer_addr'][index]['customer_addr_id'];
+        this.edit_customer_addr['customer_addr_name'] = this.customerInfo['result']['customer_addr'][index]['name'];
+        this.edit_customer_addr['customer_addr_phone'] = this.customerInfo['result']['customer_addr'][index]['phone'];
+        this.edit_customer_addr['province'] = this.customerInfo['result']['customer_addr'][index]['province'];
+        this.edit_customer_addr['city'] = this.customerInfo['result']['customer_addr'][index]['city'];
+        this.edit_customer_addr['area'] = this.customerInfo['result']['customer_addr'][index]['area'];
+        this.edit_customer_addr['customer_address'] = this.customerInfo['result']['customer_addr'][index]['address'];
+        this.edit_customer_addr['is_default'] = this.customerInfo['result']['customer_addr'][index]['is_default'];
+    }
+
+    /**
+     * 删除用户收货地址
+     * @param index
+     */
+    deleteCustomerAddr(index:number){
+        let msg = '您确定要删除该收货地址吗？';
+        if(confirm(msg)) {
+            let url = 'deleteCustomerAddrById?addr_id=' + this.customerInfo['result']['customer_addr'][index]['customer_addr_id'] + '&sid=' + this.cookieStore.getCookie('sid');
+            this.globalService.httpRequest('delete',url).subscribe((data) => {
+                if(data['status'] == 202){
+                    this.cookieStore.removeAll(this.rollback_url);
+                    this.router.navigate(['/auth/login']);
+                }
+                this.customerInfo['result']['customer_addr'].splice(index, 1);
+            });
+        }
+    }
+
+    /**
+     * 提交修改的客户收货地址信息
+     */
+    submitEditCustomerAddr(){
+        this.globalService.httpRequest('post','editCustomerAddr',{
+            'customer_addr_id':this.edit_customer_addr['customer_addr_id'],
+            'customer_addr_name':this.edit_customer_addr['customer_addr_name'],
+            'customer_addr_phone':this.edit_customer_addr['customer_addr_phone'],
+            'province':this.edit_customer_addr['province'],
+            'city':this.edit_customer_addr['city'],
+            'area':this.edit_customer_addr['area'],
+            'customer_address':this.edit_customer_addr['customer_address'],
+            'is_default':this.edit_customer_addr['is_default'],
+            'sid':this.cookieStore.getCookie('sid')
+        }).subscribe(
+            (data)=>{
+                // let info = JSON.parse(data['_body']);
+                alert(data['msg']);
+                if(data['status'] == 200) {
+                    this.customerList = data;
+                    this.selects = [];
+                    for (let entry of this.customerList['result']['customerList']['data']) {
+                        this.selects[entry['c_id']] = false;
+                    }
+                    this.check = false;
+                }else if(data['status'] == 202){
+                    this.cookieStore.removeAll(this.rollback_url);
+                    this.router.navigate(['/auth/login']);
+                }
+                this.editStatusCustomerId = 0;
+                this.isStatus = 0;
+            }
+        );
     }
 
     /**
@@ -538,4 +657,3 @@ export class UnitListComponent implements OnInit {
     }
 
 }
-
