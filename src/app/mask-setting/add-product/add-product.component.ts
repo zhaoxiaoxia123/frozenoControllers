@@ -84,8 +84,25 @@ export class AddProductComponent implements OnInit {
     show_big_pic: string = '';
     /**图片 */
     imgList : Array<any> = [];
-    url : string = this.globalService.getDomain();
 
+    p_state:number = 0; //未入库
+    p_type:number = 4; //冻龄智美商品
+    code:string = '';
+
+    oneCode:string = '';
+    qrCode:string = '';
+    category_index:number = 0;
+    add_product_count:number = 0; //当前箱子下需入库的商品个数
+    mm_code:string = '';
+    jh_code:string = '';
+    jh_count:string = '0';
+    dry_code:string = '';
+    dry_count:string = '0';
+    showSubmit:boolean = true;
+
+    categoryList:any = [];
+
+    url : string = this.globalService.getDomain();
     tempDomain:string = '';
     /**菜单id */
     menu_id:any;
@@ -93,13 +110,14 @@ export class AddProductComponent implements OnInit {
     permissions : Array<any> = [];
     menuInfos : any = [];
     constructor(
-      private http:HttpClient,
         private router : Router,
         private cookieStore:CookieStoreService,
         private globalService:GlobalService,
         private notificationService: NotificationService) {
         window.scrollTo(0,0);
-        this.getProductDefault();
+        // this.getProductDefault();
+        this.getScanProductList();
+        this.getCategoryList();
         this.tempDomain = this.globalService.tempDomain;
     }
 
@@ -134,6 +152,113 @@ export class AddProductComponent implements OnInit {
             });
         }
     }
+
+    //获取入库为完成的商品列表信息
+    getScanProductList () {
+        this.globalService.httpRequest('get','getScanProductList?state='+this.p_state+'&code='+this.code+'&sid='+this.cookieStore.getCookie('sid'))
+        .subscribe((data)=>{
+            this.productList = data;
+            if(this.productList['status'] == 202){
+              alert(this.productList['msg']);
+              this.cookieStore.removeAll(this.rollback_url);
+              this.router.navigate(['/auth/login']);
+            }
+        });
+    }
+
+    /**
+     * 查询入库包装类型
+     */
+    getCategoryList() {
+        this.globalService.httpRequest('get','getCategoryList?category_type=50&sid='+this.cookieStore.getCookie('sid'))
+            .subscribe((data)=>{
+                this.categoryList = data['result']['productList'];
+                console.log(this.categoryList);
+                if(data['status'] == 202){
+                    alert(data['msg']);
+                    this.cookieStore.removeAll(this.rollback_url);
+                    this.router.navigate(['/auth/login']);
+                }
+        });
+    }
+
+    changeType(){
+        let count = this.categoryList[this.category_index]['category_tab'];
+        if(count > 0){
+            this.add_product_count = count;
+        }else{
+            alert('该二维码下未设置装入单品数量。');
+        }
+    }
+
+    /**
+     * 计算当前入库商品个数是否和包装类型符合
+     */
+    sumCount(){
+        let mml = this.mm_code.length;
+        let count_ = (mml/13) + parseInt(this.jh_count) + parseInt(this.dry_count);
+        console.log((count_));
+        console.log(this.add_product_count);
+        if((count_) == this.add_product_count){
+            this.showSubmit = false;
+        }
+        console.log(this.showSubmit );
+    }
+
+
+    /**
+     * 添加信息
+     */
+    onSubmitProduct(){
+        if(this.oneCode.trim() == ''){
+            alert('请扫入盒子一维码！');
+            return false;
+        }
+        if(this.qrCode.trim() == ''){
+            alert('请扫入盒子二维码！');
+            return false;
+        }
+        if(this.category_index == 0){
+            alert('请选择包装类型！');
+            return false;
+        }
+        this.globalService.httpRequest('post','putAdminProduct',{
+            // 'p_id' : this.p_id,
+            'product_code' : this.oneCode,
+            'category_id' : this.categoryList[this.category_index]['category_id'],
+            'qrCode' : this.qrCode,
+            'mm_code' : this.mm_code,
+            'jh_code' : this.jh_code,
+            'jh_count' : this.jh_count,
+            'dry_code' : this.dry_code,
+            'dry_count' : this.dry_count,
+            'state' : 4,
+            'u_id' : this.cookieStore.getCookie('uid'),
+            'sid':this.cookieStore.getCookie('sid')
+        }).subscribe((data)=>{
+              if(data['status'] == 201){
+                  alert(data['msg']);
+                  return false;
+              }else if(data['status'] == 200) {
+                  this.clear_();
+                  this.lgModal.hide();
+              }else if(data['status'] == 202){
+                  this.cookieStore.removeAll(this.rollback_url);
+                  this.router.navigate(['/auth/login']);
+              }
+          }
+        );
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * 获取默认参数
      */
