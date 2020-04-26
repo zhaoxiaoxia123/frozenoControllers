@@ -237,44 +237,67 @@
         <div class="modal-header">
           <!-- 标题 -->
           <h3 class="modal-title  color-yellow" data-ng-bind='results.title'><i class="fa-fw fa fa-pencil"></i>编辑商品档案</h3>
+          <span style="font-size: 1rem;padding-left:20px;">面膜8 精华8 导入仪1</span>
           <!-- 关闭按钮 -->
           <button type="button" class="close" (click)="clear_();lgModal.hide()">×</button>
         </div>
-        <div class="modal-body">
-          <form class="form-distance">
-            <fieldset>
-              <div class="form-row">
-                <div class="form-group col-sm-4">
-                  <label class="label txt-color-blue">盒子一维码</label>
-                  <input type="text" class="form-control" name="oneCode" [(ngModel)]="oneCode" placeholder="盒子一维码">
-                </div>
-                <div class="form-group col-sm-4">
-                  <label class="label txt-color-blue">盒子二维码</label>
-                  <input type="text" class="form-control" name="qrCode" [(ngModel)]="qrCode" placeholder="盒子二维码">
-                </div>
-                <div class="form-group col-sm-4">
-                  <label class="label">选择包装类型</label>
-                  <select class="form-control" name="category_index" [(ngModel)]="category_index" (change)="changeType()">
-                    <option *ngFor="let c of categoryList;let i = index;" value="{{i}}">{{c.category_desc}}</option>
-                  </select>
-                </div>
-                <div class="form-group col-sm-4">
-                  <label class="label txt-color-blue">面膜多一维码扫入</label>
-                  <input type="text" class="form-control" placeholder="面膜多一维码扫入" name="mm_code" [(ngModel)]="mm_code" (ngModelChange)="sumCount()">
-                </div>
-                <div class="form-group col-sm-4">
-                  <label class="label txt-color-blue">精华一维码扫入</label>
-                  <input type="text" class="form-control" placeholder="精华一维码扫入" name="jh_code" [(ngModel)]="jh_code">
-                  <input type="text" class="form-control" placeholder="精华数量" name="jh_count" [(ngModel)]="jh_count" (keyup)="sumCount()">
-                </div>
-                <div class="form-group col-sm-4">
-                  <label class="label txt-color-blue">导入仪一维码扫入</label>
-                  <input type="text" class="form-control" placeholder="导入仪一维码扫入" name="dry_code" [(ngModel)]="dry_code">
-                  <input type="text" class="form-control" placeholder="导入仪数量" name="dry_count" [(ngModel)]="dry_count" (keyup)="sumCount()">
-                </div>
+        <div class="modal-body height-overflow-380">
+
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label class="txt-color-blue" >盒子一维码</label>
+                <input type="text" class="form-control" name="oneCode" [(ngModel)]="oneCode" placeholder="盒子一维码">
               </div>
-            </fieldset>
+              <div class="form-group col-md-4">
+                <label >盒子二维码</label>
+                <input type="text" class="form-control" name="qrCode" [(ngModel)]="qrCode" placeholder="盒子二维码">
+              </div>
+              <div class="form-group col-md-4">
+                <label >选择包装类型</label>
+                <select class="form-control" name="category_index" [(ngModel)]="category_index" (change)="changeType()">
+                  <option *ngFor="let c of categoryList;let i = index;" value="{{i}}">{{c.category_desc}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-group" style="margin-bottom: 10px;">
+              <div class="input-group-prepend">
+                <span class="input-group-text">扫码</span>
+              </div>
+              <input type="text" aria-label="" placeholder="一维码扫入" class="form-control">
+              <input type="text" aria-label="" placeholder="请输入数量" class="form-control">
+            </div>
+
+            <div class="input-group" style="margin-bottom: 10px;">
+              <div class="input-group-prepend">
+                <span class="input-group-text">扫码</span>
+              </div>
+              <input type="text" aria-label="" placeholder="一维码扫入" class="form-control">
+            </div>
+
+
           </form>
+
+          <!--<form class="form-distance">-->
+            <!--<fieldset>-->
+                <!--<div class="form-group col-sm-4">-->
+                  <!--<label class="label txt-color-blue">面膜多一维码扫入</label>-->
+                  <!--<input type="text" class="form-control" placeholder="面膜多一维码扫入" name="mm_code" [(ngModel)]="mm_code" (ngModelChange)="sumCount()">-->
+                <!--</div>-->
+                <!--<div class="form-group col-sm-4">-->
+                  <!--<label class="label txt-color-blue">精华一维码扫入</label>-->
+                  <!--<input type="text" class="form-control" placeholder="精华一维码扫入" name="jh_code" [(ngModel)]="jh_code">-->
+                  <!--<input type="text" class="form-control" placeholder="精华数量" name="jh_count" [(ngModel)]="jh_count" (keyup)="sumCount()">-->
+                <!--</div>-->
+                <!--<div class="form-group col-sm-4">-->
+                  <!--<label class="label txt-color-blue">导入仪一维码扫入</label>-->
+                  <!--<input type="text" class="form-control" placeholder="导入仪一维码扫入" name="dry_code" [(ngModel)]="dry_code">-->
+                  <!--<input type="text" class="form-control" placeholder="导入仪数量" name="dry_count" [(ngModel)]="dry_count" (keyup)="sumCount()">-->
+                <!--</div>-->
+            <!--</fieldset>-->
+          <!--</form>-->
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary ml-2" [disabled]="showSubmit" (click)="onSubmitProduct();">保存</button>

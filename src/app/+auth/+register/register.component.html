@@ -26,35 +26,25 @@
           </div>
           <img src="assets/img/login-img.png" class="pull-right display-image" alt="" style="width:400px">
         </div>
-        <ul class="login-text" >
-          <li>
-            <div class="col">
-              <h5 class="about-heading">联系我们</h5>
-
-
-              <div>
-                深圳地址：深圳市福田区莲花街道康欣社区北环大道7043号青海大厦3203
-              </div>
-              <div>
-                成都地址：四川省成都市下南大街59号世代锦江国际酒店25楼
-              </div>
-              <div>
-                如有任何意见与建议请写信至：info@frozeno.com
-              </div>
-
-            </div>
-
-          </li>
-
-        </ul>
-
+        <div class="col-sm-12">
+          <h5 class="about-heading">联系我们</h5>
+          <div>
+            深圳地址：深圳市福田区莲花街道康欣社区北环大道7043号青海大厦3203
+          </div>
+          <div>
+            成都地址：四川省成都市下南大街59号世代锦江国际酒店25楼
+          </div>
+          <div>
+            如有任何意见与建议请写信至：info@frozeno.com
+          </div>
+        </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
         <div class="login-box clearfix">
 
           <ul class="flex-container ">
-            <li class="flex-item " [ngClass] = "item==0 ? 'login-item' : ''" (click)="OnItemClick(0)"  >企业注册</li>
-            <li class="flex-item " [ngClass] = "item==1 ? 'login-item' : ''" (click)="OnItemClick(1)" >个人注册</li>
+            <li class="flex-item " [ngClass] = "item==0 ? 'login-item' : ''" (click)="OnItemClick(0)"  style="width:100%;">企业注册</li>
+            <!--<li class="flex-item " [ngClass] = "item==1 ? 'login-item' : ''" (click)="OnItemClick(1)" >个人注册</li>-->
           </ul>
 
           <div class="login-user">
@@ -84,7 +74,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <p class="txt-color-red" style="padding-bottom:10px;">暂不开放，如需注册，请联系QQ：2839761055</p>
+                  <p class="txt-color-red" style="padding-bottom:10px;">暂不开放，如需注册，请联系QQ：2939373797</p>
                 </div>
                 <div class="form-group">
                   <button class="btn btn-primary btn-lg btn-block login-btn "  disabled="disabled" >
@@ -94,59 +84,59 @@
 
               </form>
             </div>
-            <div class=""  [style.display] = "item == 1 ? 'block' : 'none'">
-              <form class="" >
-                <div class="form-group">
-                  <label class="label">手机号码</label>
-                  <input class="form-control" disabled="disabled" placeholder="可用于登录或找回密码" type="text" minlength="1"   name="uNumber">
-                </div>
+            <!--<div class=""  [style.display] = "item == 1 ? 'block' : 'none'">-->
+              <!--<form class="" >-->
+                <!--<div class="form-group">-->
+                  <!--<label class="label">手机号码</label>-->
+                  <!--<input class="form-control" disabled="disabled" placeholder="可用于登录或找回密码" type="text" minlength="1"   name="uNumber">-->
+                <!--</div>-->
 
-                <div class="form-group">
-                  <label class="label">密码</label>
-                  <input class="form-control" disabled="disabled" placeholder="请设置登录密码" type="password" name="password"  minlength="6"  data-minlength="3" >
-                  <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i>用户名最小长度是6</b>
-                </div>
+                <!--<div class="form-group">-->
+                  <!--<label class="label">密码</label>-->
+                  <!--<input class="form-control" disabled="disabled" placeholder="请设置登录密码" type="password" name="password"  minlength="6"  data-minlength="3" >-->
+                  <!--<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i>用户名最小长度是6</b>-->
+                <!--</div>-->
 
-                <div class="form-group">
-                  <label class="labe">验证码</label>
-                  <div class="input-group mb-2 mr-sm-2">
-                    <input class="form-control" disabled="disabled" placeholder="请输入验证码" type="text" minlength="1" name="uNumber">
+                <!--<div class="form-group">-->
+                  <!--<label class="labe">验证码</label>-->
+                  <!--<div class="input-group mb-2 mr-sm-2">-->
+                    <!--<input class="form-control" disabled="disabled" placeholder="请输入验证码" type="text" minlength="1" name="uNumber">-->
 
-                    <div class="input-group-prepend">
-                      <button  disabled="disabled" type="button" class="input-group-text btn txt-color-blueLight btn-sm form-control" >
-                        获取短信验证码
-                      </button>
-                    </div>
+                    <!--<div class="input-group-prepend">-->
+                      <!--<button  disabled="disabled" type="button" class="input-group-text btn txt-color-blueLight btn-sm form-control" >-->
+                        <!--获取短信验证码-->
+                      <!--</button>-->
+                    <!--</div>-->
 
-                  </div>
-                </div>
+                  <!--</div>-->
+                <!--</div>-->
 
-                <div class="form-group">
-                  <p class="txt-color-red" style="padding-bottom:10px;">暂不开放</p>
-                </div>
+                <!--<div class="form-group">-->
+                  <!--<p class="txt-color-red" style="padding-bottom:10px;">暂不开放</p>-->
+                <!--</div>-->
 
-                <div class="form-group">
-                  <button class="btn btn-primary btn-lg btn-block login-btn"  disabled="disabled" >
-                    注册
-                  </button>
-                </div>
+                <!--<div class="form-group">-->
+                  <!--<button class="btn btn-primary btn-lg btn-block login-btn"  disabled="disabled" >-->
+                    <!--注册-->
+                  <!--</button>-->
+                <!--</div>-->
 
-              </form>
-            </div>
+              <!--</form>-->
+            <!--</div>-->
 
 
           </div>
         </div>
 
-        <h5 class="text-center"> -使用第三方账号 -</h5>
-        <ul class="list-inline text-center icon-set">
-          <li>
-            <a (click)="(null)" ><i class="icon-set_wechat"></i></a>
-          </li>
-          <li>
-            <a (click)="(null)" ><i class="icon-set_nailing"></i></a>
-          </li>
-        </ul>
+        <!--<h5 class="text-center"> -使用第三方账号 -</h5>-->
+        <!--<ul class="list-inline text-center icon-set">-->
+          <!--<li>-->
+            <!--<a (click)="(null)" ><i class="icon-set_wechat"></i></a>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<a (click)="(null)" ><i class="icon-set_nailing"></i></a>-->
+          <!--</li>-->
+        <!--</ul>-->
 
 
       </div>
