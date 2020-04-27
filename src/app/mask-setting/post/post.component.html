@@ -39,8 +39,19 @@
                                                 <div class="btn-group" (click)="lgModal.show();">
                                                     <button type="button" class="btn btn-primary"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                                                 </div>
+                                                <div class="btn-group">
+                                                    <button type="button"  class="btn btn-warning" ><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModalCenter" ><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button"  class="btn btn-success" ><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                                </div>
                                             </form>
                                             <form>
+
+
                                                 <div class="btn-group">
                                                     <input type="text"  class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">
                                                 </div>
@@ -127,7 +138,8 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="postScrollableTitle">添加</h5>
+                <!--添加、修改、详情-->
+                <h5 class="modal-title" >添加</h5>
                 <button type="button" class="close" (click)="lgModal.hide()" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -225,19 +237,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-sm-6" >-->
-                        <!--<div class="card" >-->
-                            <!--<img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper2 [image]="data2" [settings]="avatarSettings2" (onCrop)="cropped($event)"></img-cropper>-->
-                            <!--<div class="card-body" style="padding: 0 1.25rem 1.25rem;">-->
-                                <!--<h5 class="card-title">封面图片</h5>-->
-                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
-                                <!--<div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
-                                    <!--<input id="image-input2" type="file" c-img-cropper-select [cropper]="avatarCropper2">-->
-                                <!--</div>-->
-                                <!--<button type="button" class="btn btn-primary " (click)="postFile(2)">图片上传</button>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+
                 </div>
                 <div class="form-group row" >
                     <label class="col-sm-2 col-form-label ">正文内容</label>
@@ -258,6 +258,37 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  (click)="submitPost()">保存</button>
                 <button type="button" class="btn btn-secondary" (click)="lgModal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--删除-->
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+
+
+<!-- 删除 -->
+<div class="modal fade bd-example-modal-sm" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">删除</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="" style="padding: 1rem;">
+                确定要删除吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
