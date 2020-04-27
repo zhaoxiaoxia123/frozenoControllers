@@ -18,9 +18,37 @@
                                     <article>
                                         <div class="navbar " style="width:100%;">
                                             <form  class="navbar-form " novalidate="" role="search" >
+                                                <div class="btn-group  dropdown">
+                                                    <a class=" btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选-全部</a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#">全部</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#">成长课堂</a>
+                                                        <a class="dropdown-item" href="#">产品百科</a>
+                                                        <a class="dropdown-item" href="#">规则中心</a>
+                                                        <a class="dropdown-item" href="#">政策中心</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#" >帮助与客服</a>
+                                                        <a class="dropdown-item" href="#">系统通知</a>
+                                                        <a class="dropdown-item" href="#">冻龄智美通知</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#">激励中心</a>
+                                                        <a class="dropdown-item" href="#">广告</a>
+                                                    </div>
+                                                </div>
                                                 <div class="btn-group" (click)="lgModal.show();">
                                                     <button type="button" class="btn btn-primary"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                                                 </div>
+                                            </form>
+                                            <form>
+                                                <div class="btn-group">
+                                                    <input type="text"  class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0" >搜索</button>
+                                                </div>
+                                                <!--<input class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">-->
+                                                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>-->
                                             </form>
                                         </div>
                                     </article>
@@ -185,30 +213,31 @@
                 <div class="form-group row" >
                     <div class="col-sm-6" >
                         <div class="card" >
-                            <img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>
+                            <img  class="" style="width:100%;padding:10px;" src="assets/img/news/news4.jpg" >
+                            <!--<img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>-->
                             <div class="card-body" style="padding: 0 1.25rem 1.25rem;">
                                 <h5 class="card-title">封面图片</h5>
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <input id="image-input"  type="file" c-img-cropper-select [cropper]="avatarCropper">
-                                </div>
+                                <!--<div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<input id="image-input"  type="file" c-img-cropper-select [cropper]="avatarCropper">-->
+                                <!--</div>-->
                                 <button type="button" class="btn btn-primary " (click)="postFile(1)" >图片上传</button>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6" >
-                        <div class="card" >
-                            <img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper2 [image]="data2" [settings]="avatarSettings2" (onCrop)="cropped($event)"></img-cropper>
-                            <div class="card-body" style="padding: 0 1.25rem 1.25rem;">
-                                <h5 class="card-title">封面图片</h5>
-                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <input id="image-input2" type="file" c-img-cropper-select [cropper]="avatarCropper2">
-                                </div>
-                                <button type="button" class="btn btn-primary " (click)="postFile(2)">图片上传</button>
-                            </div>
-                        </div>
-                    </div>
+                    <!--<div class="col-sm-6" >-->
+                        <!--<div class="card" >-->
+                            <!--<img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper2 [image]="data2" [settings]="avatarSettings2" (onCrop)="cropped($event)"></img-cropper>-->
+                            <!--<div class="card-body" style="padding: 0 1.25rem 1.25rem;">-->
+                                <!--<h5 class="card-title">封面图片</h5>-->
+                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
+                                <!--<div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<input id="image-input2" type="file" c-img-cropper-select [cropper]="avatarCropper2">-->
+                                <!--</div>-->
+                                <!--<button type="button" class="btn btn-primary " (click)="postFile(2)">图片上传</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="form-group row" >
                     <label class="col-sm-2 col-form-label ">正文内容</label>
