@@ -18,9 +18,48 @@
                                     <article>
                                         <div class="navbar " style="width:100%;">
                                             <form  class="navbar-form " novalidate="" role="search" >
+                                                <div class="btn-group  dropdown">
+                                                    <a class=" btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">筛选-全部</a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#">全部</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#">成长课堂</a>
+                                                        <a class="dropdown-item" href="#">产品百科</a>
+                                                        <a class="dropdown-item" href="#">规则中心</a>
+                                                        <a class="dropdown-item" href="#">政策中心</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#" >帮助与客服</a>
+                                                        <a class="dropdown-item" href="#">系统通知</a>
+                                                        <a class="dropdown-item" href="#">冻龄智美通知</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#">激励中心</a>
+                                                        <a class="dropdown-item" href="#">广告</a>
+                                                    </div>
+                                                </div>
                                                 <div class="btn-group" (click)="lgModal.show();">
                                                     <button type="button" class="btn btn-primary"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                                                 </div>
+                                                <div class="btn-group">
+                                                    <button type="button"  class="btn btn-warning" ><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModalCenter" ><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button"  class="btn btn-success" ><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                                </div>
+                                            </form>
+                                            <form>
+
+
+                                                <div class="btn-group">
+                                                    <input type="text"  class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0" >搜索</button>
+                                                </div>
+                                                <!--<input class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">-->
+                                                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>-->
                                             </form>
                                         </div>
                                     </article>
@@ -99,7 +138,8 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="postScrollableTitle">添加</h5>
+                <!--添加、修改、详情-->
+                <h5 class="modal-title" >添加</h5>
                 <button type="button" class="close" (click)="lgModal.hide()" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -185,13 +225,14 @@
                 <div class="form-group row" >
                     <div class="col-sm-6" >
                         <div class="card" >
-                            <img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>
+                            <img  class="" style="width:100%;padding:10px;" src="assets/img/news/news4.jpg" >
+                            <!--<img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>-->
                             <div class="card-body" style="padding: 0 1.25rem 1.25rem;">
                                 <h5 class="card-title">封面图片</h5>
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <input id="image-input"  type="file" c-img-cropper-select [cropper]="avatarCropper">
-                                </div>
+                                <!--<div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<input id="image-input"  type="file" c-img-cropper-select [cropper]="avatarCropper">-->
+                                <!--</div>-->
                                 <button type="button" class="btn btn-primary " (click)="postFile(1)" >图片上传</button>
                             </div>
                         </div>
@@ -229,6 +270,37 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  (click)="submitPost()">保存</button>
                 <button type="button" class="btn btn-secondary" (click)="lgModal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--删除-->
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+
+
+<!-- 删除 -->
+<div class="modal fade bd-example-modal-sm" id="deleteModalCenter" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="">删除</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="" style="padding: 1rem;">
+                确定要删除吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确定</button>
             </div>
         </div>
     </div>
