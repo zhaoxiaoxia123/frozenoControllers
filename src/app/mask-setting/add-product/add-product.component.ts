@@ -183,7 +183,7 @@ export class AddProductComponent implements OnInit {
     }
 
     changeType(){
-        let count = this.categoryList[this.category_index]['category_tab'];
+        let count = this.categoryList[this.category_index]['frozeno_child_count'];
         if(count > 0){
             this.add_product_count = count;
         }else{

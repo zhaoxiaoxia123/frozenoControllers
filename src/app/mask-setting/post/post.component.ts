@@ -4,6 +4,7 @@ import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {Router} from '@angular/router';
 import {GlobalService} from '../../core/global.service';
 import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
+import {ModalDirective} from "ngx-bootstrap";
 
 @FadeInTop()
 @Component({
@@ -12,12 +13,16 @@ import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
   templateUrl: './post.component.html',
 })
 export class PostComponent implements OnInit {
+  postList:any = [];
+  editId: any = 0;
+  page : any;
+
   title:string;
   href:string;
   tag:string;
   introduction:string;
   type:number=0;
-  state:number;
+  state:number=1;
   theme:string;
   startDate:string;
   endDate:string;
@@ -35,6 +40,7 @@ export class PostComponent implements OnInit {
   croppedHeight:number;
 
   typeList:any = [];
+  adTypeList:any = [];
   url : string = this.globalService.getDomain();
   path:string = '';
   path2:string = '';
@@ -62,9 +68,12 @@ export class PostComponent implements OnInit {
       {'id':5,'name':'政策中心'},
       {'id':6,'name':'系统通知'},
       {'id':7,'name':'冻龄智美通知'},
-      {'id':8,'name':'激励中心'},
+      {'id':8,'name':'激励中心'}
     ];
 
+    this.adTypeList = [{'id':1,'name':'商城app广告'},
+      {'id':2,'name':'工作台腰部广告'}
+    ];
     this.name = 'Angular2';
     this.avatarSettings = new CropperSettings();
     this.avatarSettings.width = 200;
@@ -103,7 +112,7 @@ export class PostComponent implements OnInit {
     this.croppedWidth = bounds.right-bounds.left;
   }
   ngOnInit() {
-
+    this.getPostList(1);
   }
 
   // onCheck(radio) {
@@ -113,6 +122,37 @@ export class PostComponent implements OnInit {
     this.state = radio;
   }
 
+  /**
+   * 顶部
+   */
+  isStatusShow(id:any){
+    this.editId = id;
+  }
+  /**
+   * 获取文章列表
+   * @param num
+   */
+  getPostList(num:number){
+    let url = 'getPostList?page='+num+'&sid='+this.cookieStore.getCookie('sid');
+    this.globalService.httpRequest('get',url)
+      .subscribe((data)=>{
+        this.postList = data;
+        if(this.postList) {
+          if (this.postList['status'] == 202) {
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+          }
+        }
+      });
+  }
+
+  /**
+   * 分页
+   */
+  pagination(page : string) {
+    this.page = page;
+    this.getPostList(this.page);
+  }
   /**
    * 添加文章
    */
@@ -156,6 +196,7 @@ export class PostComponent implements OnInit {
     }).subscribe( (data)=>{
         alert(data['msg']);
         if(data['status'] == 200){
+          this.lgModal.hide();
         }else if(data['status'] == 202){
           this.cookieStore.removeAll(this.rollback_url);
           this.router.navigate(['/auth/login']);
@@ -215,4 +256,5 @@ export class PostComponent implements OnInit {
   }
 
 
+  @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;
 }

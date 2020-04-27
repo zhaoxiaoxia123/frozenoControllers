@@ -1,8 +1,6 @@
 <div id="content">
     <sa-widgets-grid>
-
         <div class="row">
-
             <article class="col-sm-12 ">
                 <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
                     <header>
@@ -15,98 +13,76 @@
                     </header>
                     <div>
                         <div class="widget-body no-padding" >
-
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" >
                                     <article>
                                         <div class="navbar " style="width:100%;">
                                             <form  class="navbar-form " novalidate="" role="search" >
-                                                <div class="btn-group" data-toggle="modal" data-target="#postScrollable">
-                                                    <button type="button" class="btn btn-primary"  ><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
+                                                <div class="btn-group" (click)="lgModal.show();">
+                                                    <button type="button" class="btn btn-primary"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                                                 </div>
-
                                             </form>
                                         </div>
                                     </article>
-
-
-
                                     <div  class="">
                                         <table class="table table-striped smart-form table-height-20 ">
                                             <thead class="">
                                             <tr>
                                                 <th>编号</th>
-                                                <th>发布时间</th>
-                                                <th>分类</th>
                                                 <th>标题 </th>
+                                                <th>分类</th>
                                                 <th>简介</th>
+                                                <th>发布时间</th>
                                                 <th>是否有效</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <!-- class="table-color"-->
-                                            <tr  >
-                                                <td>1</td>
-                                                <td>2020/04/24 16:00:00</td>
-                                                <td>成长课堂</td>
-                                                <td>标题标题标题</td>
-                                                <td>简介简介简介简介简介简介简介简介</td>
-                                                <td>是</td>
+                                            <tr *ngFor="let pl of postList?.result?.data;let ind = index;" (click)="isStatusShow(pl.post_id)" [ngClass]="{'table-color':editId == pl.post_id}">
+                                                <td>{{ ind }}</td>
+                                                <td>{{ pl.title }}</td>
+                                                <td>
+                                                <span [ngSwitch]="pl.type">
+                                                    <span class="label-normal" *ngSwitchCase="1">帮助与客服</span>
+                                                    <span class="label-blue" *ngSwitchCase="2">成长课堂</span>
+                                                    <span class="label-full" *ngSwitchCase="3">产品百科</span>
+                                                    <span class="label-full" *ngSwitchCase="4">规则中心</span>
+                                                    <span class="label-full" *ngSwitchCase="5">政策中心</span>
+                                                    <span class="label-full" *ngSwitchCase="6">系统通知</span>
+                                                    <span class="label-full" *ngSwitchCase="7">冻龄智美通知</span>
+                                                    <span class="label-full" *ngSwitchCase="8">激励中心</span>
+                                                    <span class="label-full" *ngSwitchCase="9">广告</span>
+                                                    <span class="label-unknown" *ngSwitchDefault>未知</span>
+                                                </span>
+                                                </td>
+                                                <td>{{ pl.introduction }}</td>
+                                                <td>{{ pl.created_at }}</td>
+                                                <td>
+                                                <span [ngSwitch]="pl.state">
+                                                    <span class="label-normal" *ngSwitchCase="1">是</span>
+                                                    <span class="label-blue" *ngSwitchCase="0">否</span>
+                                                    <span class="label-unknown" *ngSwitchDefault>未知</span>
+                                                </span>
+                                                </td>
                                             </tr>
-                                            <tr  >
-                                                <td>2</td>
-                                                <td>2020/04/24 16:00:00</td>
-                                                <td>成长课堂</td>
-                                                <td>标题标题标题</td>
-                                                <td>简介简介简介简介简介简介简介简介</td>
-                                                <td>是</td>
-                                            </tr>
-                                            <tr  >
-                                                <td>3</td>
-                                                <td>2020/04/24 16:00:00</td>
-                                                <td>成长课堂</td>
-                                                <td>标题标题标题</td>
-                                                <td>简介简介简介简介简介简介简介简介</td>
-                                                <td>是</td>
-                                            </tr>
-                                            <tr  >
-                                                <td>4</td>
-                                                <td>2020/04/24 16:00:00</td>
-                                                <td>成长课堂</td>
-                                                <td>标题标题标题</td>
-                                                <td>简介简介简介简介简介简介简介简介</td>
-                                                <td>是</td>
-                                            </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
-
                                     <!-- 底部-（分页部分）-->
                                     <div class="footer-size flex-justify-end">
-
-                                        <ul class="pagination folat-right">
-                                            <li class="page-item disabled">
-                                                <span class="page-link">上一页</span>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item active" aria-current="page"><span class="page-link">2</span>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">下一页</a>
+                                        <ul class="pagination" *ngIf="postList" >
+                                            <li *ngFor="let p of postList?.result?.page" class="{{p.class}}">
+                                                <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                                                <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>
                                             </li>
                                             <li class="page-item disabled">
-                                                <a  class="page-link" disabled>共5445条</a>
+                                                <a  class="page-link" disabled>共{{postList.result?.total}}条</a>
                                             </li>
                                         </ul>
-
                                     </div>
-
 
                                 </div>
                                 <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
-
                                     <article>
                                         <div class="navbar " style="width:100%;">
                                             <form  class="navbar-form " novalidate="" role="search" >
@@ -117,8 +93,6 @@
                                             </form>
                                         </div>
                                     </article>
-
-
                                     <div  class="">
                                         <table class="table table-striped smart-form table-height-20 ">
                                             <thead class="">
@@ -140,16 +114,12 @@
                                                 <td>16:4</td>
                                                 <td><img  height="22" width="22" class="img-picture"  src="assets/img/login-img.png"></td>
                                                 <td>是</td>
-
                                             </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
-
                                     <!-- 底部-（分页部分）-->
                                     <div class="footer-size flex-justify-end">
-
                                         <ul class="pagination folat-right">
                                             <li class="page-item disabled">
                                                 <span class="page-link">上一页</span>
@@ -165,35 +135,24 @@
                                                 <a  class="page-link" disabled>共5445条</a>
                                             </li>
                                         </ul>
-
                                     </div>
-
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </sa-widget>
             </article>
-
-
         </div>
     </sa-widgets-grid>
-
-
-
 </div>
 
-
-
 <!-- 上传文章 -->
-<div class="modal fade bd-example-modal-xl" id="postScrollable" tabindex="-1" role="dialog" aria-labelledby="postScrollableTitle" aria-hidden="true">
+<div bsModal #lgModal="bs-modal" class="modal fade bd-example-modal-xl" id="postScrollable" tabindex="-1" role="dialog" aria-labelledby="postScrollableTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="postScrollableTitle">添加文章</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" (click)="lgModal.hide()" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -208,7 +167,6 @@
                             </select>
                         </div>
                     </div>
-
                 </form>
                 <form>
                     <div class="form-group row" *ngIf="type == 8">
@@ -217,35 +175,30 @@
                             <input class="form-control" type="text" placeholder="主题" name="theme" [(ngModel)]="theme" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-
                     <div class="form-group row " *ngIf="type == 8">
                         <label class="col-sm-2 col-form-label txt-color-blue">开始时间<span class="asterisk-color">*</span></label>
                         <div class="col-sm-10">
                             <input class="form-control" type="text" placeholder="开始时间" name="startDate" [(ngModel)]="startDate" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-
                     <div class="form-group row " *ngIf="type == 8">
                         <label class="col-sm-2 col-form-label txt-color-blue">结束时间<span class="asterisk-color">*</span></label>
                         <div class="col-sm-10">
                             <input class="form-control" type="text" placeholder="结束时间" name="endDate" [(ngModel)]="endDate" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-
                     <div class="form-group row" >
                         <label class="col-sm-2 col-form-label txt-color-blue">标题<span class="asterisk-color">*</span></label>
                         <div class="col-sm-10">
                             <input class="form-control" type="text" placeholder="标题" name="title" [(ngModel)]="title" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-
                     <div class="form-group row" >
                         <label class="col-sm-2 col-form-label txt-color-blue">简介<span class="asterisk-color">*</span></label>
                         <div class="col-sm-10">
                             <textarea class="form-control" rows="2" name="introduction" [(ngModel)]="introduction" [ngModelOptions]="{standalone: true}"></textarea>
                         </div>
                     </div>
-
                     <div class="form-group row" >
                         <label class="col-sm-2 col-form-label ">跳转地址</label>
                         <div class="col-sm-10">
@@ -259,18 +212,12 @@
                             <input class="form-control" type="text" placeholder="标签" name="tag" [(ngModel)]="tag" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-
-
                 </form>
 
-
-
                 <div class="form-group row" >
-
                     <div class="col-sm-6" >
                         <div class="card" >
                             <img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>
-
                             <div class="card-body" style="padding: 0 1.25rem 1.25rem;">
                                 <h5 class="card-title">封面图片</h5>
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
@@ -281,7 +228,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-sm-6" >
                         <div class="card" >
                             <img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper2 [image]="data2" [settings]="avatarSettings2" (onCrop)="cropped($event)"></img-cropper>
@@ -295,41 +241,30 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
                 <div class="form-group row" >
                     <label class="col-sm-2 col-form-label ">正文内容</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" rows="3" name="description" [(ngModel)]="description" [ngModelOptions]="{standalone: true}"></textarea>
                     </div>
                 </div>
-
                 <div class="form-group row" >
                     <label class="col-sm-2 col-form-label ">是否有效</label>
                     <div class="col-sm-10">
                         <ng-container>
-                            <input type="radio" name="state" [(ngModel)]="state" [value]="1" (click)="onCheckState(1)"> 是
-                            <input type="radio" name="state" [(ngModel)]="state" [value]="2" (click)="onCheckState(2)"> 否
+                            <input type="radio" name="state" [(ngModel)]="state" [value]="1" [checked]="state==1" (click)="onCheckState(1)"> 是
+                            <input type="radio" name="state" [(ngModel)]="state" [value]="2" [checked]="state==2" (click)="onCheckState(2)"> 否
                         </ng-container>
                     </div>
                 </div>
-
-
-
-
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-primary"  (click)="submitPost()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="lgModal.hide()">取消</button>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <!--上传滚动图片-->
 <div class="modal fade bd-example-modal-xl" id="scrollpictureScrollable" tabindex="-1" role="dialog" aria-labelledby="scrollpictureScrollableTitle" aria-hidden="true">
@@ -343,7 +278,6 @@
             </div>
             <div class="modal-body height-overflow-380">
                 <form>
-
                     <div class="form-group row" >
                         <label class="col-sm-2 col-form-label ">标题</label>
                         <div class="col-sm-10">
@@ -357,24 +291,12 @@
                             <input class="form-control" type="text" placeholder="链接地址" name="href" [(ngModel)]="href" [ngModelOptions]="{standalone: true}">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label  class="col-sm-2 col-form-label">尺寸</label>
-                        <div class="col-sm-10">
-                            <select class="custom-select"  required>
-                                <option selected disabled value="">16:4</option>
-                                <option>正方形</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="form-group row" >
                         <div class="card col-sm-12" >
-
                             <div class="">
                                 <img  class="" style="width:25%;padding:10px;" src="assets/img/login-img.png" >
                                 <img  class="" style="width:25%;padding:10px;" src="assets/img/login-img.png" >
                             </div>
-
                             <img-cropper style="text-align:center;padding-top:1.25rem;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>
                             <div class="card-body">
                                 <!--<h5 class="card-title">封面图片</h5>-->
@@ -385,11 +307,7 @@
                                 <button type="button" class="btn btn-primary " (click)="postFile(1)" >上传</button>
                             </div>
                         </div>
-
                     </div>
-
-
-
 
                     <div class="form-group row" >
                         <label class="col-sm-2 col-form-label ">是否有效</label>
@@ -400,7 +318,6 @@
                             </ng-container>
                         </div>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
