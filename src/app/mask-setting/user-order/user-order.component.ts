@@ -317,7 +317,7 @@ export class UserOrderComponent implements OnInit {
 
   /**
    * 获取仓库详情
-   * @param o_id
+   * @param type
    */
   detailUserOrder(type:string){
     if(this.editStatusUserOrderId == 0){
