@@ -31,6 +31,7 @@ export class AddProductComponent implements OnInit {
     //用作全选和反选
     selects : Array<any> = [];
     check : boolean = false;
+    isStatus : any = 0;
 
     p_state:number = 0; //未入库
     p_type:number = 4; //冻龄智美商品

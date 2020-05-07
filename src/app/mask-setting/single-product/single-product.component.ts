@@ -17,6 +17,13 @@ export class SingleProductComponent implements OnInit {
 
   xy_details: boolean = false;  //单击展开，再次单击隐藏
 
+  //用作全选和反选
+  selects : Array<any> = [];
+  check : boolean = false;
+  page : any;
+  prev : boolean = false;
+  next : boolean = false;
+
   type:number=1;
   uid:string;
   rollback_url:string;
@@ -30,7 +37,7 @@ export class SingleProductComponent implements OnInit {
     private cookieStore:CookieStoreService,
     private globalService:GlobalService) {
     this.uid = this.cookieStore.getCookie('uid');
-    this.getProductList();
+    this.getProductList(1);
     window.scrollTo(0,0);
   }
 
@@ -47,7 +54,7 @@ export class SingleProductComponent implements OnInit {
 
     //单击展开，再次单击隐藏
     changedetails(){
-        this.xy_details = (this.xy_details == false);
+        this.xy_details = !this.xy_details;
     }
   /**
    * 是否有该元素
@@ -64,23 +71,48 @@ export class SingleProductComponent implements OnInit {
     if(this.code.indexOf('690708216') == 0 || this.code.indexOf('690708217') == 0){
       this.type = (this.code.indexOf('690708216') == 0) ? 3 : 2;
       this.isShowCount = true;
-    }else{
+    }else if(this.code.indexOf('690708218') == 0){
       this.type = 1;
+      this.isShowCount = true;
+    }else {
       this.isShowCount = false;
     }
-  }
+  }  /**
+ * 分页
+ */
+pagination(page : string) {
+  this.page = page;
+  this.getProductList(this.page);
+}
 
   /**
    * 获取列表
    */
-  getProductList() {
-    let url = 'getFrozenoProductList?sid='+this.cookieStore.getCookie('sid');
+  getProductList(number:number) {
+    let url = 'getFrozenoProductList?page='+number+'&sid='+this.cookieStore.getCookie('sid');
     this.globalService.httpRequest('get',url)
       .subscribe((data)=>{
         this.productList = data;
         if(this.productList['status'] == 202){
           this.cookieStore.removeAll(this.rollback_url);
           this.router.navigate(['/auth/login']);
+        }
+        if (this.productList) {
+          if (this.productList['result']['products']['current_page'] == this.productList['result']['products']['last_page']) {
+            this.next = true;
+          } else {
+            this.next = false;
+          }
+          if (this.productList['result']['products']['current_page'] == 1) {
+            this.prev = true;
+          } else {
+            this.prev = false;
+          }
+          this.selects = [];
+          for (let entry of this.productList['result']['products']['data']) {
+            this.selects[entry['fp_id']] = false;
+          }
+          this.check = false;
         }
       });
   }
@@ -98,7 +130,7 @@ export class SingleProductComponent implements OnInit {
       return false;
     }
     let category_id=0;
-    if(this.code.indexOf('690708210') == 0){   //单品面膜装
+    if(this.code.indexOf('690708218') == 0){   //单品面膜装  690708210
       category_id = this.globalService.mm_category_id;
       this.type = 1;
     }else if(this.code.indexOf('690708216') == 0){  //单品导入仪

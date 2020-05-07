@@ -16,6 +16,7 @@ export class PostComponent implements OnInit {
   postList:any = [];
   editId: any = 0;
   page : any;
+  postInfo:any = [];
 
   title:string;
   href:string;
@@ -23,10 +24,14 @@ export class PostComponent implements OnInit {
   introduction:string;
   type:number=0;
   state:number=1;
+  weight:number=0;
   theme:string;
   startDate:string;
   endDate:string;
   description:string;
+
+  imageAd:string;    //广告图片
+  imageHead:string;  //封面图片
 
   name:string;
   data1:any;
@@ -40,7 +45,8 @@ export class PostComponent implements OnInit {
   croppedHeight:number;
 
   typeList:any = [];
-  adTypeList:any = [];
+  checkTypeId: number = 0;
+  checkTypeName: string = '全部';
   url : string = this.globalService.getDomain();
   path:string = '';
   path2:string = '';
@@ -61,19 +67,20 @@ export class PostComponent implements OnInit {
       // private sanitizer: DomSanitizer
   ) {
     window.scrollTo(0,0);
-    this.typeList = [{'id':1,'name':'帮助与客服'},
+    this.typeList = [
+      {'id':1,'name':'帮助与客服'},
       {'id':2,'name':'成长课堂'},
       {'id':3,'name':'产品百科'},
       {'id':4,'name':'规则中心'},
       {'id':5,'name':'政策中心'},
       {'id':6,'name':'系统通知'},
       {'id':7,'name':'冻龄智美通知'},
-      {'id':8,'name':'激励中心'}
+      {'id':8,'name':'激励中心'},
+      {'id':9,'name':'app商城广告'},
+      {'id':10,'name':'工作台腰部广告'},
+      {'id':11,'name':'会员服务协议'}
     ];
 
-    this.adTypeList = [{'id':1,'name':'商城app广告'},
-      {'id':2,'name':'工作台腰部广告'}
-    ];
     this.name = 'Angular2';
     this.avatarSettings = new CropperSettings();
     this.avatarSettings.width = 200;
@@ -112,12 +119,29 @@ export class PostComponent implements OnInit {
     this.croppedWidth = bounds.right-bounds.left;
   }
   ngOnInit() {
+
+    //顶部菜单读取
+    this.globalService.getMenuInfo();
+    setTimeout(()=>{
+      this.menu_id = this.globalService.getMenuId();
+      this.rollback_url = this.globalService.getMenuUrl();
+      this.permissions = this.globalService.getPermissions();
+      this.menuInfos = this.globalService.getMenuInfos();
+    },this.globalService.getMenuPermissionDelayTime())
+
     this.getPostList(1);
   }
+  /**
+   * 是否有该元素
+   */
+  isPermission(menu_id,value){
+    let key = menu_id +'_'+value;
+    if(value == ''){
+      key = menu_id;
+    }
+    return this.cookieStore.in_array(key, this.permissions);
+  }
 
-  // onCheck(radio) {
-  //   this.type = radio;
-  // }
   onCheckState(radio) {
     this.state = radio;
   }
@@ -134,6 +158,9 @@ export class PostComponent implements OnInit {
    */
   getPostList(num:number){
     let url = 'getPostList?page='+num+'&sid='+this.cookieStore.getCookie('sid');
+    if(this.checkTypeId != 0){
+      url += '&type='+this.checkTypeId;
+    }
     this.globalService.httpRequest('get',url)
       .subscribe((data)=>{
         this.postList = data;
@@ -180,6 +207,7 @@ export class PostComponent implements OnInit {
       return false;
     }
     this.globalService.httpRequest('post','editPost',{
+      'post_id':this.editId,
       'title':this.title,
       'href':this.href,
       'tag':this.tag,
@@ -197,6 +225,7 @@ export class PostComponent implements OnInit {
         alert(data['msg']);
         if(data['status'] == 200){
           this.lgModal.hide();
+          this.getPostList(1);
         }else if(data['status'] == 202){
           this.cookieStore.removeAll(this.rollback_url);
           this.router.navigate(['/auth/login']);
@@ -206,6 +235,81 @@ export class PostComponent implements OnInit {
         console.log('PATCH call in error', response);
       }
     );
+  }
+
+  /**
+   * 筛选
+   * @param num
+   * @param name
+   */
+  checkType(num:number,name:string){
+    this.checkTypeId = num;
+    this.checkTypeName = name;
+    this.getPostList(1);
+  }
+
+  /**
+   * 修改时查询文章详情
+   */
+  getPostInfo(){
+    if(this.editId == 0){
+      alert('请在列表选中要操作的信息。');
+      return false;
+    }
+    let url = 'getPostInfo?post_id='+this.editId+'&sid='+this.cookieStore.getCookie('sid');
+    this.globalService.httpRequest('get',url)
+      .subscribe((data)=>{
+        this.setValue(data['result']);
+        this.lgModal.show();
+        this.postInfo = data;
+        if(this.postInfo) {
+          if (this.postInfo['status'] == 202) {
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+          }
+        }
+      });
+  }
+
+  setValue(info:any){
+    this.title = info['title'];
+    this.href = info['href'];
+    this.tag = info['tag'];
+    this.type = info['type'];
+    this.state = info['state'];
+    this.weight = info['weight'];
+    this.state = info['state'];
+    this.theme = info['theme'];
+    this.startDate = info['start_date'];
+    this.endDate = info['end_date'];
+    this.introduction = info['introduction'];
+    this.description = info['description'];
+
+    this.imageAd = this.globalService.domain + info['b_image_url'];
+    this.imageHead = this.globalService.domain + info['s_image_url'];
+  }
+  /**
+   * 删除文章
+   */
+  deletePost(){
+    if(this.editId == 0){
+      alert('请在列表选中要操作的信息。');
+      return false;
+    }
+    let msg = '您确定要执行此删除操作吗？';
+    if(confirm(msg)) {
+      let url ='deletePost?post_id=' + this.editId + '&sid=' + this.cookieStore.getCookie('sid');
+      this.globalService.httpRequest('delete',url)
+        .subscribe((data) => {
+          if(data['status'] == 202){
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+          }else if(data['status'] == 200){
+            this.getPostList(this.page);
+          }
+
+        });
+    }
   }
   /**
    * 上传文件

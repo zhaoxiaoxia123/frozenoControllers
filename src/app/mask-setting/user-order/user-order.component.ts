@@ -154,6 +154,19 @@ export class UserOrderComponent implements OnInit {
   }
 
 
+  /**
+   * 打印选中用户订单
+   */
+  beforePrint(){
+    if(this.editStatusUserOrderId){
+      this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type=detail&sid='+this.cookieStore.getCookie('sid'))
+        .subscribe((data)=>{
+          this.orderInfo = data;
+        });
+    }else{
+      alert('请选中要打印的用户订单');
+    }
+  }
   printComplete () {
     console.log('打印完成！');
   }
@@ -173,7 +186,7 @@ export class UserOrderComponent implements OnInit {
    * @param number
    */
   getUserOrderList(number:string) {
-    let url = 'getOrderList?page='+number+'&sid='+this.cookieStore.getCookie('sid');
+    let url = 'getDLZMOrderList?page='+number+'&role='+this.cookieStore.getCookie('urole')+'&sid='+this.cookieStore.getCookie('sid');
     if(this.formModel.value['keyword'].trim() != ''){
       url += '&keyword='+this.formModel.value['keyword'].trim();
     }

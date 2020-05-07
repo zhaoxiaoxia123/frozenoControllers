@@ -32,10 +32,6 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" (click)="deleteUserOrder('all')">批量删除</a>
                                             </div>
-
-
-
-
                                         </div>
 
                                         <div style="display: inline-block;">
@@ -47,6 +43,7 @@
                                                     [printHTML]="print_div"
                                                     [printStyle]="printStyle"
                                                     [printCSS]="printCSS"
+                                                    (click)="beforePrint()"
                                                     (printComplete)="printComplete()">
                                             </essence-ng2-print>
                                         </div>
@@ -130,7 +127,9 @@
                                                   <span class="label-blue" *ngSwitchCase="2">已支付，待发货</span>
                                                   <span class="label-full" *ngSwitchCase="3">已支付,已发货</span>
                                                   <span class="label-full" *ngSwitchCase="4">交易完成</span>
-                                                  <span class="label-full" *ngSwitchCase="5">取消订单</span>
+                                                  <span class="label-full" *ngSwitchCase="5">订单已取消</span>
+                                                  <span class="label-full" *ngSwitchCase="6">审核取消订单</span>
+                                                  <span class="label-full" *ngSwitchCase="7">已退款</span>
                                                   <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>
                                             </td>
@@ -262,8 +261,6 @@
 
     <div class="receipt" #print_div>
         <div class="rt-main rt-flex">
-
-
             <div class="rt-main-doc"  style="padding-right:60px;">
                 <div class="rt-item-hd">
                     <div class="rt-item-hd-img rt-center">
@@ -276,22 +273,21 @@
                 <div class="rt-item">
                     <div class="rt-left" style="width:50%;padding-right:20px;" >
                         <div class="" style="font-weight: bold;">配送地址</div>
-                        <div class="">姓名：深圳市</div>
-                        <div class="">公司名称：</div>
-                        <div class="">省/市/自治区：广东省深圳市</div>
-                        <div class="">街道地址：福田区莲花街道康欣社区北环大道7043号青海大厦3203</div>
-                        <div class="">邮政编码:518000</div>
-                        <div class="">电话：18215569754</div>
-
+                        <div class="">名称：{{(orderInfo.result?.c_name) ? (orderInfo.result?.c_name) : (orderInfo.result?.c_phone)}}</div>
+                        <div class="">姓名：{{orderInfo.result?.name}}</div>
+                        <div class="">省/市/自治区：{{orderInfo.result?.province}}{{orderInfo.result?.city}}{{orderInfo.result?.area}}</div>
+                        <div class="">街道地址：{{orderInfo.result?.address}}</div>
+                        <div class="">邮政编码:{{orderInfo.result?.zip}}</div>
+                        <div class="">电话：{{orderInfo.result?.phone}}</div>
                     </div>
                     <div class="rt-right" style="width:50%;">
                         <div class="rt-one">
                             <img src="assets/img/one1.jpg" class="rt-one-mg">
                         </div>
 
-                        <div class="">发票编号：6454566666666454645</div>
-                        <div class="">日期：2019年04月22日</div>
-                        <div class="">客户ID：ID</div>
+                        <div class="">发票编号：{{orderInfo.result?.tax_number}}</div>
+                        <div class="">日期：{{orderInfo.result?.created_at}}</div>
+                        <div class="">客户ID：{{orderInfo.result?.frozeno_customer_id}}</div>
 
                     </div>
                 </div>
@@ -300,36 +296,33 @@
                 <div class="rt-table">
                     <div class="rt-table-hd">
                         <div class="">出货仓库：</div>
-                        <div class="">配送方式：</div>
-                        <div class="">付款方式：</div>
+                        <div class="">配送方式：{{orderInfo.result?.frozeno_express_company}}</div>
+                        <div class="">付款方式：微信</div>
                     </div>
                     <table class="rt-gridtable">
-                        <tr >
-                            <th >No.</th><th >产品编号</th><th >名称</th><th >数量</th><th >单价</th><th >折扣</th><th >折扣价</th><th >金额</th>
+                        <tr>
+                            <th >No.</th>
+                            <th >产品编号</th>
+                            <th >名称</th>
+                            <th >数量</th>
+                            <th >折扣价</th>
+                        </tr>
+                        <tr *ngFor="let p of orderInfo?.result?.products;let indp = index;">
+                            <td>{{indp+1}}</td>
+                            <td>{{p.category_number}}</td>
+                            <td>{{p.category_desc}}</td>
+                            <td>{{p.product_count}}</td>
+                            <td>{{p.product_amount}}</td>
                         </tr>
                         <tr>
-                            <td>1</td><td>B154859211949</td><td>无创水光</td><td>3</td><td>3,888.00</td><td>1,000.00</td><td>2,888.00</td><td>8,664.00</td>
-                        </tr>
-                        <tr>
-                            <td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td class="ft-left" colspan="3">合计：捌仟陆佰陆拾肆元整</td><td>3</td><td></td><td></td><td></td><td>8,664.00</td>
+                            <td class="ft-left" colspan="3">合计：</td>
+                            <td>{{orderInfo?.result?.totalCount}}</td>
+                            <td>{{orderInfo?.result?.frozeno_order_amount}}</td>
                         </tr>
                     </table>
                     <div class="rt-table-right" style="padding: 10px 0 10px;">收据</div>
                     <div class="rt-center rt-ft">谢谢惠顾！</div>
                 </div>
-
             </div>
 
             <div class="rt-main-doc"  style="padding-left:60px;">
@@ -342,69 +335,55 @@
                     </div>
                 </div>
                 <div class="rt-item">
-                    <div class="rt-left" style="width:50%;">
+                    <div class="rt-left" style="width:50%;padding-right:20px;" >
                         <div class="" style="font-weight: bold;">配送地址</div>
-                        <div class="">姓名：深圳市</div>
-                        <div class="">公司名称：</div>
-                        <div class="">省/市/自治区：广东省深圳市</div>
-                        <div class="">街道地址：福田区莲花街道康欣社区北环大道7043号青海大厦3203</div>
-                        <div class="">邮政编码:518000</div>
-                        <div class="">电话：18215569754</div>
-
+                        <div class="">名称：{{(orderInfo.result?.c_name) ? (orderInfo.result?.c_name) : (orderInfo.result?.c_phone)}}</div>
+                        <div class="">姓名：{{orderInfo.result?.name}}</div>
+                        <div class="">省/市/自治区：{{orderInfo.result?.province}}{{orderInfo.result?.city}}{{orderInfo.result?.area}}</div>
+                        <div class="">街道地址：{{orderInfo.result?.address}}</div>
+                        <div class="">邮政编码:{{orderInfo.result?.zip}}</div>
+                        <div class="">电话：{{orderInfo.result?.phone}}</div>
                     </div>
                     <div class="rt-right" style="width:50%;">
                         <div class="rt-one">
                             <img src="assets/img/one1.jpg" class="rt-one-mg">
                         </div>
-
-                        <div class="">发票编号：6454566666666454645</div>
-                        <div class="">日期：2019年04月22日</div>
-                        <div class="">客户ID：ID</div>
-
+                        <div class="">发票编号：{{orderInfo.result?.tax_number}}</div>
+                        <div class="">日期：{{orderInfo.result?.created_at}}</div>
+                        <div class="">客户ID：{{orderInfo.result?.frozeno_customer_id}}</div>
                     </div>
                 </div>
-
-
                 <div class="rt-table">
                     <div class="rt-table-hd">
                         <div class="">出货仓库：</div>
-                        <div class="">配送方式：</div>
-                        <div class="">付款方式：</div>
+                        <div class="">配送方式：{{orderInfo.result?.frozeno_express_company}}</div>
+                        <div class="">付款方式：微信</div>
                     </div>
                     <table class="rt-gridtable">
-                        <tr >
-                            <th >No.</th><th >产品编号</th><th >名称</th><th >数量</th><th >单价</th><th >折扣</th><th >折扣价</th><th >金额</th>
+                        <tr>
+                            <th >No.</th>
+                            <th >产品编号</th>
+                            <th >名称</th>
+                            <th >数量</th>
+                            <th >折扣价</th>
+                        </tr>
+                        <tr *ngFor="let p of orderInfo?.result?.products;let indp = index;">
+                            <td>{{indp+1}}</td>
+                            <td>{{p.category_number}}</td>
+                            <td>{{p.category_desc}}</td>
+                            <td>{{p.product_count}}</td>
+                            <td>{{p.product_amount}}</td>
                         </tr>
                         <tr>
-                            <td>1</td><td>B154859211949</td><td>无创水光</td><td>3</td><td>3,888.00</td><td>1,000.00</td><td>2,888.00</td><td>8,664.00</td>
-                        </tr>
-                        <tr>
-                            <td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
-                        <tr>
-                            <td class="ft-left" colspan="3">合计：捌仟陆佰陆拾肆元整</td><td>3</td><td></td><td></td><td></td><td>8,664.00</td>
+                            <td class="ft-left" colspan="3">合计：</td>
+                            <td>{{orderInfo?.result?.totalCount}}</td>
+                            <td>{{orderInfo?.result?.frozeno_order_amount}}</td>
                         </tr>
                     </table>
                     <div class="rt-table-right" style="padding: 10px 0 10px;">收据</div>
                     <div class="rt-center rt-ft">谢谢惠顾！</div>
                 </div>
-
             </div>
-
-
-
-
         </div>
-
     </div>
-
 </div>

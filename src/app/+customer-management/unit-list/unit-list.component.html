@@ -255,7 +255,6 @@
                   <label class="label">助记码</label>
                   <input type="text" class="form-control"  disabled="disabled" placeholder="助记码(或单位简称)" name="c_abbreviation" [(ngModel)]="c_abbreviation">
                 </div>
-
                 <!--<div class="form-group col-sm-4">-->
                 <!--<label class="label txt-color-blue">价格级别<span class="asterisk-color">*</span></label>-->
                 <!--<select  class="form-control"name="c_price_type" [(ngModel)]="c_price_type">-->
@@ -266,14 +265,10 @@
                 <!--<option value="4" >一级价</option>-->
                 <!--</select>-->
                 <!--</div>-->
-                <!---->
-
                 <div class="form-group col-sm-12">
                   <label class="label">备注</label>
                   <textarea class="form-control"   rows="2" name="c_notes" [(ngModel)]="c_notes"></textarea>
                 </div>
-
-
               </div>
             </form>
           </div>
@@ -333,7 +328,7 @@
                 <a class="input-group-text" type="button" (click)="editCustomerAddr(inde)">修改</a>
                 <a class="input-group-text" type="button" (click)="deleteCustomerAddr(inde)">删除</a>
               </div>
-              <div class="form-row" *ngIf="edit_customer_addr.length > 0">
+              <div class="form-row" *ngIf="edit_customer_addr.customer_addr_id > 0">
                 <div class="form-group col-sm-4">
                   <label class="label">收货人姓名</label>
                   <input type="text" class="form-control" name="edit_customer_addr.customer_addr_name" value="{{edit_customer_addr.customer_addr_name}}" [(ngModel)]="edit_customer_addr.customer_addr_name" [ngModelOptions]="{standalone: true}" >
@@ -345,11 +340,11 @@
                 <div class="form-group col-sm-4">
                   <label class="label ">发货人地址</label>
                   <div class="input-group">
-                    <select  class="form-control" name="edit_customer_addr.province" [(ngModel)]="edit_customer_addr.province" value="{{edit_customer_addr.province}}" (change)="getCity(0)" [ngModelOptions]="{standalone: true}">
+                    <select  class="form-control" name="edit_customer_addr.province" [(ngModel)]="edit_customer_addr.province" value="{{edit_customer_addr.province}}" (change)="getEditCity()" [ngModelOptions]="{standalone: true}">
                       <option value="">--请选择省--</option>
                       <option *ngFor="let p of edit_customer_addr.provinces" value="{{p}}">{{p}}</option>
                     </select>
-                    <select  class="form-control" name="edit_customer_addr.city" [(ngModel)]="edit_customer_addr.city" value="{{edit_customer_addr.city}}" (change)="getArea(0)" [ngModelOptions]="{standalone: true}">
+                    <select  class="form-control" name="edit_customer_addr.city" [(ngModel)]="edit_customer_addr.city" value="{{edit_customer_addr.city}}" (change)="getEditArea()" [ngModelOptions]="{standalone: true}">
                       <option value="">--请选择市--</option>
                       <!--[selected]="storehouse_info.result?.address2 == c"-->
                       <option *ngFor="let c of edit_customer_addr.citys" value="{{c}}">{{c}}</option>
@@ -364,9 +359,14 @@
                   <label class="label ">具体地址</label>
                   <input type="text" class="form-control" name="edit_customer_addr.customer_address" value="{{edit_customer_addr.customer_address}}" [(ngModel)]="edit_customer_addr.customer_address" [ngModelOptions]="{standalone: true}">
                 </div>
-                <div class="form-group col-sm-4">
+                <div class="form-group col-sm-4" *ngIf="edit_customer_addr.is_default==1">
                   <label class="label">是否默认</label>
-                  <input type="radio" [checked]="edit_customer_addr.is_default" (click)="checkDefault" value="1" name="edit_customer_addr.is_default" [(ngModel)]="edit_customer_addr.is_default" [ngModelOptions]="{standalone: true}">是
+                  <input type="checkbox" (click)="checkDefault()" value="1" name="edit_customer_addr.is_default" [(ngModel)]="edit_customer_addr.is_default" [ngModelOptions]="{standalone: true}" checked>是
+                </div>
+
+                <div class="form-group col-sm-4" *ngIf="edit_customer_addr.is_default!=1">
+                  <label class="label">是否默认</label>
+                  <input type="checkbox" (click)="checkDefault()" value="1" name="edit_customer_addr.is_default" [(ngModel)]="edit_customer_addr.is_default" [ngModelOptions]="{standalone: true}">是
                 </div>
                 <button type="button" class="btn btn-primary ml-2" (click)="submitEditCustomerAddr()">确定</button>
               </div>
@@ -405,7 +405,7 @@
                 </div>
                 <div class="form-group col-sm-4">
                   <label class="label">是否默认</label>
-                  <input type="radio" [checked]="ca.is_default" (click)="checkDefault" value="1" name="ca.is_default" [(ngModel)]="ca.is_default" [ngModelOptions]="{standalone: true}">是
+                  <input type="checkbox" [checked]="ca.is_default" (click)="checkDefault" value="1" name="ca.is_default" [(ngModel)]="ca.is_default" [ngModelOptions]="{standalone: true}">是
                 </div>
               </div>
                 <!--<button type="button" class="btn btn-primary  ml-2" (click)="onSubmit(1);">确定</button>-->

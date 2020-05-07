@@ -152,6 +152,19 @@ export class UnitListComponent implements OnInit {
         let city = this.customer_addr[this.checkIndex]['city'];
         this.customer_addr[this.checkIndex]['areas'] = getArea(pro,city);
     }
+
+//修改收货地址调用   -start
+    getEditCity(){
+        this.edit_customer_addr['citys'] = getCity(this.edit_customer_addr['province']);
+        this.edit_customer_addr['areas'] = [];
+    }
+    getEditArea(){
+        this.edit_customer_addr['areas'] = getArea(this.edit_customer_addr['province'],this.edit_customer_addr['city']);
+    }
+//修改收货地址调用   -end
+
+
+
     checkDefault(){
         this.customer_addr[this.checkIndex]['is_default'] = !this.customer_addr[this.checkIndex]['is_default'];
     }
@@ -338,7 +351,6 @@ export class UnitListComponent implements OnInit {
         this.c_phone = '';
         this.c_address = '';
         this.c_abbreviation = '';
-        // this.c_price_type = 0;
         this.c_notes = '';
         this.c_contacts = '';
         this.user_title = '';
@@ -435,8 +447,12 @@ export class UnitListComponent implements OnInit {
         this.edit_customer_addr['province'] = this.customerInfo['result']['customer_addr'][index]['province'];
         this.edit_customer_addr['city'] = this.customerInfo['result']['customer_addr'][index]['city'];
         this.edit_customer_addr['area'] = this.customerInfo['result']['customer_addr'][index]['area'];
+        this.edit_customer_addr['provinces'] = getProvince();
+        this.edit_customer_addr['citys'] = getCity(this.edit_customer_addr['province']);
+        this.edit_customer_addr['areas'] = getArea(this.edit_customer_addr['province'],this.edit_customer_addr['city']);
         this.edit_customer_addr['customer_address'] = this.customerInfo['result']['customer_addr'][index]['address'];
         this.edit_customer_addr['is_default'] = this.customerInfo['result']['customer_addr'][index]['is_default'];
+        console.log(this.edit_customer_addr);
     }
 
     /**
@@ -473,21 +489,12 @@ export class UnitListComponent implements OnInit {
             'sid':this.cookieStore.getCookie('sid')
         }).subscribe(
             (data)=>{
-                // let info = JSON.parse(data['_body']);
                 alert(data['msg']);
                 if(data['status'] == 200) {
-                    this.customerList = data;
-                    this.selects = [];
-                    for (let entry of this.customerList['result']['customerList']['data']) {
-                        this.selects[entry['c_id']] = false;
-                    }
-                    this.check = false;
                 }else if(data['status'] == 202){
                     this.cookieStore.removeAll(this.rollback_url);
                     this.router.navigate(['/auth/login']);
                 }
-                this.editStatusCustomerId = 0;
-                this.isStatus = 0;
             }
         );
     }
