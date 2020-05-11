@@ -39,7 +39,7 @@
                   <div class="form-row">
 
                     <div class="form-group col-sm-4">
-                      <label class="label ">销货方式</label>
+                      <label class="label ">销售方</label>
                       <div class="input-group  mr-sm-2">
                         <div class="custom-control custom-radio custom-control-inline">
                           <input  class="custom-control-input" *ngIf="isDetail=='detail'" disabled="disabled" [checked]="purchaseInfo.result?.pr_type == 7 || this.pr_id == 0" [value]="7" type="radio" name="pr_type" formControlName="pr_type">
@@ -50,19 +50,19 @@
                     </div>
 
                     <div class="form-group col-sm-4">
-                      <label class="label txt-color-blue">单据日期<span class="asterisk-color">*</span></label>
+                      <label class="label txt-color-blue">销售日期<span class="asterisk-color">*</span></label>
                       <input  class="form-control" *ngIf="isDetail=='detail'" disabled="disabled" name="pr_date"  maxlength="20" formControlName="pr_date" placeholder="选择日期" [dpDayPicker]="datePickerConfig" [theme]="'dp-material'" [mode]="'day'"/>
                       <input class="form-control" *ngIf="isDetail!='detail'" name="pr_date"  maxlength="20" formControlName="pr_date" placeholder="选择日期" [dpDayPicker]="datePickerConfig" [theme]="'dp-material'" [mode]="'day'" />
                     </div>
 
                     <div class="form-group col-sm-4">
-                      <label class="label txt-color-blue">单据号<span class="asterisk-color">*</span></label>
-                      <input  class="form-control" *ngIf="isDetail=='detail'" disabled="disabled" type="text" placeholder="单据号" name="pr_order" formControlName="pr_order" >
-                      <input class="form-control" *ngIf="isDetail!='detail'" type="text" placeholder="单据号" name="pr_order" formControlName="pr_order" >
+                      <label class="label txt-color-blue">订单编号<span class="asterisk-color">*</span></label>
+                      <input  class="form-control" *ngIf="isDetail=='detail'" disabled="disabled" type="text" placeholder="编号" name="pr_order" formControlName="pr_order" >
+                      <input class="form-control" *ngIf="isDetail!='detail'" type="text" placeholder="编号" name="pr_order" formControlName="pr_order" >
                     </div>
 
                     <div class="form-group col-sm-4">
-                      <label class="label">销售对象（下单客户）</label>
+                      <label class="label">购买方</label>
                       <div class="input-group mb-2 mr-sm-2">
                         <select  class="form-control" *ngIf="isDetail=='detail'" disabled="disabled" name="pr_supplier" formControlName="pr_supplier" [(ngModel)]="pr_supplier_default">
                           <option [selected]="this.pr_id == 0" value="0">--请选择--</option>
@@ -272,18 +272,18 @@
         <button type="button" class="close" (click)="closeSubmit()">×</button>
       </div>
       <div class="modal-body">
-        <article  class="col-sm-12">
-          <div class="navbar navbar-default">
-            <form  class="navbar-form" novalidate="" role="search" >
-              <div class="btn-group">
-                <input type="text" class="form-control"   maxlength="15" name="keyword_product"  [(ngModel)]="keyword_product"  placeholder="请输入搜索内容">
-              </div>
-              <div class="btn-group">
-                <button type="button" class="btn default-btn">搜索</button>
-              </div>
-            </form>
-          </div>
-        </article>
+        <!--<article  class="col-sm-12">-->
+          <!--<div class="navbar navbar-default">-->
+            <!--<form  class="navbar-form" novalidate="" role="search" >-->
+              <!--<div class="btn-group">-->
+                <!--<input type="text" class="form-control"   maxlength="15" name="keyword_product"  [(ngModel)]="keyword_product"  placeholder="请输入搜索内容">-->
+              <!--</div>-->
+              <!--<div class="btn-group">-->
+                <!--<button type="button" class="btn default-btn">搜索</button>-->
+              <!--</div>-->
+            <!--</form>-->
+          <!--</div>-->
+        <!--</article>-->
         <div class="pt">
           <div class="row  margin-b50" style="padding:0 10px;">
             <article class="form-group col-sm-12 col-12">
@@ -305,11 +305,9 @@
                               <i></i>
                             </label>
                             </td>
-                            <th>商品编号</th>
-                            <th>商品名称</th>
-                            <th>商品价格</th>
-                            <th>优惠价格</th>
-                            <th>商品个数</th>
+                            <th>名称</th>
+                            <th>原价</th>
+                            <th>剩余库存</th>
                           </tr>
                           </thead>
                           <tbody *ngIf="searchProductList">
@@ -324,11 +322,12 @@
                                 <i></i>
                               </label>
                             </td>
-                            <td>{{p.category_number}}</td>
+                            <!--<td>{{p.category_number}}</td>-->
                             <td>{{p.category_desc}}</td>
                             <td>{{p.frozeno_amount}}</td>
-                            <td>{{p.frozeno_discount_amount}}</td>
-                            <td>{{p.frozeno_category_count}}</td>
+                            <td></td>
+                            <!--<td>{{p.frozeno_discount_amount}}</td>-->
+                            <!--<td>{{p.frozeno_category_count}}</td>-->
                           </tr>
                           </tbody>
                         </table>
