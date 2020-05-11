@@ -11,7 +11,7 @@
                         <div class="widget-body no-padding">
                             <article>
                                 <div class="navbar navbar-default">
-                                    <!--详情一直都显示，打印、备货（在有待发货状态的时候一直显示，其他情况显示灰色）、发货（在待发货并已备货时显示，其他时候显示灰色），添加删除不显示。修改需管理才显示（可以修改订单状态-针对退换货的，功能先不做，修改也可以先不显示）。作废管理员有权限（未支付和待发货的订单可以作废，状态显示交易失败）-->
+                                    <!--详情一直都显示，打印、备货（在有待备货状态的时候一直显示，其他情况显示灰色）、发货（在待备货时显示，其他时候显示灰色），添加删除不显示。修改需管理才显示（可以修改订单状态-针对退换货的，功能先不做，修改也可以先不显示）。作废管理员有权限（未支付、待备货和待发货的订单可以作废，状态显示交易失败）-->
                                     <form  class="navbar-form" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" novalidate >
                                         <div class="btn-group" *ngIf="isPermission(menu_id,'add')">
                                             <button type="button" class="btn btn-primary" (click)="isDemo('/forms/inventory1','0')"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
@@ -19,7 +19,6 @@
                                         <div class="btn-group" *ngIf="isPermission(menu_id,'edit')">
                                             <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
                                         </div>
-                                        <!--打印备货发货状态只有在待发货才显示-->
                                         <div class="btn-group" data-toggle="modal" data-target="#choiceexampleModal" >
                                             <button type="button" class="btn btn-warning" >备货</button>
                                         </div>
@@ -66,9 +65,10 @@
                                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 状态筛选
                                             </button>
-                                            <!--未支付、待发货、待收货、退款中、交易成功、交易失败、已退款-->
+                                            <!--未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款-->
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#">未支付</a>
+                                                <a class="dropdown-item" href="#">待备货</a>
                                                 <a class="dropdown-item" href="#">待发货</a>
                                                 <a class="dropdown-item" href="#">待收货</a>
                                                 <a class="dropdown-item" href="#">退款中</a>
@@ -140,16 +140,17 @@
                                             <td>谷子健</td>
                                             <td>冻龄智美</td>
                                             <td>{{ sl.c_name }}</td>
-                                            <td data-toggle="tooltip" data-placement="top" title="无创水光套装*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">{{ sl.frozeno_order_name }}</td>
+                                            <td data-toggle="tooltip" data-placement="top" title="无创水光新人礼盒装*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">{{ sl.frozeno_order_name }}</td>
                                             <td>{{ sl.frozeno_rate_amount }}</td>
                                             <td>
-                                                <!--管理员可取消——未支付、待发货销售单里面的订单审核通过自动生成用户订单
-                                                状态：未支付、待发货、待收货、退款中、交易成功、交易失败、已退款
+                                                <!--管理员可取消——未支付、待备货、待发货销售单里面的订单审核通过自动生成用户订单
+                                                状态：未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款
                                                 物流开通后还需添加状态：已签收
                                                 在待发货状态下显示：打印、备货、发货。其他状态不显示。
                                                 -->
                                                 <span style="display: none">
                                                   <span class="label-normal">未支付</span>
+                                                  <span class="label-normal" >待备货</span>
                                                   <span class="label-blue" >待发货</span>
                                                   <span class="label-normal" >待收货</span>
                                                   <span class="label-full" >退款中</span>
@@ -282,7 +283,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                     <button type="button" class="btnbtn-danger">全部清空</button>
                     <button type="button" class="btn btn-warning">备货</button>
-                    <!--待发货状态的订单-->
+                    <!--待备货状态的订单-->
                     <button type="button" class="btn btn-warning">备货显示下一条</button>
                 </div>
             </div>
@@ -388,7 +389,7 @@
                             <div class="col-6 col-md-3"><span class="m-orderdetails-title">负责人：</span>黄浩能</div>
                         </div>
                         <div class="row m-orderdetails">
-                            <div class="col-12 "><span class="m-orderdetails-title">产品明细：</span>无创水光套装*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20></div>
+                            <div class="col-12 "><span class="m-orderdetails-title">产品明细：</span>无创水光新人礼盒装*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20></div>
                         </div>
                         <div class="row m-orderdetails">
                             <div class="col-12 ">
@@ -410,6 +411,7 @@
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">状态：</span>
                             <span>
                               <span class="label-normal">未支付</span>
+                              <span class="label-normal">待备货</span>
                               <span class="label-blue" >待发货</span>
                               <span class="label-normal" >待收货</span>
                               <span class="label-full" >退款中</span>
@@ -484,7 +486,7 @@
                             <tr>
                                 <td >1</td>
                                 <td>64646464</td>
-                                <td>无创水光套装</td>
+                                <td>无创水光新人礼盒装</td>
                                 <td>1</td>
                                 <td>222</td>
                                 <td>222</td>
@@ -494,7 +496,7 @@
                             <tr>
                                 <td scope="row">2</td>
                                 <td>64646464</td>
-                                <td>无创水光套装</td>
+                                <td>无创水光新人礼盒装</td>
                                 <td>1</td>
                                 <td>222</td>
                                 <td>222</td>
