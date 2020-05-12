@@ -20,7 +20,7 @@
                                             <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
                                         </div>
                                         <div class="btn-group" data-toggle="modal" data-target="#choiceexampleModal" >
-                                            <button type="button" class="btn btn-warning" >备货</button>
+                                            <button type="button" class="btn btn-warning" >备货并发货</button>
                                         </div>
                                         <div class="btn-group"  data-toggle="modal" data-target="#sendexampleModal">
                                             <button type="button" class="btn btn-warning" >发货</button>
@@ -124,6 +124,7 @@
                                         <tr >
                                             <th>序号</th>
                                             <th>订单编号</th>
+                                            <th>来源</th>
                                             <th>购买方</th>
                                             <th>销售方</th>
                                             <th>负责人</th>
@@ -137,6 +138,10 @@
                                         <tr *ngFor="let sl of orderList?.result?.data" (click)="isStatusShow(sl.o_id)" [ngClass]="{'table-color':editStatusUserOrderId == sl.o_id}">
                                             <td>1</td>
                                             <td>{{ sl.o_order }}</td>
+                                            <!--小程序-冻龄智美商城
+                                            冻龄智美—销售单
+                                            -->
+                                            <td>小程序-冻龄智美商城</td>
                                             <td>谷子健</td>
                                             <td>冻龄智美</td>
                                             <td>{{ sl.c_name }}</td>
@@ -202,7 +207,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="choiceexampleModalLabel">备货（订单编号：B754946937233）</h5>
+                    <h5 class="modal-title" id="choiceexampleModalLabel">备货并发货（订单编号：B754946937233）</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -211,6 +216,7 @@
                     <div class="m-order">
                         <div class="row m-orderdetails">
                             <div class="col-6 col-md-6"><span class="m-orderdetails-title">订单编号：</span>B754946937233</div>
+                            <div class="col-6 col-md-6"><span class="m-orderdetails-title">快递单号：</span>54455451545</div>
                         </div>
                     </div>
                     <div class="m-order">
@@ -276,12 +282,25 @@
                             </tbody>
                         </table>
 
+                        <div class="bg-light" style="padding:10px;">
+
+                            <form  class="navbar-form" role="search">
+                                <div class="btn-group">
+                                    <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入快递单号">
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" >录入</button>
+                                </div>
+                            </form>
+
+                        </div>
+
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btnbtn-danger">全部清空</button>
+                    <button type="button" class="btn btn-danger">全部清空</button>
                     <button type="button" class="btn btn-warning">备货</button>
                     <!--待备货状态的订单-->
                     <button type="button" class="btn btn-warning">备货显示下一条</button>
@@ -371,7 +390,8 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">{{orderInfo.result?.frozeno_order_name}}</h4>
+                    <h4 class="modal-title">{{orderInfo.result?.o_order}}</h4>
+                    <!--<h4 class="modal-title">{{orderInfo.result?.frozeno_order_name}}</h4>-->
                     <button type="button" class="close" (click)="lgModal.hide()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -379,22 +399,110 @@
                 <div class="modal-body text-overflow-y">
 
                     <div class="m-order">
-                        <div class="alert alert-primary m-orderdetails-alert" role="alert">
-                            基本信息
+                        <!--<div class="alert alert-primary m-orderdetails-alert" role="alert">-->
+                            <!--基本信息-->
+                        <!--</div>-->
+                        <div class="row m-orderdetails">
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">订单编号：</span>B754946937233</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">来源：</span>小程序-冻龄智美商城</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">购买方：</span>谷子健</div>
                         </div>
                         <div class="row m-orderdetails">
-                            <div class="col-6 col-md-3"><span class="m-orderdetails-title">订单编号：</span>B754946937233</div>
-                            <div class="col-6 col-md-3"><span class="m-orderdetails-title">购买方：</span>谷子健</div>
-                            <div class="col-6 col-md-3"><span class="m-orderdetails-title">销售方：</span>冻龄智美</div>
-                            <div class="col-6 col-md-3"><span class="m-orderdetails-title">负责人：</span>黄浩能</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">销售方：</span>冻龄智美</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">负责人：</span>黄浩能</div>
                         </div>
                         <div class="row m-orderdetails">
-                            <div class="col-12 "><span class="m-orderdetails-title">产品明细：</span>无创水光新人礼盒装*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20></div>
+                            <div class="col-12 "><span class="m-orderdetails-title">产品明细：</span>无创水光新人礼盒装*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20</div>
                         </div>
+
                         <div class="row m-orderdetails">
                             <div class="col-12 ">
                                 <button type="button" class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">查看详情</button>
                             </div>
+                        </div>
+
+                        <div class="m-order">
+                            <div class="collapse" id="collapseExample">
+                                <!--<div class="alert alert-primary m-orderdetails-alert" role="alert">-->
+                                    <!--产品明细-->
+                                <!--</div>-->
+                                <!--表格默认最少显示5行-->
+                                <table class="table table-striped table-forum">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">序号</th>
+                                        <th scope="col">产品编号</th>
+                                        <th scope="col">名称</th>
+                                        <th scope="col">数量</th>
+                                        <th scope="col">单价</th>
+                                        <th scope="col">折扣</th>
+                                        <th scope="col">折扣价</th>
+                                        <th scope="col">金额</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td >1</td>
+                                        <td>64646464</td>
+                                        <td>无创水光新人礼盒装</td>
+                                        <td>1</td>
+                                        <td>222</td>
+                                        <td>222</td>
+                                        <td>222</td>
+                                        <td>222</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">2</td>
+                                        <td>64646464</td>
+                                        <td>无创水光新人礼盒装</td>
+                                        <td>1</td>
+                                        <td>222</td>
+                                        <td>222</td>
+                                        <td>222</td>
+                                        <td>222</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">3</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">4</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">5</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">合计：捌仟陆佰陆拾肆元整</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>222</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
 
                     <div class="row m-orderdetails">
@@ -463,89 +571,7 @@
                     </div>
 
                 </div>
-                <div class="m-order">
-                    <div class="collapse" id="collapseExample">
-                        <div class="alert alert-primary m-orderdetails-alert" role="alert">
-                            产品明细
-                        </div>
-                        <!--表格默认最少显示5行-->
-                        <table class="table table-striped table-forum">
-                            <thead>
-                            <tr>
-                                <th scope="col">序号</th>
-                                <th scope="col">产品编号</th>
-                                <th scope="col">名称</th>
-                                <th scope="col">数量</th>
-                                <th scope="col">单价</th>
-                                <th scope="col">折扣</th>
-                                <th scope="col">折扣价</th>
-                                <th scope="col">金额</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td >1</td>
-                                <td>64646464</td>
-                                <td>无创水光新人礼盒装</td>
-                                <td>1</td>
-                                <td>222</td>
-                                <td>222</td>
-                                <td>222</td>
-                                <td>222</td>
-                            </tr>
-                            <tr>
-                                <td scope="row">2</td>
-                                <td>64646464</td>
-                                <td>无创水光新人礼盒装</td>
-                                <td>1</td>
-                                <td>222</td>
-                                <td>222</td>
-                                <td>222</td>
-                                <td>222</td>
-                            </tr>
-                            <tr>
-                                <td scope="row">3</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">4</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">5</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">合计：捌仟陆佰陆拾肆元整</td>
-                                <td>1</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>222</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div>
+
 
 
 
