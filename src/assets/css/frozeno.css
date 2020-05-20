@@ -1,0 +1,10 @@
+/*用户订单详情*/
+.m-orderdetails{
+    padding:6px 0;
+}
+.m-orderdetails-title{
+    font-weight: bold;
+}
+.m-orderdetails-alert{
+    margin-top:20px;
+}
