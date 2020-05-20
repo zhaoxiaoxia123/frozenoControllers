@@ -118,8 +118,9 @@
                                         <tbody *ngIf="orderList">
                                         <tr *ngFor="let sl of orderList?.result?.data" (click)="isStatusShow(sl.o_id)" [ngClass]="{'table-color':editStatusUserOrderId == sl.o_id}">
                                             <td>{{ sl.frozeno_order_name }}</td>
-                                            <td>{{ sl.o_order }}</td>
-                                            <td>{{ sl.c_name }}</td>
+                                            <td *ngIf="sl.o_is_complete == 3" style="color: blue;">{{ sl.o_order }}</td>
+                                            <td *ngIf="sl.o_is_complete != 3">{{ sl.o_order }}</td>
+                                            <td>{{ sl.c_name?sl.c_name:sl.c_phone }}</td>
                                             <td>{{ sl.frozeno_rate_amount }}</td>
                                             <td>
                                                 <span [ngSwitch]="sl.frozeno_order_state">

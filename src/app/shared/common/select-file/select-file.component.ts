@@ -17,7 +17,6 @@ export class SelectFileComponent implements OnInit {
     path:string = '';
     url : string = this.globalService.getDomain();
 
-
     @Input() select_type ;
     @Input() imgList : Array<any> = [];
 
@@ -60,11 +59,11 @@ export class SelectFileComponent implements OnInit {
                     };
                     if(selectedArr.length > 0){
                         let isSame = false;
-                        selectedArr.forEach((img,j)=>{
-                            if(img.url == this.result){
-                                isSame = true;
-                            }
-                        });
+                        // selectedArr.forEach((img,j)=>{
+                        //     if(img.url == this.result){
+                        //         isSame = true;
+                        //     }
+                        // });
                         if(!isSame){
                             selectedArr.push(imgs);
                             // imgUrl.push(imgs.url);
