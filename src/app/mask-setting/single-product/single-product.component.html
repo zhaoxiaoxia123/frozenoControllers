@@ -15,15 +15,30 @@
                                     <div class="btn-group" (click)="changedetails()">
                                         <button type="button" class="btn btn-primary"  >查看单品库存量</button>
                                     </div>
-                                    <div class="btn-group">
-                                        <input type="text" class="form-control" style="width: 300px" [(ngModel)]="code" name="code" placeholder="请扫码" (ngModelChange)="isShowCountDiv()">
-                                    </div>
-                                    <div class="btn-group" *ngIf="isShowCount">
-                                        <input type="text" class="form-control" [(ngModel)]="count" name="count" placeholder="个数">
+                                    <div class="btn-group" data-toggle="modal" data-target="#singleModal">
+                                        <button type="button" class="btn btn-primary"  ><span class="fa-fw fa fa-plus  mr-5"></span>添加单品</button>
                                     </div>
                                     <div class="btn-group">
-                                        <button type="button" class="btn default-btn"  (click)="onSubmit()">录入</button>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#suitModal" ><span class="fa-fw fa fa-plus  mr-5"></span>添加套装</button>
                                     </div>
+                                    <div class="btn-group" >
+                                        <button type="button" class="btn btn-danger" >作废</button>
+                                    </div>
+                                    <div class="btn-group" >
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#storagedetailsModal"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                    </div>
+                                    <!--<div class="btn-group"  >-->
+                                        <!--<button type="button" class="btn btn-danger"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>-->
+                                    <!--</div>-->
+                                    <!--<div class="btn-group">-->
+                                        <!--<input type="text" class="form-control" style="width: 300px" [(ngModel)]="code" name="code" placeholder="请扫码" (ngModelChange)="isShowCountDiv()">-->
+                                    <!--</div>-->
+                                    <!--<div class="btn-group" *ngIf="isShowCount">-->
+                                        <!--<input type="text" class="form-control" [(ngModel)]="count" name="count" placeholder="个数">-->
+                                    <!--</div>-->
+                                    <!--<div class="btn-group">-->
+                                        <!--<button type="button" class="btn default-btn"  (click)="onSubmit()">录入</button>-->
+                                    <!--</div>-->
                                 </form>
 
                             </article>
@@ -32,11 +47,14 @@
                                     <table class="table table-striped smart-form table-height-20">
                                         <thead>
                                         <tr>
-                                            <th>单品二维码</th>
-                                            <th>类型</th>
-                                            <th>个数</th>
-                                            <th>操作员</th>
-                                            <th>创建时间</th>
+                                            <th>商品编码</th>
+                                            <th>商品名称</th>
+                                            <th>入库类型</th>
+                                            <th>数量</th>
+                                            <th>商品明细</th>
+                                            <th>仓库</th>
+                                            <th>入库人</th>
+                                            <th>入库时间</th>
                                         </tr>
                                         </thead>
 
@@ -51,7 +69,11 @@
                                                 <span class="label-unknown" *ngSwitchDefault>未知</span>
                                              </span>
                                             </td>
+                                            <!--入库类型：单品入库，套装入库-->
+                                            <td>单品入库</td>
                                             <td>{{p.count}}</td>
+                                            <td data-toggle="tooltip" data-placement="top" title="无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20</td>
+                                            <td>成都仓库</td>
                                             <td>{{p.name}}</td>
                                             <td>{{p.created_at}}</td>
                                         </tr>
@@ -92,6 +114,246 @@
                 <span *ngFor="let e of errorCode">
                     {{e}}
                 </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--添加单品-->
+<div class="modal fade bd-example-modal-xl" id="singleModal" tabindex="-1" role="dialog" aria-labelledby="singleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="singleModalLabel">添加单品</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-overflow-y">
+                <div class="m-order">
+                    <div class="bg-light" style="padding:10px;margin-top:20px;">
+
+                        <form  class="navbar-form" role="search">
+                            <div class="btn-group">
+                                <select  class="form-control">
+                                    <option selected>成都仓库</option>
+                                    <option>温江仓库</option>
+                                </select>
+                            </div>
+                            <div class="btn-group">
+                                <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
+                            </div>
+                            <!--扫码过后默认为1，可更改-->
+                            <div class="btn-group" >
+                                <input type="text" class="form-control"  name="count" placeholder="请输入数量">
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" >录入</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <table class="table table-striped table-forum">
+                        <thead>
+                        <tr>
+                            <th scope="col">商品编码</th>
+                            <th scope="col">商品名称</th>
+                            <th scope="col">数量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td >56464316455</td>
+                            <td>纯钛金属表皮电子</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td >56464316455</td>
+                            <td>纯钛金属表皮电子</td>
+                            <td>2</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--添加套装-->
+<div class="modal fade bd-example-modal-xl" id="suitModal" tabindex="-1" role="dialog" aria-labelledby="suitModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="suitModalLabel">添加套装</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-overflow-y">
+                <div class="m-order">
+                    <div class="bg-light" style="padding:10px;margin-top:20px;">
+
+                        <form  class="navbar-form" role="search">
+                            <div class="btn-group">
+                                <span>套装</span>
+                            </div>
+                            <div class="btn-group">
+                                <select  class="form-control">
+                                    <option selected>成都仓库</option>
+                                    <option>温江仓库</option>
+                                </select>
+                            </div>
+                            <div class="btn-group">
+                                <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
+                            </div>
+                            <div class="btn-group">
+                                <select  class="form-control">
+                                    <option selected>无创水光尊享礼盒（8+8+1）</option>
+                                    <option>润月雅水光精华套装（3）</option>
+                                    <option>润月雅水光精华套装（3）</option>
+                                </select>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="bg-light" style="padding:10px;margin-top:20px;">
+
+                        <form  class="navbar-form" role="search">
+                            <div class="btn-group">
+                                <span>子商品</span>
+                            </div>
+                            <div class="btn-group">
+                                <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
+                            </div>
+                            <!--扫码过后默认为1，可更改-->
+                            <div class="btn-group" >
+                                <input type="text" class="form-control"  name="count" placeholder="请输入数量">
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" >录入</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <table class="table table-striped table-forum">
+                        <thead>
+                        <tr>
+                            <th scope="col">子商品编码</th>
+                            <th scope="col">子商品名称</th>
+                            <th scope="col">数量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td >56464316455</td>
+                            <td>润月雅水光精华套装</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td >56464316455</td>
+                            <td>润月雅水光精华套装</td>
+                            <td>3</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">清空重新录入</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-warning">保存</button>
+                <button type="button" class="btn btn-warning">保存并新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--详情-->
+<!--发货-->
+<div class="modal fade bd-example-modal-xl" id="storagedetailsModal" tabindex="-1" role="dialog" aria-labelledby="storagedetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="storagedetailsModalLabel">商品编号：B754946937233</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-overflow-y">
+                <div class="m-order">
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品编号：</span>B754946937233</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品名称：</span>小程序商城</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">入库类型：</span>套装</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">数量：</span>3</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">仓库：</span>成都仓库</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">入库人：</span>成都</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-12 "><span class="m-orderdetails-title">商品明细：</span>无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-12 ">
+                            <button type="button" class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">查看详情</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="m-order">
+                    <div class="collapse" id="collapseExample">
+                        <!--<div class="alert alert-primary m-orderdetails-alert" role="alert">-->
+                        <!--商品明细-->
+                        <!--</div>-->
+                        <!--表格默认最少显示5行-->
+                        <table class="table table-striped table-forum">
+                            <thead>
+                            <tr>
+                                <th scope="col">商品编号</th>
+                                <th scope="col">商品名称</th>
+                                <th scope="col">数量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>64646464</td>
+                                <td>无创水光尊享礼盒</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>64646464</td>
+                                <td>无创水光尊享礼盒</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>64646464</td>
+                                <td>无创水光尊享礼盒</td>
+                                <td>1</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
             </div>
         </div>
     </div>
