@@ -135,9 +135,10 @@
                                         </tr>
                                         </thead>
                                         <tbody *ngIf="orderList">
-                                        <tr *ngFor="let sl of orderList?.result?.data" (click)="isStatusShow(sl.o_id)" [ngClass]="{'table-color':editStatusUserOrderId == sl.o_id}">
-                                            <td>1</td>
-                                            <td>{{ sl.o_order }}</td>
+                                        <tr *ngFor="let sl of orderList?.result?.data;let ind = index;" (click)="isStatusShow(sl.o_id)" [ngClass]="{'table-color':editStatusUserOrderId == sl.o_id}">
+                                            <td>{{ind}}</td>
+                                            <td *ngIf="sl.o_is_complete == 3" style="color: blue;">{{ sl.o_order }}</td>
+                                            <td *ngIf="sl.o_is_complete != 3">{{ sl.o_order }}</td>
                                             <!--小程序商城
                                             经销商管理平台
                                             -->
@@ -146,31 +147,31 @@
                                             <td>冻龄智美</td>
                                             <td>{{ sl.c_name }}</td>
                                             <td data-toggle="tooltip" data-placement="top" title="无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">{{ sl.frozeno_order_name }}</td>
-                                            <td>{{ sl.frozeno_rate_amount }}</td>
+                                            <td>{{ sl.c_name?sl.c_name:sl.c_phone }}</td>
                                             <td>
                                                 <!--管理员可取消——未支付、待备货、待发货销售单里面的订单审核通过自动生成用户订单
                                                 状态：未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款
                                                 物流开通后还需添加状态：已签收
                                                 在待发货状态下显示：打印、备货、发货。其他状态不显示。
                                                 -->
-                                                <span style="display: none">
-                                                  <span class="label-normal">未支付</span>
-                                                  <span class="label-normal" >待备货</span>
-                                                  <span class="label-blue" >待发货</span>
-                                                  <span class="label-normal" >待收货</span>
-                                                  <span class="label-full" >退款中</span>
-                                                  <span class="label-normal" >交易成功</span>
-                                                  <span class="label-full" >交易失败</span>
-                                                  <span class="label-full" >已退款</span>
-                                                  <span class="label-unknown" >未知</span>
-                                                </span>
+                                                <!--<span style="display: none">-->
+                                                  <!--<span class="label-normal">未支付</span>-->
+                                                  <!--<span class="label-normal" >待备货</span>-->
+                                                  <!--<span class="label-blue" >待发货</span>-->
+                                                  <!--<span class="label-normal" >待收货</span>-->
+                                                  <!--<span class="label-full" >退款中</span>-->
+                                                  <!--<span class="label-normal" >交易成功</span>-->
+                                                  <!--<span class="label-full" >交易失败</span>-->
+                                                  <!--<span class="label-full" >已退款</span>-->
+                                                  <!--<span class="label-unknown" >未知</span>-->
+                                                <!--</span>-->
                                                 <span [ngSwitch]="sl.frozeno_order_state">
                                                   <span class="label-normal" *ngSwitchCase="1">未支付</span>
-                                                  <span class="label-blue" *ngSwitchCase="2">已支付，备货中</span>
-                                                  <span class="label-full" *ngSwitchCase="3">已支付,已发货</span>
-                                                  <span class="label-full" *ngSwitchCase="4">交易完成</span>
-                                                  <span class="label-full" *ngSwitchCase="5">订单已取消</span>
-                                                  <span class="label-full" *ngSwitchCase="6">审核取消订单</span>
+                                                  <span class="label-blue" *ngSwitchCase="2">待备货</span>
+                                                  <span class="label-full" *ngSwitchCase="3">待收货</span>
+                                                  <span class="label-full" *ngSwitchCase="4">交易成功</span>
+                                                  <span class="label-full" *ngSwitchCase="5">交易失败</span>
+                                                  <span class="label-full" *ngSwitchCase="6">交易失败</span>
                                                   <span class="label-full" *ngSwitchCase="7">已退款</span>
                                                   <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>

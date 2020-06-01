@@ -30,7 +30,7 @@ export const routes: Routes = [
         path: 'single-product',
         loadChildren: 'app/mask-setting/single-product/single-product.module#SingleProductModule',
         data: {pageTitle: 'single-product'}
-    },
+    }
 ];
 
 export const routing = RouterModule.forChild(routes);

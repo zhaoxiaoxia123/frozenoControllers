@@ -12,9 +12,9 @@
                             <article style="padding:10px;">
 
                                 <form  class="navbar-form " novalidate="" role="search" >
-                                    <div class="btn-group" (click)="changedetails()">
-                                        <button type="button" class="btn btn-primary"  >查看单品库存量</button>
-                                    </div>
+                                    <!--<div class="btn-group" (click)="changedetails()">-->
+                                        <!--<button type="button" class="btn btn-primary"  >查看单品库存量</button>-->
+                                    <!--</div>-->
                                     <div class="btn-group" data-toggle="modal" data-target="#singleModal">
                                         <button type="button" class="btn btn-primary"  ><span class="fa-fw fa fa-plus  mr-5"></span>添加单品</button>
                                     </div>
@@ -62,7 +62,19 @@
                                         <tr *ngFor="let p of productList?.result?.products.data">
                                             <td>{{p.code}}</td>
                                             <td>
-                                             <span [ngSwitch]="p.type">
+                                                <!--
+                                                单品——
+                                                纯钛金属表皮电子
+                                                润月雅水光精华
+                                                钛金属导入仪
+                                                套装——
+                                                无创水光尊享礼盒（8+8+1）
+                                                冻龄智美钛金属导入仪
+                                                纯钛金属表皮电子
+                                                无创水光轻雅套装（3+3+1）
+                                                无创水光基础套装 （3+3）
+                                                -->
+                                                <span [ngSwitch]="p.type">
                                                 <span class="label-normal" *ngSwitchCase="1">面膜单品</span>
                                                 <span class="label-invalid" *ngSwitchCase="2">精华单品</span>
                                                 <span class="label-maintain" *ngSwitchCase="3">导入仪单品</span>
@@ -359,7 +371,7 @@
     </div>
 </div>
 
-
+<!--查看单品库存量-->
 <div class="slide-content"  [ngStyle]="{'display':xy_details?'block':'none'}" style="position: fixed; display: block; z-index: 9991;">
     <div class="entity-well entity-well--tasks">
         <div class="entity-well-header">

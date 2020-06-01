@@ -3,8 +3,9 @@ import {FadeInTop} from '../../shared/animations/fade-in-top.decorator';
 import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {Router} from '@angular/router';
 import {GlobalService} from '../../core/global.service';
-import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
 import {ModalDirective} from "ngx-bootstrap";
+import {FileUploader} from "ng2-file-upload";
+import {isUndefined} from "util";
 
 @FadeInTop()
 @Component({
@@ -24,6 +25,7 @@ export class PostComponent implements OnInit {
   introduction:string;
   type:number=0;
   state:number=1;
+  is_href:number=2;
   weight:number=0;
   theme:string;
   startDate:string;
@@ -33,16 +35,16 @@ export class PostComponent implements OnInit {
   imageAd:string;    //广告图片
   imageHead:string;  //封面图片
 
-  name:string;
-  data1:any;
-  avatarSettings:CropperSettings;
+  // 初始化上次图片变量
+  public uploader:FileUploader = new FileUploader({
+    url: this.globalService.getDomain() + "/api/v1/uploadFile",
+    method: "POST",
+    removeAfterUpload:true,
+    itemAlias: "uploadedfile",
+  });
 
-  name2:string;
-  data2:any;
-  avatarSettings2:CropperSettings;
-
-  croppedWidth:number;
-  croppedHeight:number;
+  imgCount : number = 0;
+  selectedImageUrl : any[] = [];
 
   typeList:any = [];
   checkTypeId: number = 0;
@@ -57,8 +59,6 @@ export class PostComponent implements OnInit {
   menuInfos : any = [];
 
   rollback_url :string = '';
-  @ViewChild('avatarCropper', /* TODO: add static flag */ undefined) avatarCropper:ImageCropperComponent;
-  @ViewChild('avatarCropper2', /* TODO: add static flag */ undefined) avatarCropper2:ImageCropperComponent;
 
   constructor(
       private router : Router,
@@ -78,46 +78,16 @@ export class PostComponent implements OnInit {
       {'id':8,'name':'激励中心'},
       {'id':9,'name':'app商城广告'},
       {'id':10,'name':'工作台腰部广告'},
-      {'id':11,'name':'会员服务协议'}
+      {'id':11,'name':'冻龄智会员协议'},
+      {'id':12,'name':'app商城其他广告'},
+      {'id':13,'name':'app商城关于我们广告'},
+      {'id':14,'name':'冻龄智美服务协议'},
+      {'id':15,'name':'隐私政策'},
+      {'id':16,'name':'会员体系图片'},
+      {'id':17,'name':'售后图片'}
     ];
-
-    this.name = 'Angular2';
-    this.avatarSettings = new CropperSettings();
-    this.avatarSettings.width = 200;
-    this.avatarSettings.height = 200;
-    this.avatarSettings.croppedWidth = 200;
-    this.avatarSettings.croppedHeight = 200;
-    this.avatarSettings.canvasWidth = 300;
-    this.avatarSettings.canvasHeight = 300;
-    this.avatarSettings.minWidth = 10;
-    this.avatarSettings.minHeight = 10;
-    this.avatarSettings.rounded = false;
-    this.avatarSettings.keepAspect = true;
-    this.avatarSettings.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-    this.avatarSettings.cropperDrawSettings.strokeWidth = 2;
-    this.data1 = {};
-
-    this.name2 = 'Angular2';
-    this.avatarSettings2 = new CropperSettings();
-    this.avatarSettings2.width = 200;
-    this.avatarSettings2.height = 200;
-    this.avatarSettings2.croppedWidth = 200;
-    this.avatarSettings2.croppedHeight = 200;
-    this.avatarSettings2.canvasWidth = 300;
-    this.avatarSettings2.canvasHeight = 300;
-    this.avatarSettings2.minWidth = 10;
-    this.avatarSettings2.minHeight = 10;
-    this.avatarSettings2.rounded = false;
-    this.avatarSettings2.keepAspect = true;
-    this.avatarSettings2.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-    this.avatarSettings2.cropperDrawSettings.strokeWidth = 2;
-    this.data2 = {};
   }
 
-  cropped(bounds:Bounds) {
-    this.croppedHeight =bounds.bottom-bounds.top;
-    this.croppedWidth = bounds.right-bounds.left;
-  }
   ngOnInit() {
 
     //顶部菜单读取
@@ -127,8 +97,7 @@ export class PostComponent implements OnInit {
       this.rollback_url = this.globalService.getMenuUrl();
       this.permissions = this.globalService.getPermissions();
       this.menuInfos = this.globalService.getMenuInfos();
-    },this.globalService.getMenuPermissionDelayTime())
-
+    },this.globalService.getMenuPermissionDelayTime());
     this.getPostList(1);
   }
   /**
@@ -142,8 +111,84 @@ export class PostComponent implements OnInit {
     return this.cookieStore.in_array(key, this.permissions);
   }
 
+  // C: 定义事件，选择文件
+  selectedFileOnChanged(index) {
+    let $this = this;
+    let selectedArr = this.selectedImageUrl;
+    this.uploader.queue.forEach((q,i)=>{
+        let reader = new FileReader();
+        reader.readAsDataURL(q.some);
+        reader.onload = function(e){
+          let imgs = {
+            url:this.result,
+            uploadID:i,
+            pIndex:index
+          };
+          if(selectedArr.length > 0){
+            let isSame = false;
+            if(!isSame){
+              selectedArr.push(imgs);
+            }else{
+              $this.uploader.queue[i].remove();
+            }
+          }else{
+            selectedArr.push(imgs);
+          }
+        }
+    });
+    this.imgCount = this.uploader.queue.length;
+    this.selectedImageUrl = selectedArr;
+  }
+
+  // D: 定义事件，上传文件  单个文件
+  uploadFile(num) {
+    // 上传
+    let that = this;
+    this.uploader.queue.forEach((q,i)=> {
+      if (!isUndefined(that.uploader.queue[i])) {
+        that.uploader.queue[i].onSuccess = function (response, status, headers) {
+          let tempRes = JSON.parse(response);
+          // 上传文件成功
+          if (status == 200) {
+            // 上传文件后获取服务器返回的数据
+            if(num == 1){
+              that.path = tempRes['result'];
+              that.imageAd = '';
+            }else if(num == 2){
+              that.path2 = tempRes['result'];
+              that.imageHead = '';
+            }
+            alert("上传成功!");
+          } else {
+            // 上传文件后获取服务器返回的数据错误
+            alert(tempRes['msg']);
+          }
+        };
+        this.uploader.queue[i].upload(); // 开始上传
+      } else {
+        alert('找不到要上传的图片！');
+      }
+    });
+  }
+
+
+  removeUpload(uploadID) {
+    //删除图片
+    this.uploader.queue[uploadID].remove();
+    this.selectedImageUrl.splice(uploadID, 1);
+    this.selectedImageUrl.forEach((up, i) => {
+      up.uploadID = i//重构与上传数据一致的结构
+    });
+    this.imgCount = this.uploader.queue.length;
+    console.log(this.uploader);
+  }
+
   onCheckState(radio) {
     this.state = radio;
+  }
+
+  onCheckHerf(radio) {
+    this.is_href = radio;
   }
 
   /**
@@ -217,6 +262,7 @@ export class PostComponent implements OnInit {
       's_image_url':this.path2,
       'type':this.type,
       'state':this.state,
+      'is_href':this.is_href,
       'theme':this.theme,
       'start_date':this.startDate,
       'end_date':this.endDate,
@@ -226,6 +272,7 @@ export class PostComponent implements OnInit {
         if(data['status'] == 200){
           this.lgModal.hide();
           this.getPostList(1);
+          this.clear();  //清除数据
         }else if(data['status'] == 202){
           this.cookieStore.removeAll(this.rollback_url);
           this.router.navigate(['/auth/login']);
@@ -235,6 +282,23 @@ export class PostComponent implements OnInit {
         console.log('PATCH call in error', response);
       }
     );
+  }
+
+  clear(){
+    this.title = '';
+    this.href = '';
+    this.tag = '';
+    this.introduction = '';
+    this.type=0;
+    this.state=1;
+    this.is_href = 2;
+    this.weight=0;
+    this.theme = '';
+    this.startDate = '';
+    this.endDate = '';
+    this.description = '';
+    this.path = '';
+    this.path2 = '';
   }
 
   /**
@@ -278,7 +342,7 @@ export class PostComponent implements OnInit {
     this.type = info['type'];
     this.state = info['state'];
     this.weight = info['weight'];
-    this.state = info['state'];
+    this.is_href = info['is_href'];
     this.theme = info['theme'];
     this.startDate = info['start_date'];
     this.endDate = info['end_date'];
@@ -311,53 +375,65 @@ export class PostComponent implements OnInit {
         });
     }
   }
-  /**
-   * 上传文件
-   */
-  postFile(num){
-    var that = this;
-    var form=document.forms[0];
-    var formData : FormData = new FormData(form);
-    //convertBase64UrlToBlob函数是将base64编码转换为Blob
-    if(num == 1){
-      formData.append("uploadedfile",this.globalService.convertBase64UrlToBlob(this.data1.image),"post_"+ new Date().getTime() +".png");
-      console.log(this.data1);
-    }else {
-      formData.append("uploadedfile", this.globalService.convertBase64UrlToBlob(this.data2.image), "post_" + new Date().getTime() + ".png");
-      console.log(this.data2);
-    }
-    //组建XMLHttpRequest 上传文件
-    var infos ;
-    var request = new XMLHttpRequest();
-    //上传连接地址
-    request.open("POST", this.globalService.getDomain() + "/api/v1/uploadFile");
-    request.onreadystatechange=function()
-    {
-      console.log(request);
-      if (request.readyState==4)
-      {
-        if(request.status==200){
-          infos = JSON.parse(request.response);
-          if(infos['status']==200){
-            if(num == 1){
-              that.path = infos['result'];
-            }else {
-              that.path2 = infos['result'];
-            }
 
-            alert("上传成功");
-          }else{
-            alert("上传失败，无法获取图片上传地址");
-          }
-          console.log(that.path);
-          console.log(that.path2);
-        }else{
-          alert("上传失败,检查上传地址是否正确");
-        }
-      }
-    }
-    request.send(formData);
-  }
+
+  // //-----------------图片选择弹框 ---------------
+  // showSelectFileDiv(){
+  //   this.select_type = 'file';
+  // }
+  // getSelectTypes(){
+  //   this.select_type = '';
+  // }
+  // getImgLists(value:any){
+  //   this.imgList = JSON.parse(value);
+  // }
+  // /**
+  //  * 上传文件
+  //  */
+  // postFile(num){
+  //   var that = this;
+  //   var form=document.forms[0];
+  //   var formData : FormData = new FormData(form);
+  //   //convertBase64UrlToBlob函数是将base64编码转换为Blob
+  //   if(num == 1){
+  //     formData.append("uploadedfile",this.globalService.convertBase64UrlToBlob(this.data1.image),"post_"+ new Date().getTime() +".png");
+  //     console.log(this.data1);
+  //   }else {
+  //     formData.append("uploadedfile", this.globalService.convertBase64UrlToBlob(this.data2.image), "post_" + new Date().getTime() + ".png");
+  //     console.log(this.data2);
+  //   }
+  //   //组建XMLHttpRequest 上传文件
+  //   var infos ;
+  //   var request = new XMLHttpRequest();
+  //   //上传连接地址
+  //   request.open("POST", this.globalService.getDomain() + "/api/v1/uploadFile");
+  //   request.onreadystatechange=function()
+  //   {
+  //     console.log(request);
+  //     if (request.readyState==4)
+  //     {
+  //       if(request.status==200){
+  //         infos = JSON.parse(request.response);
+  //         if(infos['status']==200){
+  //           if(num == 1){
+  //             that.path = infos['result'];
+  //           }else {
+  //             that.path2 = infos['result'];
+  //           }
+  //
+  //           alert("上传成功");
+  //         }else{
+  //           alert("上传失败，无法获取图片上传地址");
+  //         }
+  //         console.log(that.path);
+  //         console.log(that.path2);
+  //       }else{
+  //         alert("上传失败,检查上传地址是否正确");
+  //       }
+  //     }
+  //   }
+  //   request.send(formData);
+  // }
 
 
   @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;

@@ -27,10 +27,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="btn-group" *ngIf="isPermission(menu_id,'add')">
+                                                <!--*ngIf="isPermission(menu_id,'add')" *ngIf="isPermission(menu_id,'edit')"-->
+                                                <div class="btn-group">
                                                     <button type="button" class="btn btn-primary" (click)="lgModal.show();"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
                                                 </div>
-                                                <div class="btn-group" *ngIf="isPermission(menu_id,'edit')">
+                                                <div class="btn-group">
                                                     <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0}" (click)="getPostInfo()"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
                                                 </div>
                                                 <div class="btn-group" *ngIf="isPermission(menu_id,'delete')" >
@@ -40,16 +41,6 @@
                                                     <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editStatusUserOrderId == 0}" (click)="getPostInfo()"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
                                                 </div>
                                             </form>
-                                            <!--<form>-->
-                                                <!--<div class="btn-group">-->
-                                                    <!--<input type="text"  class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">-->
-                                                <!--</div>-->
-                                                <!--<div class="btn-group">-->
-                                                    <!--<button type="submit" class="btn btn-outline-success my-2 my-sm-0" >搜索</button>-->
-                                                <!--</div>-->
-                                                <!--&lt;!&ndash;<input class="form-control mr-sm-2" type="search" placeholder="输入关键词" aria-label="Search">&ndash;&gt;-->
-                                                <!--&lt;!&ndash;<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>&ndash;&gt;-->
-                                            <!--</form>-->
                                         </div>
                                     </article>
                                     <div  class="">
@@ -81,7 +72,13 @@
                                                     <span class="label-full" *ngSwitchCase="8">激励中心</span>
                                                     <span class="label-full" *ngSwitchCase="9">app商城广告</span>
                                                     <span class="label-full" *ngSwitchCase="10">工作台腰部广告</span>
-                                                    <span class="label-full" *ngSwitchCase="11">会员服务协议</span>
+                                                    <span class="label-full" *ngSwitchCase="11">冻龄智美会员协议</span>
+                                                    <span class="label-full" *ngSwitchCase="12">app商城其他广告</span>
+                                                    <span class="label-full" *ngSwitchCase="13">app商城关于我们广告</span>
+                                                    <span class="label-full" *ngSwitchCase="14">冻龄智美服务协议</span>
+                                                    <span class="label-full" *ngSwitchCase="15">隐私政策</span>
+                                                    <span class="label-full" *ngSwitchCase="16">会员体系图片</span>
+                                                    <span class="label-full" *ngSwitchCase="17">售后图片</span>
                                                     <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>
                                                 </td>
@@ -110,10 +107,6 @@
                                             </li>
                                         </ul>
                                     </div>
-
-                                </div>
-                                <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" >
-
                                 </div>
                             </div>
                         </div>
@@ -192,19 +185,22 @@
                         </div>
                     </div>
                 </form>
-                <div class="form-group row" *ngIf="type == 9 || type == 10">
+                <div class="form-group row" *ngIf="type == 9 || type == 10|| type == 12|| type == 13">
                     <div class="col-sm-6">
-                        <!--col-sm-12-->
                         <div class="card">
-                            <!--<img  class="" style="width:100%;padding:10px;" src="assets/img/news/news4.jpg" >-->
-                            <img-cropper style="width:100%;padding:10px;" #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>
                             <div class="card-body">
                                 <h5 class="card-title">广告图片</h5>
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
                                 <div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <input type="file" c-img-cropper-select [cropper]="avatarCropper">
+                                    <span class="picture-list" *ngFor="let img of selectedImageUrl;let ind = index;">
+                                    <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(img.uploadID)"></a>
+                                      <img width="90px" height="90px" src="{{img.url}}" >
+                                    </span>
+                                    <div class="picture-list" *ngIf="imgCount < 1">
+                                        <input id="image-input1" class="btn btn-default " type="file" ng2FileSelect [uploader]="uploader" multiple (change)="selectedFileOnChanged(i)" />
+                                    </div>
                                 </div>
-                                <button type="button" class="btn btn-primary" (click)="postFile(1)" >图片上传</button>
+                                <button type="button" class="btn btn-primary" (click)="uploadFile(1)">图片上传</button>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -216,29 +212,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row" *ngIf="type == 9 || type == 10">
+                <div class="form-group row" *ngIf="type == 9 || type == 10 || type == 12 || type == 13">
                     <label class="col-sm-2 col-form-label">排序</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="number" placeholder="请输入顺序" name="weight" [(ngModel)]="weight" [ngModelOptions]="{standalone: true}">
                     </div>
                 </div>
-
-                <div class="form-group row" *ngIf="type != 9 && type != 10">
+                <div class="form-group row" *ngIf="type != 9 && type != 10 && type != 12 && type != 13">
                     <div class="col-sm-6">
                         <div class="card">
-                            <!--<img  class="" style="width:100%;padding:10px;" src="assets/img/news/news4.jpg" >text-align:center;padding-top:1.25rem;-->
-                            <img-cropper style="width:100%;padding:10px;" #avatarCropper2 [image]="data2" [settings]="avatarSettings2" (onCrop)="cropped($event)"></img-cropper>
-                            <div class="card-body" style="padding: 0 1.25rem 1.25rem;">
-                                <h5 class="card-title">封面图片</h5>
+                            <div class="card-body">
+                                <h5 class="card-title">广告图片</h5>
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
                                 <div class="" style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <input id="image-input"  type="file" c-img-cropper-select [cropper]="avatarCropper2">
+                                    <span class="picture-list" *ngFor="let img of selectedImageUrl;let ind = index;">
+                                    <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(img.uploadID)"></a>
+                                      <img width="90px" height="90px" src="{{img.url}}" >
+                                    </span>
+                                    <div class="picture-list" *ngIf="imgCount < 1">
+                                        <input id="image-input2" class="btn btn-default " type="file" ng2FileSelect [uploader]="uploader" multiple (change)="selectedFileOnChanged(i)" />
+                                    </div>
                                 </div>
-                                <button type="button" class="btn btn-primary" (click)="postFile(2)" >图片上传</button>
+                                <button type="button" class="btn btn-primary" (click)="uploadFile(2)">图片上传</button>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-sm-6">
                         <div class="text-align-center">
                             <span class="user-image" *ngIf="imageHead">
@@ -247,10 +245,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row" *ngIf="type != 9 && type != 10">
+                <div class="form-group row" *ngIf="type != 9 && type != 10 && type != 12 && type != 13">
                     <label class="col-sm-2 col-form-label">正文内容</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" rows="3" name="description" [(ngModel)]="description" [ngModelOptions]="{standalone: true}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label ">是否可跳转详情页</label>
+                    <div class="col-sm-10">
+                        <ng-container>
+                            <input type="radio" name="is_href" [(ngModel)]="is_href" [value]="1" [checked]="is_href==1" (click)="onCheckHerf(1)"> 是
+                            <input type="radio" name="is_href" [(ngModel)]="is_href" [value]="2" [checked]="is_href==2" (click)="onCheckHerf(2)"> 否
+                        </ng-container>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -279,3 +286,5 @@
         </div>
     </div>
 </div>
+<!--选不用裁剪的图片-->
+<!--<app-select-file [select_type]="select_type" [imgList]="imgList" (select_types)="getSelectTypes()" (imgLists)="getImgLists($event)"></app-select-file>-->
