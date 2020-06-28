@@ -5,6 +5,7 @@
   "angular-cli": {},
   "scripts": {
     "build:dev": "ng build --prod --configuration=production",
+    "build:test": "ng build --prod --configuration=test",
     "build:prod": "ng build --prod --aot=false",
     "build:aot": "ng build --prod --aot",
     "build:aot2": "node --max_old_space_size=4096 ./node_modules/.bin/ng build --prod --aot",

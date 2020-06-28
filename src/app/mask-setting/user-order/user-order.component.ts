@@ -1,9 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {GlobalService} from '../../core/global.service';
 import {ModalDirective} from "ngx-bootstrap";
+import {split} from "ts-node/dist";
+import {stringify} from "querystring";
+import {EssenceNg2PrintComponent} from "essence-ng2-print";
 
 @Component({
   selector: 'app-user-order',
@@ -23,18 +26,31 @@ export class UserOrderComponent implements OnInit {
 
   //顶部按钮是否启用显示
   editStatusUserOrderId : any = 0;
+  editOrderState : any = 0;
+  editPrepareState : any = 0;
+
+  isNext : boolean = false;
+  isNextSend : boolean = false;
+  isPrint : boolean = false;
+
   //处理批量
   isAll : number = 0;
   width : string = '0%';
   width_1 : string = '100%';
 
   orderInfo : any = [];
-  express_code:string = '';
+  expressCode:string = '';
+  stockExpressCode:string = '';
+  products_disintegrate:any = [];
 
-
+  searchType: string = 'all';  //状态筛选
+  stateShow:string = '全部';
   printCSS: string[];
   printStyle: string;
 
+
+  // 这一步很重要：获取打印标签的按钮组件，然后调用提供的print方法
+  @ViewChild('printBtn', { static: true }) printBtn: EssenceNg2PrintComponent;
 
   rollback_url : string = '';
   /**菜单id */
@@ -45,13 +61,14 @@ export class UserOrderComponent implements OnInit {
   constructor(
     fb:FormBuilder,
     private router:Router,
+    private cdr: ChangeDetectorRef,
     private cookieStore:CookieStoreService,
     private globalService:GlobalService
   ) {
     this.formModel = fb.group({
       keyword:[''],
     });
-    this.getUserOrderList('1');
+    this.getUserOrderList('1','');
     window.scrollTo(0,0);
   }
 
@@ -154,18 +171,27 @@ export class UserOrderComponent implements OnInit {
   }
 
 
+  print() {
+    this.printBtn.print(); // 通过父组件来调用子组件的方法，用来触发打印功能
+  }
   /**
    * 打印选中用户订单
    */
   beforePrint(){
+    this.isPrint = true;
     if(this.editStatusUserOrderId){
-      this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type=detail&sid='+this.cookieStore.getCookie('sid'))
-        .subscribe((data)=>{
-          this.orderInfo = data;
-        });
+      this.getOrderInfo();
+      // this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&sid='+this.cookieStore.getCookie('sid'))//&type=detail
+      //   .subscribe((data)=>{
+      //     this.orderInfo = data;
+      //   });
     }else{
       alert('请选中要打印的用户订单');
     }
+    let that =this;
+    setTimeout(function () {
+      that.isPrint = false;
+    },2000)
   }
   printComplete () {
     console.log('打印完成！');
@@ -185,10 +211,19 @@ export class UserOrderComponent implements OnInit {
    * 获取用户订单列表
    * @param number
    */
-  getUserOrderList(number:string) {
+  getUserOrderList(number:string,search_type:string,state:string = '') {
+    if(state){
+      this.stateShow = state;
+    }
+    if(search_type != '') {
+      this.searchType = search_type;
+    }
     let url = 'getDLZMOrderList?page='+number+'&role='+this.cookieStore.getCookie('urole')+'&sid='+this.cookieStore.getCookie('sid');
     if(this.formModel.value['keyword'].trim() != ''){
       url += '&keyword='+this.formModel.value['keyword'].trim();
+    }
+    if(this.searchType != "all"){
+      url += '&order_state='+this.searchType;
     }
     this.globalService.httpRequest('get',url)
       .subscribe((data)=>{
@@ -252,7 +287,7 @@ export class UserOrderComponent implements OnInit {
    */
   pagination(page : string) {
     this.page = page;
-    this.getUserOrderList(this.page);
+    this.getUserOrderList(this.page,'');
   }
 
   /**
@@ -325,7 +360,7 @@ export class UserOrderComponent implements OnInit {
    * 提交搜索
    */
   onSubmit(){
-    this.getUserOrderList('1');
+    this.getUserOrderList('1','');
   }
 
   /**
@@ -337,30 +372,133 @@ export class UserOrderComponent implements OnInit {
       return false;
     }
     this.lgModal.show();
-    this.globalService.httpRequest('get','getOrderInfo?o_id='+this.editStatusUserOrderId+'&type='+type+'&sid='+this.cookieStore.getCookie('sid'))
-      .subscribe((data)=>{
+
+    this.getOrderInfo();
+  }
+
+  /**
+   * 作废订单  未支付状态下的订单可后台作废
+   */
+  cancelOrder(){
+    if(this.editStatusUserOrderId) {
+      let param = {
+        'o_id': this.editStatusUserOrderId,
+        'type':'cancel',
+        // 'express_code': this.stockExpressCode,
+        'frozeno_order_state':this.editOrderState == 2 ? 6 : 5,
+        'u_id': this.cookieStore.getCookie('uid'),
+        'sid': this.cookieStore.getCookie('sid')
+      };
+      this.editExpress(param);
+      this.getUserOrderList(this.page,'');
+    }
+  }
+
+
+  /**
+   * 备货框显示
+   */
+  choiceOrder(){
+    if(this.editStatusUserOrderId == 0 || !(this.editOrderState == 2 && this.editPrepareState == 1)){
+      return false;
+    }else{
+      this.choiceExampleModal.show();
+      this.getOrderInfo();
+    }
+  }
+
+  /**
+   * 发货框显示  1:显示发货弹框   2：发货   3：发货并跳转下一条
+   */
+  sendOrder(num){
+    if(num == 1) {
+      this.sendExampleModal.show();
+      this.getOrderInfo();
+    }else if(num == 2) {
+      this.sendOrderToExpress(1);
+    }else if(num == 3) {
+      this.sendOrderToExpress(2);
+    }
+  }
+
+  /**
+   * 获取订单详情
+   */
+  getOrderInfo() {
+    let url = 'getOrderInfo?o_id='+this.editStatusUserOrderId+'&sid='+this.cookieStore.getCookie('sid');
+    if(this.isNext) {
+      url += '&is_next='+this.isNext;
+    }
+    if(this.isNextSend) {
+      url += '&is_next_send='+this.isNextSend;
+    }
+    this.globalService.httpRequest('get',url)//&type='+type+'
+      .subscribe((data)=> {
         this.orderInfo = data;
+        if (data['status'] == 201 && this.isNext){
+          alert(data['msg']);
+          this.closeChoice();
+        }
+        if (data['status'] == 201 && this.isNextSend){
+          alert(data['msg']);
+          this.closeExpress();
+        }
+        this.editStatusUserOrderId = this.orderInfo['result']['o_id'];
+        this.editPrepareState = this.orderInfo['result']['frozeno_prepare_state'];
+        this.editOrderState = this.orderInfo['result']['frozeno_order_state'];
+        this.stockExpressCode = this.orderInfo?this.orderInfo['result']['frozeno_express_code']:'';
+        this.expressCode = this.orderInfo?this.orderInfo['result']['frozeno_express_code']:'';
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
+        if(this.isPrint) {
+          this.print();
+        }
       });
   }
 
   /**
-   * 发货  ,新增快递单号
+   * 备货并发货框    快递单号录入
    */
-  sendProduct(){
-    if(this.express_code.trim() == ''){
+  expressCodeEntry(){
+    if(this.stockExpressCode.trim() == ''){
       alert('请填写快递单号！');
       return false;
     }
-    this.globalService.httpRequest('post','editExpress',{
+    let param = {
       'o_id':this.editStatusUserOrderId,
-      'express_code':this.express_code,
+      'express_code':this.stockExpressCode,
+      // 'frozeno_order_state':3,
       'u_id':this.cookieStore.getCookie('uid'),
       'sid':this.cookieStore.getCookie('sid')
-    }).subscribe( (data)=>{
+    };
+    this.editExpress(param);
+  }
+
+  /**
+   * 关闭备货框
+   */
+  closeChoice(){
+    this.isNext = false;
+    this.choiceExampleModal.hide();
+  }
+
+  /**
+   * 关闭发货框
+   */
+  closeExpress(){
+    this.isNextSend = false;
+    this.sendExampleModal.hide();
+  }
+  /**
+   * 发货
+   */
+  editExpress(param){
+    this.globalService.httpRequest('post','editExpress',param).subscribe(
+      (data)=>{
         alert(data['msg']);
         if(data['status'] == 200){
-          this.orderInfo['result']['frozeno_express_company'] = "顺丰";
-          this.orderInfo['result']['frozeno_express_code'] = this.express_code;
+          // this.orderInfo['result']['frozeno_express_company'] = "顺丰";
+          this.orderInfo['result']['frozeno_express_code'] = this.expressCode;
         }else if(data['status'] == 202){
           this.cookieStore.removeAll(this.rollback_url);
           this.router.navigate(['/auth/login']);
@@ -371,6 +509,159 @@ export class UserOrderComponent implements OnInit {
       }
     );
   }
+
+
+
+  /**
+   * 备货录入
+   * num  (1:备货  2：备货并进入下一条)
+   */
+  stockEntry(num){
+    let isError = 0;
+    let arrStr = [];
+    for (let i = 0 ;i < this.orderInfo['result']['products_disintegrate'].length;i++){
+      let arr = this.sumPCount(this.orderInfo['result']['products_disintegrate'][i]['product_code'],i);
+      let goArray = {
+        'attach_id':this.orderInfo['result']['products_disintegrate'][i]['attach_id'],
+        'product_code':this.orderInfo['result']['products_disintegrate'][i]['product_code'],
+        'count':this.orderInfo['result']['products_disintegrate'][i]['choice_count']
+      };
+      arrStr.push(goArray);
+      if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == this.globalService.category29){
+        for (let a = 0 ;a < arr.length;a++){
+          if(arr[a].indexOf("0102") != 3){
+            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
+            isError++;
+          }
+        }
+      }else if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'm30' || this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'm31'){
+        for (let a = 0 ;a < arr.length;a++){
+          if(arr[a].indexOf("0105") != 3){
+            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
+            isError++;
+          }
+        }
+      }else if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'j30' || this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'j31'){
+        for (let a = 0 ;a < arr.length;a++){
+          if(arr[a].indexOf("0106") != 3){
+            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
+            isError++;
+          }
+        }
+      }else if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == this.globalService.category44 || this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'd30'){
+        for (let a = 0 ;a < arr.length;a++){
+          if(arr[a].indexOf("0103") != 3){
+            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
+            isError++;
+          }
+        }
+      }
+    }
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
+    if(isError <= 0){
+      this.globalService.httpRequest('post','putPrepare',{
+        'order_id':this.editStatusUserOrderId,
+        'join_list':JSON.stringify(arrStr),
+        'u_id':this.cookieStore.getCookie('uid'),
+        'sid':this.cookieStore.getCookie('sid')
+      }).subscribe( (data)=>{
+          alert(data['msg']);
+          if(data['status'] == 200){
+            // this.orderInfo['result']['frozeno_express_company'] = "顺丰";
+            this.orderInfo['result']['frozeno_express_code'] = this.expressCode;
+            this.getUserOrderList(this.page,'');
+            if(num == 1){
+              this.closeChoice();
+            }else if(num == 2){
+              // this.editStatusUserOrderId = 0;  //下一个备货的id
+              this.isNext = true;
+              this.getOrderInfo();
+            }
+          }else if(data['status'] == 202){
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+          }
+        },
+        response => {
+          console.log('PATCH call in error', response);
+        }
+      );
+    }else{
+      alert('录入信息有误，请检查');
+    }
+  }
+
+  /**
+   * 清空备货录入
+   */
+  clearStock(){
+    if(this.orderInfo['result']['products_disintegrate']){
+      for (let i = 0 ;i < this.orderInfo['result']['products_disintegrate'].length;i++){
+        this.orderInfo['result']['products_disintegrate'][i]['product_code'] = '';
+        this.orderInfo['result']['products_disintegrate'][i]['choice_count'] = 0;
+        // this.sumPCount(this.orderInfo['result']['products_disintegrate'][i]['product_code'],i);
+      }
+    }
+  }
+  /**
+   * 计算当前扫码个数
+   */
+  sumPCount(code,index){
+
+    let strArr = [];
+    let n = 13;
+    for (let i = 0, l = code.length; i < l/n; i++) {
+      let a = code.slice(n * i, n * (i + 1));
+      strArr.push(a);
+    }
+    this.orderInfo['result']['products_disintegrate'][index]['choice_count'] = strArr.length;
+    return strArr;
+  }
+
+  /**
+   * 发货框  快递单号录入
+   */
+  expressCodeInput(){
+    if(this.expressCode.trim() == ''){
+      alert('请填写快递单号！');
+      return false;
+    }
+    let param = {
+      'o_id':this.editStatusUserOrderId,
+      'express_code':this.expressCode,
+      // 'frozeno_order_state':3,
+      'u_id':this.cookieStore.getCookie('uid'),
+      'sid':this.cookieStore.getCookie('sid')
+    };
+    this.editExpress(param);
+  }
+
+
+  /**
+   * 发货框  num : 1:  发货  2:发货并显示下一条
+   */
+  sendOrderToExpress(num){
+    let param = {
+      'o_id': this.editStatusUserOrderId,
+      // 'express_code':this.expressCode,
+      'frozeno_order_state': 3,
+      'u_id': this.cookieStore.getCookie('uid'),
+      'sid': this.cookieStore.getCookie('sid')
+    };
+    this.editExpress(param);
+
+    this.getUserOrderList(this.page,'');
+    if(num == 1){
+      this.closeExpress();
+    }else if(num == 2){
+      // this.editStatusUserOrderId = 0;  //下一个发货的id
+      this.isNextSend = true;
+      this.getOrderInfo();
+    }
+  }
+
+
   /**
    * 演示账号输出
    * @param url
@@ -386,8 +677,10 @@ export class UserOrderComponent implements OnInit {
   /**
    * 顶部
    */
-  isStatusShow(o_id:any){
+  isStatusShow(o_id:any,state:string,prepare_state:string){
     this.editStatusUserOrderId = o_id;
+    this.editOrderState = state;
+    this.editPrepareState = prepare_state;
 
     this.isAll = 0;
     this.width = '0%';
@@ -412,4 +705,6 @@ export class UserOrderComponent implements OnInit {
   }
 
   @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;
+  @ViewChild('choiceExampleModal', { static: true }) public choiceExampleModal:ModalDirective;
+  @ViewChild('sendExampleModal', { static: true }) public sendExampleModal:ModalDirective;
 }

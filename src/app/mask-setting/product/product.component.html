@@ -1,0 +1,418 @@
+<div id="content">
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 ">
+                <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+                    <header>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">商品列表</a>
+                            </div>
+                        </nav>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding" >
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" >
+                                    <article>
+                                        <div class="navbar" style="width:100%;">
+                                            <form  class="navbar-form" role="search">
+                                                <!--*ngIf="isPermission(menu_id,'add')" *ngIf="isPermission(menu_id,'edit')"-->
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary" (click)="editId = 0;lgModal.show();"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editId == 0}" (click)="getProductInfo('edit')"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                                                </div>
+                                                <!--<div class="btn-group" >-->
+                                                    <!--<button type="button" [ngClass]="{'btn btn-danger':true,'not-click':editId == 0}" (click)="deleteProduct()"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>-->
+                                                <!--</div>-->
+                                                <!--*ngIf="isPermission(menu_id,'detail')"-->
+                                                <div class="btn-group">
+                                                    <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editId == 0}" (click)="getProductInfo('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editId == 0}" (click)="getProductInfo('img')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情图片排序</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </article>
+                                    <div class="">
+                                        <table class="table table-striped smart-form table-height-20 ">
+                                            <thead class="">
+                                            <tr>
+                                                <th>编号</th>
+                                                <th>名称 </th>
+                                                <th>价格</th>
+                                                <th>优惠价格</th>
+                                                <th>是否显示商城</th>
+                                                <th>是否参加折扣</th>
+                                                <th>是否减去导入仪后折扣</th>
+                                                <th>发布时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- class="table-color"-->
+                                            <tr *ngFor="let pl of productList?.result?.productList;let ind = index;" (click)="isStatusShow(pl.category_id)" [ngClass]="{'table-color':editId == pl.category_id}">
+                                                <td>{{ ind+1 }}</td>
+                                                <td>{{ pl.category_desc }}</td>
+                                                <td>{{ pl.frozeno_amount }}</td>
+                                                <td>{{ pl.frozeno_discount_amount }}</td>
+                                                <td>
+                                                    <span [ngSwitch]="pl.frozeno_is_show_app">
+                                                        <span class="label-normal" *ngSwitchCase="1">是</span>
+                                                        <span class="label-blue" *ngSwitchCase="0">否</span>
+                                                        <span class="label-unknown" *ngSwitchDefault>未知</span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span [ngSwitch]="pl.frozeno_is_discount">
+                                                        <span class="label-normal" *ngSwitchCase="1">是</span>
+                                                        <span class="label-blue" *ngSwitchCase="0">否</span>
+                                                        <span class="label-unknown" *ngSwitchDefault>未知</span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span [ngSwitch]="pl.frozeno_is_sub_dry">
+                                                        <span class="label-normal" *ngSwitchCase="1">是</span>
+                                                        <span class="label-blue" *ngSwitchCase="0">否</span>
+                                                        <span class="label-unknown" *ngSwitchDefault>未知</span>
+                                                    </span>
+                                                </td>
+                                                <td>{{ pl.created_at }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>
+
+<!--新增修改 上传 -->
+<div bsModal #lgModal="bs-modal" class="modal fade bd-example-modal-xl" id="productScrollable" tabindex="-1" role="dialog" aria-labelledby="productScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!--添加、修改、详情-->
+                <h5 class="modal-title" *ngIf="editId == 0">添加</h5>
+                <h5 class="modal-title" *ngIf="editId != 0">修改</h5>
+                <button type="button" class="close" (click)="lgModal.hide()" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body height-overflow-380">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label txt-color-blue">商品名称<span class="asterisk-color">*</span></label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" placeholder="商品名称" name="category_desc" [(ngModel)]="category_desc" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-2 col-form-label txt-color-blue">商品价格<span class="asterisk-color">*</span></label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" placeholder="商品价格" name="frozeno_amount" [(ngModel)]="frozeno_amount" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label class="col-sm-2 col-form-label txt-color-blue">优惠价格<span class="asterisk-color">*</span></label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" placeholder="优惠价格" name="frozeno_discount_amount" [(ngModel)]="frozeno_discount_amount" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label ">是否显示在商城</label>
+                        <div class="col-sm-10">
+                            <ng-container>
+                                <input type="radio" name="frozeno_is_show_app" [(ngModel)]="frozeno_is_show_app" [value]="1" [checked]="frozeno_is_show_app==1" (click)="onCheck(1,1)"> 是
+                                <input type="radio" name="frozeno_is_show_app" [(ngModel)]="frozeno_is_show_app" [value]="0" [checked]="frozeno_is_show_app==0" (click)="onCheck(1,0)"> 否
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label ">是否享受折扣</label>
+                        <div class="col-sm-10">
+                            <ng-container>
+                                <input type="radio" name="frozeno_is_discount" [(ngModel)]="frozeno_is_discount" [value]="1" [checked]="frozeno_is_discount==1" (click)="onCheck(2,1)"> 是
+                                <input type="radio" name="frozeno_is_discount" [(ngModel)]="frozeno_is_discount" [value]="0" [checked]="frozeno_is_discount==0" (click)="onCheck(2,0)"> 否
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label ">是否减去导入仪后计算折扣</label>
+                        <div class="col-sm-10">
+                            <ng-container>
+                                <input type="radio" name="frozeno_is_sub_dry" [(ngModel)]="frozeno_is_sub_dry" [value]="1" [checked]="frozeno_is_sub_dry==1" (click)="onCheck(3,1)"> 是
+                                <input type="radio" name="frozeno_is_sub_dry" [(ngModel)]="frozeno_is_sub_dry" [value]="0" [checked]="frozeno_is_sub_dry==0" (click)="onCheck(3,0)"> 否
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="form-group row" >
+                        <label class="col-sm-2 col-form-label">可使用的新人卡券金额</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" placeholder="可使用的新人卡券金额" name="frozeno_ticket_amount" [(ngModel)]="frozeno_ticket_amount" [ngModelOptions]="{standalone: true}">
+                        </div>
+                    </div>
+                </form>
+                <div class="form-group row">
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">产品首页图片</h5>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
+                                    <span class="picture-list" *ngFor="let img1 of selectedImageUrl1;let ind1 = index;">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(1,img1.uploadID)"></a>
+                                        <img width="90px" height="90px" src="{{img1.url}}">
+                                    </span>
+                                    <span class="picture-list" *ngFor="let pi1 of path1;let pind1 = index;">
+                                        <img width="90px" height="90px" src="{{pi1}}">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(1,pind1)"></a>
+                                    </span>
+                                    <span class="picture-list" *ngFor="let imga1 of imageAd1;let imgInd1 = index;">
+                                        <img width="90px" height="90px" [src]="imga1.image_url">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(1,imga1.img_id,imgInd1)"></a>
+                                    </span>
+                                    <div class="picture-list">
+                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader1" multiple (change)="selectedFileOnChangedFun(1)"/>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(1)">图片上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">产品顶部图片</h5>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
+                                    <span class="picture-list 1" *ngFor="let img3 of selectedImageUrl3;let ind3 = index;">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(3,img3.uploadID)"></a>
+                                        <img width="90px" height="90px" src="{{img3.url}}">
+                                    </span>
+                                    <span class="picture-list 2" *ngFor="let pi3 of path3;let pind3 = index;">
+                                        <img width="90px" height="90px" src="{{pi3}}">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(3,pind3)"></a>
+                                    </span>
+                                    <span class="picture-list 3" *ngFor="let img3 of imageAd3;let imgInd3 = index;">
+                                        <img width="90px" height="90px" [src]="img3.image_url">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(3,img3.img_id,imgInd3)"></a>
+                                    </span>
+                                    <div class="picture-list">
+                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader3" multiple (change)="selectedFileOnChangedFun(3)"/>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(3)">图片上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">产品详情图片</h5>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
+                                    <span class="picture-list 1" *ngFor="let img2 of selectedImageUrl2;let ind2 = index;">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(2,img2.uploadID)"></a>
+                                        <img width="90px" height="90px" src="{{img2.url}}">
+                                    </span>
+                                    <span class="picture-list 2" *ngFor="let pi2 of path2;let pind2 = index;">
+                                        <img width="90px" height="90px" src="{{pi2}}">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(2,pind2)"></a>
+                                    </span>
+                                    <span class="picture-list 3" *ngFor="let img2 of imageAd2;let imgInd2 = index;">
+                                        <img width="90px" height="90px" [src]="img2.image_url">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(2,img2.img_id,imgInd2)"></a>
+                                    </span>
+                                    <div class="picture-list">
+                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader2" multiple (change)="selectedFileOnChangedFun(2)"/>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(2)">图片上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">产品详情科技图片</h5>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
+                                    <span class="picture-list 1" *ngFor="let img4 of selectedImageUrl4;let ind4 = index;">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(4,img4.uploadID)"></a>
+                                        <img width="90px" height="90px" src="{{img4.url}}">
+                                    </span>
+                                    <span class="picture-list 2" *ngFor="let pi4 of path4;let pind4 = index;">
+                                        <img width="90px" height="90px" src="{{pi4}}">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(4,pind4)"></a>
+                                    </span>
+                                    <span class="picture-list 3" *ngFor="let img4 of imageAd4;let imgInd4 = index;">
+                                        <img width="90px" height="90px" [src]="img4.image_url">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(4,img4.img_id,imgInd4)"></a>
+                                    </span>
+                                    <div class="picture-list">
+                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader4" multiple (change)="selectedFileOnChangedFun(4)"/>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(4)">图片上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="form-group row">-->
+                    <!--<label class="col-sm-2 col-form-label">排序</label>-->
+                    <!--<div class="col-sm-10">-->
+                        <!--<input class="form-control" type="number" placeholder="请输入顺序" name="weight" [(ngModel)]="weight" [ngModelOptions]="{standalone: true}">-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  (click)="submitCategory()">保存</button>
+                <button type="button" class="btn btn-secondary" (click)="lgModal.hide()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--详情-->
+<div bsModal #detailModal="bs-modal" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{productInfo.result?.o_order}}</h4>
+                <button type="button" class="close" (click)="detailModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-overflow-y">
+                <div class="m-order">
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品名称：</span>{{productInfo?.result?.category_desc}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品价格：</span>{{productInfo?.result?.frozeno_amount}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品优惠价：</span>{{productInfo?.result?.frozeno_discount_amount}}</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">销售方：</span>冻龄智美</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">负责人：</span>谷子健</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">产品个数：</span>{{productInfo?.result?.frozeno_category_count}}</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">创建时间：</span>{{productInfo?.result?.created_at}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">更新信息时间：</span>{{productInfo?.result?.updated_at}}</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">是否显示商城：{{productInfo?.result?.frozeno_is_show_app == 1 ? '是':'否'}}</span></div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">是否参加折扣：</span>{{productInfo?.result?.frozeno_is_discount == 1 ? '是':'否'}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">是否减去导入仪后参加折扣：</span>{{productInfo?.result?.frozeno_is_sub_dry == 1 ? '是':'否'}}</div>
+                    </div>
+
+                    <div class="row m-orderdetails">
+                        <div><span>首页主页图片：</span>
+                            <div *ngFor="let pi of productInfo?.result?.product_image">
+                                <img src="{{pi.image_url}}" *ngIf="pi.type == 3">
+                            </div>
+                        </div>
+                        <div><span>详情顶部图片：</span>
+                            <div *ngFor="let pi1 of productInfo?.result?.product_image">
+                                <img src="{{pi1.image_url}}" *ngIf="pi1.type == 1">
+                            </div>
+                        </div>
+                        <div><span>详情图片：</span>
+                            <div *ngFor="let pi2 of productInfo?.result?.product_image">
+                                <img src="{{pi2.image_url}}" *ngIf="pi2.type == 2 && pi2.detail_type == 1">
+                            </div>
+                        </div>
+                        <div><span>详情科技图片：</span>
+                            <div *ngFor="let pi3 of productInfo?.result?.product_image">
+                                <img src="{{pi3.image_url}}" *ngIf="pi3.type == 2 && pi3.detail_type == 2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="detailModal.hide()">
+                    返回
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--详情图片权重排序-->
+<div bsModal #imgModal="bs-modal" class="modal fade" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{productInfo.result?.category_desc}}</h4>
+                <button type="button" class="close" (click)="imgModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-overflow-y">
+                <div class="m-order">
+                    <div class="row m-orderdetails">
+                        <div><span>首页主页图片：</span>
+                            <div *ngFor="let pi of productInfo?.result?.product_image">
+                                <img src="{{pi.image_url}}" *ngIf="pi.type == 3">
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pi.weight" value="{{pi.weight}}" *ngIf="pi.type == 3" placeholder="请输入权重" (change)="doPushEditImg(pi)">
+                            </div>
+                        </div>
+                        <div><span>详情顶部图片：</span>
+                            <div *ngFor="let pi1 of productInfo?.result?.product_image">
+                                <img src="{{pi1.image_url}}" *ngIf="pi1.type == 1">
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pi1.weight" value="{{pi1.weight}}" *ngIf="pi1.type == 1" placeholder="请输入权重" (change)="doPushEditImg(pi1)">
+                            </div>
+                        </div>
+                        <div><span>详情图片：</span>
+                            <div *ngFor="let pi2 of productInfo?.result?.product_image">
+                                <img src="{{pi2.image_url}}" *ngIf="pi2.type == 2 && pi2.detail_type == 1">
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pi2.weight" value="{{pi2.weight}}" *ngIf="pi2.type == 2 && pi2.detail_type == 1" placeholder="请输入权重" (change)="doPushEditImg(pi2)">
+                            </div>
+                        </div>
+                        <div><span>详情科技图片：</span>
+                            <div *ngFor="let pi3 of productInfo?.result?.product_image">
+                                <img src="{{pi3.image_url}}" *ngIf="pi3.type == 2 && pi3.detail_type == 2">
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pi3.weight" value="{{pi3.weight}}" *ngIf="pi3.type == 2 && pi3.detail_type == 2" placeholder="请输入权重" (change)="doPushEditImg(pi3)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  (click)="submitDetailImg()">保存</button>
+                <button type="button" class="btn btn-default" (click)="imgModal.hide()">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--删除-->
+<!--<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog modal-sm" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--...-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--选不用裁剪的图片-->
+<!--<app-select-file [select_type]="select_type" [imgList]="imgList" (select_types)="getSelectTypes()" (imgLists)="getImgLists($event)"></app-select-file>-->

@@ -5,7 +5,8 @@ import {Router} from '@angular/router';
 import {GlobalService} from '../../core/global.service';
 import {ModalDirective} from "ngx-bootstrap";
 import {FileUploader} from "ng2-file-upload";
-import {isUndefined} from "util";
+import {isNull, isUndefined} from "util";
+import {stringify} from "querystring";
 
 @FadeInTop()
 @Component({
@@ -19,22 +20,20 @@ export class PostComponent implements OnInit {
   page : any;
   postInfo:any = [];
 
-  title:string;
-  href:string;
-  tag:string;
-  introduction:string;
+  title:string='';
+  href:string='';
+  tag:string='';
+  introduction:string='';
   type:number=0;
   state:number=1;
   is_href:number=2;
   weight:number=0;
-  theme:string;
-  startDate:string;
-  endDate:string;
-  description:string;
+  theme:string='';
+  startDate:string='';
+  endDate:string='';
+  description:string='';
 
-  imageAd:string;    //广告图片
-  imageHead:string;  //封面图片
-
+  imageAd:any=[];    //广告图片
   // 初始化上次图片变量
   public uploader:FileUploader = new FileUploader({
     url: this.globalService.getDomain() + "/api/v1/uploadFile",
@@ -50,8 +49,8 @@ export class PostComponent implements OnInit {
   checkTypeId: number = 0;
   checkTypeName: string = '全部';
   url : string = this.globalService.getDomain();
-  path:string = '';
-  path2:string = '';
+  path:any = [];
+  delete_id:any = [];
   /**菜单id */
   menu_id:any;
   /** 权限 */
@@ -84,7 +83,10 @@ export class PostComponent implements OnInit {
       {'id':14,'name':'冻龄智美服务协议'},
       {'id':15,'name':'隐私政策'},
       {'id':16,'name':'会员体系图片'},
-      {'id':17,'name':'售后图片'}
+      {'id':17,'name':'售后图片'},
+      {'id':18,'name':'工作台发圈头部广告'},
+      {'id':19,'name':'工作台发圈文章'},
+      {'id':20,'name':'公众号发文对应'}
     ];
   }
 
@@ -112,7 +114,7 @@ export class PostComponent implements OnInit {
   }
 
   // C: 定义事件，选择文件
-  selectedFileOnChanged(index) {
+  selectedFileOnChanged(index=0) {
     let $this = this;
     let selectedArr = this.selectedImageUrl;
     this.uploader.queue.forEach((q,i)=>{
@@ -144,6 +146,7 @@ export class PostComponent implements OnInit {
   uploadFile(num) {
     // 上传
     let that = this;
+    let len = that.uploader.queue.length;
     this.uploader.queue.forEach((q,i)=> {
       if (!isUndefined(that.uploader.queue[i])) {
         that.uploader.queue[i].onSuccess = function (response, status, headers) {
@@ -151,14 +154,19 @@ export class PostComponent implements OnInit {
           // 上传文件成功
           if (status == 200) {
             // 上传文件后获取服务器返回的数据
-            if(num == 1){
-              that.path = tempRes['result'];
-              that.imageAd = '';
-            }else if(num == 2){
-              that.path2 = tempRes['result'];
-              that.imageHead = '';
+            // if(num == 1){
+              // that.path = tempRes['result'];
+              that.path.push(tempRes['result']);
+              that.imageAd = [];
+            // }else if(num == 2){
+            //   // that.path2 = tempRes['result'];
+            //   that.path2.push(tempRes['result']);
+            //   that.imageHead = '';
+            // }
+            if((i+1) >= len) {
+              that.selectedImageUrl = [];
+              alert("上传成功!");
             }
-            alert("上传成功!");
           } else {
             // 上传文件后获取服务器返回的数据错误
             alert(tempRes['msg']);
@@ -171,7 +179,10 @@ export class PostComponent implements OnInit {
     });
   }
 
-
+  /**
+   * 移除队列中的图片
+   * @param uploadID
+   */
   removeUpload(uploadID) {
     //删除图片
     this.uploader.queue[uploadID].remove();
@@ -181,6 +192,19 @@ export class PostComponent implements OnInit {
     });
     this.imgCount = this.uploader.queue.length;
     console.log(this.uploader);
+  }
+
+  //移除上传成功的图片
+  removePath(pind){
+    this.path.splice(pind, 1);
+  }
+
+  //移除修改数据库图片
+  removeImg(img_id,imgIndex) {
+    if(img_id && !isNull(img_id)) {
+      this.delete_id.push(img_id);
+    }
+    this.imageAd.splice(imgIndex,1);
   }
 
   onCheckState(radio) {
@@ -197,6 +221,12 @@ export class PostComponent implements OnInit {
   isStatusShow(id:any){
     this.editId = id;
   }
+
+  showLgModal(){
+    this.editId = 0;
+    this.lgModal.show();
+  }
+
   /**
    * 获取文章列表
    * @param num
@@ -258,8 +288,8 @@ export class PostComponent implements OnInit {
       'tag':this.tag,
       'introduction':this.introduction,
       'description':this.description,
-      'b_image_url':this.path,
-      's_image_url':this.path2,
+      'image_url':JSON.stringify(this.path),
+      'delete_id':JSON.stringify(this.delete_id),
       'type':this.type,
       'state':this.state,
       'is_href':this.is_href,
@@ -297,8 +327,8 @@ export class PostComponent implements OnInit {
     this.startDate = '';
     this.endDate = '';
     this.description = '';
-    this.path = '';
-    this.path2 = '';
+    this.path = [];
+    // this.path2 = [];
   }
 
   /**
@@ -349,8 +379,8 @@ export class PostComponent implements OnInit {
     this.introduction = info['introduction'];
     this.description = info['description'];
 
-    this.imageAd = this.globalService.domain + info['b_image_url'];
-    this.imageHead = this.globalService.domain + info['s_image_url'];
+    this.imageAd = info['img'];
+    // this.imageHead = this.globalService.domain + info['s_image_url'];
   }
   /**
    * 删除文章
@@ -371,7 +401,6 @@ export class PostComponent implements OnInit {
           }else if(data['status'] == 200){
             this.getPostList(this.page);
           }
-
         });
     }
   }

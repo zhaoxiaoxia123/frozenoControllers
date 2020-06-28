@@ -37,9 +37,11 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.globalService.httpRequest('get','getNewMessages?u_id=' + this.uid+'&category=notice,warning,task')
         .subscribe((data) => {
           this.messageList = data;
-          this.taskMessageList = this.messageList['result']['task'];
-          this.noticeMessageList = this.messageList['result']['notice'];
-          this.warningMessageList = this.messageList['result']['warning'];
+          if(this.messageList) {
+            this.taskMessageList = this.messageList['result']['task'];
+            this.noticeMessageList = this.messageList['result']['notice'];
+            this.warningMessageList = this.messageList['result']['warning'];
+          }
         });
   }
 
