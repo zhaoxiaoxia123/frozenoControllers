@@ -35,6 +35,11 @@ export const routes: Routes = [
         path: 'product',
         loadChildren: 'app/mask-setting/product/product.module#ProductModule',
         data: {pageTitle: 'product'}
+    },
+    {
+        path: 'jurisdiction',
+        loadChildren: 'app/mask-setting/jurisdiction/jurisdiction.module#JurisdictionModule',
+        data: {pageTitle: 'jurisdiction'}
     }
 ];
 

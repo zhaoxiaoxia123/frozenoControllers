@@ -1,4 +1,7 @@
 /*用户订单详情*/
+.m-order{
+    padding-top:20px;
+}
 .m-orderdetails{
     padding:6px 0;
 }
@@ -7,4 +10,30 @@
 }
 .m-orderdetails-alert{
     margin-top:20px;
+}
+.m-order-money{
+    color:red;
+    font-size:18px;
+}
+.m-order-colspan{
+    background-color:#e2e3e5!important;
+}
+
+.jurisdiction{
+    padding:20px;
+}
+.jurisdiction-content{
+    padding:2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+}
+.jurisdiction-hd{
+    font-size: 1.4rem;
+    padding-bottom: 20px;
+    text-align:center;
+}
+.mall-routine{
+    width:200px;
+    height:200px;
 }

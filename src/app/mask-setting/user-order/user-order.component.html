@@ -68,31 +68,6 @@
                                 </div>
                             </article>
                             <div style="padding:0;">
-                                <!--<div *ngIf="isAll != 0" [ngStyle]="{'padding': '0','z-index': '2','width':width,'float':'left'}" class="table-scrolling padding0">-->
-                                    <!--<table class="table table-striped   smart-form table-height-20">-->
-                                        <!--<thead>-->
-                                        <!--<tr>-->
-                                            <!--<td>-->
-                                                <!--<label class="checkbox mt-8">-->
-                                                    <!--<input type="checkbox" name="checkbox-inline" [checked]="check" (change)="changeCheckAll($event)">-->
-                                                    <!--<i></i>-->
-                                                <!--</label>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                        <!--</thead>-->
-                                        <!--<tbody *ngIf="orderList">-->
-                                        <!--<tr *ngFor="let sl of orderList?.result?.data">-->
-                                            <!--<td>-->
-                                                <!--<label class="checkbox mt-8">-->
-                                                    <!--<input type="checkbox" value="{{ sl.o_id }}" [checked]="selects[sl.o_id]" (change)="handle($event)">-->
-                                                    <!--<i></i>-->
-                                                <!--</label>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-                                    <!--</table>-->
-                                <!--</div>-->
-                                <!--[ngStyle]="{'padding': '0','z-index': '2','width':width_1,'float':'left'}"-->
                                 <div class="table-scrolling padding0 printonly">
                                     <table class="table table-striped smart-form table-height-20">
                                         <thead>
@@ -100,14 +75,11 @@
                                             <th>序号</th>
                                             <th>订单编号</th>
                                             <th>来源</th>
-                                            <th>购买方</th>
+                                            <th>购买人</th>
                                             <th>销售方</th>
                                             <th>负责人</th>
-<<<<<<< HEAD
-                                            <!--<th>产品明细</th>-->
-=======
                                             <th>商品明细</th>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
+
                                             <th>总金额</th>
                                             <th>状态</th>
                                             <th>下单时间</th>
@@ -118,11 +90,9 @@
                                             <td>{{(ind+1)}}</td>
                                             <td *ngIf="sl.o_is_complete == 3" style="color: blue;">{{ sl.o_order }}</td>
                                             <td *ngIf="sl.o_is_complete != 3">{{ sl.o_order }}</td>
-<<<<<<< HEAD
                                             <td data-toggle="tooltip" data-placement="top" title="{{sl.order_name}}">{{ sl.frozeno_order_name }}</td>
-                                            <td>{{ sl.c_name?sl.c_name:sl.c_phone }}</td>
-=======
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
+                                            <!--姓名  手机号码-->
+                                            <td>{{ sl.c_name?sl.c_name:sl.c_phone }}&nbsp;&nbsp;15228592891</td>
                                             <!--小程序商城
                                             经销商管理平台
                                             -->
@@ -133,15 +103,8 @@
                                                 </span>
                                             </td>
                                             <td>谷子健</td>
-<<<<<<< HEAD
-                                            <!--<td>冻龄智美</td>-->
+                                            <td data-toggle="tooltip" data-placement="top" title="无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20</td>
                                             <td>{{ sl.frozeno_rate_amount }}</td>
-=======
-                                            <td>冻龄智美</td>
-                                            <td>{{ sl.c_name }}</td>
-                                            <td data-toggle="tooltip" data-placement="top" title="无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">{{ sl.frozeno_order_name }}</td>
-                                            <td>{{ sl.c_name?sl.c_name:sl.c_phone }}</td>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
                                             <td>
                                                 <!--管理员可取消——未支付、待备货、待发货销售单里面的订单审核通过自动生成用户订单
                                                 状态：未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款
@@ -150,7 +113,6 @@
                                                 -->
                                                 <span [ngSwitch]="sl.frozeno_order_state">
                                                   <span class="label-normal" *ngSwitchCase="1">未支付</span>
-<<<<<<< HEAD
                                                   <span class="label-blue" *ngSwitchCase="2">
                                                      <span *ngIf="sl.frozeno_prepare_state == 1">
                                                       待备货</span>
@@ -158,16 +120,9 @@
                                                       待发货</span>
                                                   </span>
                                                   <span class="label-full" *ngSwitchCase="3">待收货</span>
-                                                  <span class="label-full" *ngSwitchCase="4">交易完成</span>
-                                                  <span class="label-full" *ngSwitchCase="5">订单已取消</span>
-                                                  <span class="label-full" *ngSwitchCase="6">审核取消订单</span>
-=======
-                                                  <span class="label-blue" *ngSwitchCase="2">待备货</span>
-                                                  <span class="label-full" *ngSwitchCase="3">待收货</span>
                                                   <span class="label-full" *ngSwitchCase="4">交易成功</span>
                                                   <span class="label-full" *ngSwitchCase="5">交易失败</span>
                                                   <span class="label-full" *ngSwitchCase="6">交易失败</span>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
                                                   <span class="label-full" *ngSwitchCase="7">已退款</span>
                                                   <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>
@@ -176,8 +131,8 @@
                                         </tr>
                                         </tbody>
                                         <tbody *ngIf="orderList?.result?.data.length == 0">
-                                            <tr>
-                                                <td colspan="9">没有数据。</td>
+                                            <tr style="text-align: center;">
+                                                <td colspan="10">没有数据。</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -276,12 +231,10 @@
                             <button type="button" class="btn btn-warning" (click)="beforePrint()">打印</button>
                         </div>
                         <div class="bg-light" style="padding:10px;">
-<<<<<<< HEAD
                             <p>下单套装：</p>
                             <span *ngFor="let p of orderInfo?.result?.products">
                                 <span>{{p.category_desc}}*{{p.product_count}}</span>&nbsp;&nbsp;
                             </span>
-=======
 
                             <form  class="navbar-form" role="search">
                                 <div class="btn-group" style="display: inline-block;">
@@ -309,7 +262,6 @@
                                 </div>
                             </form>
 
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
                         </div>
                         <!--<button type="button" class="btn btn-primary" style="float: right" (click)="stockEntry()">备货录入</button>-->
                         <table class="table table-striped table-forum">
@@ -322,7 +274,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-<<<<<<< HEAD
                                 <tr *ngFor="let pd of orderInfo?.result?.products_disintegrate;let ind = index;">
                                     <td>{{pd.category_desc}}</td>
                                     <td>{{pd.product_count}}</td>
@@ -331,7 +282,6 @@
                                         <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pd.product_code" value="{{pd.product_code}}" (change)="sumPCount(pd.product_code,ind)" placeholder="请扫码或输入" [ngStyle]="{'border-color': (((pd.product_count != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}">
                                     </td>
                                 </tr>
-=======
                             <tr>
                                 <td >无创水光尊享礼盒</td>
                                 <td>5</td>
@@ -342,7 +292,6 @@
                                 <td>5</td>
                                 <td>3</td>
                             </tr>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
                             </tbody>
                         </table>
                         <div class="bg-light" style="padding:10px;">
@@ -451,84 +400,91 @@
                 </div>
                 <div class="modal-body text-overflow-y">
                     <div class="m-order">
+                        <div class="alert alert-secondary" role="alert">
+                            基本信息
+                        </div>
                         <div class="row m-orderdetails">
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">订单编号：</span>{{orderInfo?.result?.o_order}}</div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">来源：</span>
                                 <span *ngIf="orderInfo?.result?.frozeno_seller == 1">小程序商城</span>
                                 <span *ngIf="orderInfo?.result?.frozeno_seller == 2">商户管理平台</span>
-                                </div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">购买方：</span>{{orderInfo?.result?.c_name}}</div>
+                            </div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">购买人：</span>{{orderInfo?.result?.c_name}}&nbsp;&nbsp;15228592891</div>
                         </div>
                         <div class="row m-orderdetails">
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">销售方：</span>冻龄智美</div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">负责人：</span>谷子健</div>
                         </div>
-                        <div class="row m-orderdetails">
-<<<<<<< HEAD
-                            <div class="col-12 "><span class="m-orderdetails-title">产品明细：</span>{{orderInfo?.result?.order_name}}</div>
-=======
-                            <div class="col-12 "><span class="m-orderdetails-title">商品明细：</span>无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20</div>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
+
+                </div>
+
+
+                <div class="m-order">
+                    <div class="alert alert-secondary" role="alert">
+                        订单信息
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-12 "><span class="m-orderdetails-title">商品明细：</span>{{orderInfo?.result?.order_name}}</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-12 ">
+                            <button type="button" class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">查看详情</button>
                         </div>
-                        <div class="row m-orderdetails">
-                            <div class="col-12 ">
-                                <button type="button" class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">查看详情</button>
-                            </div>
+                    </div>
+                    <div class="m-order">
+                        <div class="collapse" id="collapseExample">
+                            <!--商品明细-->
+                            <!--</div>-->
+                            <!--表格默认最少显示5行-->
+                            <table class="table table-striped table-forum">
+                                <thead>
+                                <tr>
+                                    <th scope="col">序号</th>
+                                    <th scope="col">商品编号</th>
+                                    <th scope="col">名称</th>
+                                    <th scope="col">数量</th>
+                                    <th scope="col">单价</th>
+                                    <th scope="col">折扣</th>
+                                    <th scope="col">折扣价</th>
+                                    <th scope="col">金额</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
+                                    <td>{{(ind+1)}}</td>
+                                    <td>64646464</td>
+                                    <td>{{pd.category_desc}}</td>
+                                    <td>{{pd.product_count}}</td>
+                                    <td>{{pd.product_before_amount}}</td>
+                                    <td>{{pd.frozeno_customer_discount?pd.frozeno_customer_discount:0}}折</td>
+                                    <td>222</td>
+                                    <td>{{pd.product_amount}}</td>
+                                <tr>
+                                    <td >1</td>
+                                    <td>64646464</td>
+                                    <td>无创水光尊享礼盒</td>
+                                    <td>1</td>
+                                    <td>222</td>
+                                    <td>3.5折</td>
+                                    <td>222</td>
+                                    <td>222</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{orderInfo?.result?.totalAmount}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="m-order">
-                            <div class="collapse" id="collapseExample">
-                                <!--<div class="alert alert-primary m-orderdetails-alert" role="alert">-->
-                                    <!--商品明细-->
-                                <!--</div>-->
-                                <!--表格默认最少显示5行-->
-                                <table class="table table-striped table-forum">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">序号</th>
-<<<<<<< HEAD
-=======
-                                        <th scope="col">商品编号</th>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
-                                        <th scope="col">名称</th>
-                                        <th scope="col">数量</th>
-                                        <th scope="col">单价</th>
-                                        <th scope="col">折扣</th>
-                                        <th scope="col">金额</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-<<<<<<< HEAD
-                                    <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
-                                        <td>{{(ind+1)}}</td>
-                                        <td>{{pd.category_desc}}</td>
-                                        <td>{{pd.product_count}}</td>
-                                        <td>{{pd.product_before_amount}}</td>
-                                        <td>{{pd.frozeno_customer_discount?pd.frozeno_customer_discount:0}}折</td>
-                                        <td>{{pd.product_amount}}</td>
-=======
-                                    <tr>
-                                        <td >1</td>
-                                        <td>64646464</td>
-                                        <td>无创水光尊享礼盒</td>
-                                        <td>1</td>
-                                        <td>222</td>
-                                        <td>222</td>
-                                        <td>222</td>
-                                        <td>222</td>
->>>>>>> b5425485d2ae23d958b743fe07a5b3e8c68212c2
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>{{orderInfo?.result?.totalAmount}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    </div>
+
                     <div class="row m-orderdetails">
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">运费：</span>¥ 0.00</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">优惠券：</span>¥ {{orderInfo?.result?.ticket_amount?orderInfo?.result?.ticket_amount:0}}</div>
@@ -559,33 +515,49 @@
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">发货时间：</span>{{orderInfo?.result?.frozeno_send_time}}</div>
                     </div>
 
+
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">备货人：</span>黄浩能</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">发货人：</span>{{orderInfo?.result?.frozeno_express_u_id}}</div>
+                    </div>
+
+                </div>
+
+                <div class="m-order">
+
+                    <div class="alert alert-secondary" role="alert">
+                        物流信息
+                    </div>
                     <div class="row m-orderdetails">
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">物流公司：</span>{{orderInfo?.result?.frozeno_express_company}}</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">快递单号：</span>{{orderInfo?.result?.frozeno_express_code}}</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">出货仓库：</span></div>
                     </div>
-                    <div class="row m-orderdetails">
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">备货人：</span>黄浩能</div>
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">发货人：</span>{{orderInfo?.result?.frozeno_express_u_id}}</div>
-                    </div>
+
                 </div>
+
+
                 <div class="m-order" *ngIf="orderInfo?.result?.name">
+                    <div class="alert alert-secondary" role="alert">
+                        配送信息
+                    </div>
                     <div class="row m-orderdetails">
-                        <div class="col-6 col-md-4 "><span class="m-orderdetails-title">配送地址————</span></div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">姓名：</span>{{orderInfo?.result?.name}}</div>
                         <div class="col-6 col-md-4 "><span class="m-orderdetails-title">手机号：</span>{{orderInfo?.result?.phone}}</div>
+                        <div class="col-12 col-md-4"><span class="m-orderdetails-title">邮编：</span>{{orderInfo?.result?.zip}}</div>
                     </div>
                     <div class="row m-orderdetails">
-                        <div class="col-12 col-md-4"><span class="m-orderdetails-title">邮编：</span>{{orderInfo?.result?.zip}}</div>
                         <div class="col-12 col-md-8"><span class="m-orderdetails-title">详细地址：</span>{{orderInfo?.result?.province}}{{orderInfo?.result?.city}}{{orderInfo?.result?.area}}{{orderInfo?.result?.address}}</div>
                     </div>
                 </div>
                     <!--需要开发票时显示-->
                 <div class="m-order" *ngIf="orderInfo?.result?.invoice?.username">
+                    <div class="alert alert-secondary" role="alert">
+                        发票信息
+                    </div>
                     <div class="row m-orderdetails">
-                        <div class="col-6 col-md-4 "><span class="m-orderdetails-title">发票————</span></div>
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">名称：</span>{{orderInfo?.result?.invoice?.username}}</div>
-                        <div class="col-6 col-md-4 "><span class="m-orderdetails-title">电话号码：</span>{{orderInfo?.result?.invoice?.phone}}</div>
+                        <div class="col-6 col-md-6"><span class="m-orderdetails-title">名称：</span>{{orderInfo?.result?.invoice?.username}}</div>
+                        <div class="col-6 col-md-6 "><span class="m-orderdetails-title">电话号码：</span>{{orderInfo?.result?.invoice?.phone}}</div>
                     </div>
                     <div class="row m-orderdetails">
                         <div class="col-12 col-md-6 "><span class="m-orderdetails-title">税号：</span>{{orderInfo?.result?.invoice?.tax_number}}</div>
@@ -596,6 +568,55 @@
                         <div class="col-12 col-md-6"><span class="m-orderdetails-title">银行账户：</span>{{orderInfo?.result?.invoice?.bank_account}}</div>
                     </div>
                 </div>
+
+                <div class="m-order">
+                    <div class="alert alert-secondary" role="alert">
+                        财务信息
+                    </div>
+
+                    <!--佣金可提现总金额：订单金额-导入仪-运费-税费 -->
+                    <!--</div>-->
+                    <!--表格默认最少显示5行-->
+                    <table class="table table-striped table-forum">
+                        <thead>
+                        <tr>
+                            <th scope="col">购买人</th>
+                            <th scope="col">订单编号</th>
+                            <th scope="col">会员等级</th>
+                            <th scope="col">等级</th>
+                            <th scope="col">总金额</th>
+                            <th scope="col">佣金</th>
+                            <th scope="col">状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr >
+                            <td>张三&nbsp;&nbsp;15228592891</td>
+                            <td>64646464</td>
+                            <td>VIP</td>
+                            <td>一级</td>
+                            <td>666</td>
+                            <td>12</td>
+                            <td>已结算</td>
+                        <tr>
+                        <tr >
+                            <td>张三&nbsp;&nbsp;15228592891</td>
+                            <td>64646464</td>
+                            <td>VIP</td>
+                            <td>一级</td>
+                            <td>666</td>
+                            <td>12</td>
+                            <td>已结算</td>
+                        <tr>
+                        <tr class="m-order-colspan">
+                            <td colspan="7">订单总佣金：<span class="m-order-money">48</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" (click)="lgModal.hide()">

@@ -1,0 +1,176 @@
+<div id="content">
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 ">
+                <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+
+                    <header>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">经销商授权管理</a>
+                            </div>
+                        </nav>
+                    </header>
+
+                    <div style="min-height: 600px;border-bottom: 1px solid #ccc;">
+                        <div class="widget-body no-padding" >
+
+                            <article>
+                                <div class="navbar" style="width:100%;border-bottom:1px solid #e2e3e5;">
+
+                                    <form  class="navbar-form" novalidate="" role="search" >
+
+                                        <div class="btn-group">
+                                            <input type="text" class="form-control" placeholder="请输入电话号码">
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn default-btn" >搜索</button>
+                                        </div>
+                                        <!--<div class="btn-group">-->
+                                            <!--<button type="button" class="btn btn-primary" >-->
+                                                <!--<span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span>-->
+                                                <!--<span>刷新</span>-->
+                                            <!--</button>-->
+                                        <!--</div>-->
+
+                                    </form>
+
+                                    <!--<form  class="navbar-form" novalidate="" role="search" >-->
+                                        <!--<div class="btn-group">-->
+                                            <!--<button type="button"  class="btn btn-warning"  data-toggle="collapse" href="#upgrade" role="button" aria-expanded="false" aria-controls="upgrade">用户升级</button>-->
+                                        <!--</div>-->
+                                        <!--<div class="btn-group">-->
+                                            <!--<button type="button" class="btn btn-primary" data-toggle="collapse" href="#coupon" role="button" aria-expanded="false" aria-controls="coupon">邀请授权自动发优惠券</button>-->
+                                        <!--</div>-->
+
+                                    <!--</form>-->
+                                </div>
+                            </article>
+
+
+                            <div class="navbar" style="width:100%;border-bottom:1px solid #e2e3e5;" id="upgrade">
+                                <form class="navbar-form">
+                                    <div class="form-row align-items-center">
+                                        <div class="col-auto">
+                                            <label class="sr-only" >电话号码：</label>
+                                            <input type="text" class="form-control mb-2" value="15248598791" >
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="sr-only" >等级</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">等级</div>
+                                                </div>
+                                                <select  class="form-control">
+                                                    <option selected>VIP</option>
+                                                    <option>SVIP</option>
+                                                    <option>钻卡</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn btn-primary mb-2">用户升级</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div class="navbar" style="width:100%;border-bottom:1px solid #e2e3e5;" id="coupon">
+                                <form class="navbar-form">
+                                    <div class="form-row align-items-center">
+                                        <div class="col-auto">
+                                            <label class="sr-only" >电话号码：</label>
+                                            <input type="text" class="form-control mb-2" value="15248598791" >
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="sr-only" >优惠券</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">优惠券</div>
+                                                </div>
+                                                <select  class="form-control">
+                                                    <option selected>满减</option>
+                                                    <option>立减</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="sr-only" >满减：</label>
+                                            <input type="text" class="form-control mb-2" value="满" >
+                                            <input type="text" class="form-control mb-2" value="减" >
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="sr-only" >立减：</label>
+                                            <input type="text" class="form-control mb-2" value="立减" >
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <label class="sr-only" >有效期</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">有效期</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <label class="sr-only" >有效期：</label>
+                                            <input type="text" class="form-control mb-2" value="开始时间" >
+                                            <input type="text" class="form-control mb-2" value="结束时间" >
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <button type="submit" class="btn btn-primary mb-2">授权用户邀请自动发优惠券</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <div class="jurisdiction">
+
+                                <div class="jurisdiction-content">
+                                    <div class="jurisdiction-hd">用户信息</div>
+                                    <div class="row m-orderdetails">
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">用户名：</span>小星星</div>
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">手机号码：</span>15248598791</div>
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">ID：</span>5464 </div>
+                                    </div>
+                                    <div class="row m-orderdetails">
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">等级：</span>VIP</div>
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">注册时间：</span>2020-06-23 10:57:25 </div>
+
+                                    </div>
+                                    <div class="row m-orderdetails">
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">邀请授权自动发优惠券：</span>满300减200</div>
+                                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">有效期：</span>2020-06-23 00:00:00 至2020-06-24 23:59:59</div>
+                                    </div>
+
+                                    <div class="row m-orderdetails">
+                                        <div class="col-12 text-center" style="padding: 20px 0;">
+                                            <img class="mall-routine" src="assets/img/mall-routine.jpg"  alt="">
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <button type="submit" class="btn btn-primary">下载</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>
