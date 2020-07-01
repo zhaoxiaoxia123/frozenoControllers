@@ -1,0 +1,394 @@
+<div id="content">
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 ">
+                <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
+
+                    <header>
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">优惠券管理</a>
+                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">发放记录</a>
+                            </div>
+                        </nav>
+                    </header>
+
+                    <div>
+                        <div class="widget-body no-padding" >
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <article>
+                                        <div class="navbar" style="width:100%;border-bottom:1px solid #e2e3e5;">
+
+                                            <form  class="navbar-form" novalidate="" role="search" >
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#couponModal" ><span class="fa-fw fa fa-plus  mr-5" ></span>添加</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button"   [ngClass]="{'btn btn-warning':true,'not-click':isStatus == 0}"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':isStatus == 0}"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                                </div>
+                                                <!--已审核的-->
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#grantModal"><span class="fa-fw fa fa-play mr-5 "></span>发放</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-primary" ><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-warning" ><span class="fa-fw fa fa-trash-o mr-5 "></span>作废</button>
+                                                    </div>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-danger" ><span class="fa-fw fa fa-mail-reply-all mr-5 "></span>弃废</button>
+                                                    </div>
+
+                                                </div>
+
+                                            </form>
+
+                                            <form  class="navbar-form" novalidate="" role="search" >
+                                                <div class="btn-group">
+                                                    <h5> 筛选：</h5>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        全部
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#">全部</a>
+                                                        <a class="dropdown-item" href="#">未审核</a>
+                                                        <a class="dropdown-item" href="#">已审核</a>
+                                                        <a class="dropdown-item" href="#">未使用</a>
+                                                        <a class="dropdown-item" href="#">已使用</a>
+                                                        <a class="dropdown-item" href="#">已过期</a>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <input type="text" class="form-control" placeholder="">
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn default-btn" >搜索</button>
+                                                </div>
+
+                                            </form>
+
+
+                                        </div>
+                                    </article>
+                                    <div class="">
+                                        <table class="table table-striped smart-form table-height-20">
+                                            <thead class="">
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>优惠券ID</th>
+                                                <th>优惠券名称 </th>
+                                                <th>优惠券类型</th>
+                                                <th>优惠券内容</th>
+                                                <th>领取条件</th>
+                                                <th>优惠券数量</th>
+                                                <th>每人限领</th>
+                                                <th>状态</th>
+                                                <th>有效期</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- class="table-color"-->
+                                            <tr >
+                                                <td>1</td>
+                                                <td>C0001</td>
+                                                <td>新人卡券</td>
+                                                <td>满减 </td>
+                                                <td>全场通用 </td>
+                                                <td>所有用户</td>
+                                                <td>1000</td>
+                                                <td>1</td>
+                                                <td>未使用</td>
+                                                <td>2020.07.01至2020.07.30</td>
+                                            </tr>
+                                            <tr >
+                                                <td>1</td>
+                                                <td>C0002</td>
+                                                <td>活动券</td>
+                                                <td>满减 </td>
+                                                <td>满2000减100</td>
+                                                <td>所有用户</td>
+                                                <td>1000</td>
+                                                <td>1</td>
+                                                <td>未使用</td>
+                                                <td>2020.07.01至2020.07.30</td>
+                                            </tr>
+                                            <tr >
+                                                <td>1</td>
+                                                <td>C0003</td>
+                                                <td>新人卡券</td>
+                                                <td>满减 </td>
+                                                <td>满2000减100（导入仪除外）</td>
+                                                <td>所有用户</td>
+                                                <td>1000</td>
+                                                <td>1</td>
+                                                <td>审核中</td>
+                                                <td>2020.07.01至2020.07.30</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <!-- 底部-（分页部分）-->
+                                    <div class="footer-size flex-justify-end">
+
+                                        <ul class="pagination folat-right">
+                                            <li class="page-item disabled">
+                                                <span class="page-link">上一页</span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item active" aria-current="page"><span class="page-link">2</span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">下一页</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a  class="page-link" disabled>共5445条</a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    <article>
+                                        <div class="navbar" style="width:100%;border-bottom:1px solid #e2e3e5;">
+
+                                            <form  class="navbar-form" novalidate="" role="search" >
+
+                                                <div class="btn-group">
+                                                    <input type="text" class="form-control" placeholder="">
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn default-btn" >搜索</button>
+                                                </div>
+
+                                            </form>
+
+
+                                        </div>
+                                    </article>
+                                    <div class="">
+                                        <table class="table table-striped smart-form table-height-20">
+                                            <thead class="">
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>优惠券ID </th>
+                                                <th>优惠券名称 </th>
+                                                <th>发送人数</th>
+                                                <th>领取人数</th>
+                                                <th>分享领取人数</th>
+                                                <th>领券总张数</th>
+                                                <th>获得新客户数</th>
+                                                <th>已使用数</th>
+                                                <th>带动营业额</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- class="table-color"-->
+                                            <tr >
+                                                <td>1</td>
+                                                <td>C0001</td>
+                                                <td>新人卡券</td>
+                                                <td>200 </td>
+                                                <td>12 </td>
+                                                <td>21</td>
+                                                <td>12</td>
+                                                <td>1</td>
+                                                <td>2</td>
+                                                <td>2000</td>
+                                            </tr>
+                                            <tr >
+                                                <td>1</td>
+                                                <td>C0002</td>
+                                                <td>新人卡券</td>
+                                                <td>200 </td>
+                                                <td>12 </td>
+                                                <td>21</td>
+                                                <td>12</td>
+                                                <td>1</td>
+                                                <td>2</td>
+                                                <td>2000</td>
+                                            </tr>
+                                            <tr >
+                                                <td>1</td>
+                                                <td>C0003</td>
+                                                <td>新人卡券</td>
+                                                <td>200 </td>
+                                                <td>12 </td>
+                                                <td>21</td>
+                                                <td>12</td>
+                                                <td>1</td>
+                                                <td>2</td>
+                                                <td>2000</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                    <!-- 底部-（分页部分）-->
+                                    <div class="footer-size flex-justify-end">
+
+                                        <ul class="pagination folat-right">
+                                            <li class="page-item disabled">
+                                                <span class="page-link">上一页</span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item active" aria-current="page"><span class="page-link">2</span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">下一页</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a  class="page-link" disabled>共5445条</a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+</div>
+
+
+
+<!-- 新增 修改 详情 -->
+<div class="modal fade" id="couponModal" tabindex="-1" role="dialog" aria-labelledby="couponModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="couponModalLabel">新增优惠券</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label >优惠券名称</label>
+                            <input type="text" class="form-control" >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label >优惠券标题</label>
+                            <input type="text" class="form-control" >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label >优惠券类型</label>
+                            <select  class="form-control">
+                                <option selected>满减</option>
+                                <option>立减</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label >金额</label>
+                            <input type="number" class="form-control" >
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label class="">满减</label>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <input type="number" class="form-control" placeholder="满" >
+                                <div class="input-group-prepend">
+                                    <input type="number" class="form-control" placeholder="减" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label >领取条件</label>
+                            <select  class="form-control">
+                                <option selected>所有人</option>
+                                <option>VIP以上</option>
+                                <option>SVIP以上</option>
+                                <option>钻卡以上</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label >商品</label>
+                            <select  class="form-control">
+                                <option selected>请选择</option>
+                                <option>套装</option>
+                                <option>单品导入仪</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label >优惠券数量</label>
+                            <input type="number" class="form-control" placeholder="数量"  >
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label >每人限领</label>
+                            <input type="number" class="form-control" placeholder="数量"  >
+                        </div>
+
+
+                        <div class="form-group col-sm-6">
+                            <label class="">有效期</label>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <input type="text" class="form-control" placeholder="开始时间" >
+                                <div class="input-group-prepend">
+                                    <input type="text" class="form-control" placeholder="结束时间" >
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- 发放 -->
+<div class="modal fade" id="grantModal" tabindex="-1" role="dialog" aria-labelledby="grantModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="grantModalLabel">发放</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="">
+
+                <div class="text-align-center" style="display: flex;flex-flow: column;justify-content: center;align-items: center;padding:40px 0">
+                    <h3>满2000减200</h3>
+                    <h3>有效期：2020.07.01至2020.07.30</h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

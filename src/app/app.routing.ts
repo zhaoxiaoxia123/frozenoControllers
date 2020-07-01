@@ -130,7 +130,12 @@ export const routes: Routes = [
         path: 'mask-setting',
         loadChildren: 'app/mask-setting/mask-setting.module#MaskSettingModule',
         data: {pageTitle: 'MaskSetting'}
-      }
+      },
+        {
+            path: 'marketing',
+            loadChildren: 'app/marketing/marketing.module#MarketingModule',
+            data: {pageTitle: 'Marketing'}
+        }
     ]
   },
     {path: 'auth', component: AuthLayoutComponent, loadChildren: 'app/+auth/auth.module#AuthModule'},
