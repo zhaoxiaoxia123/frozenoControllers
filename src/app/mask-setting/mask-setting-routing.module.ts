@@ -40,6 +40,16 @@ export const routes: Routes = [
         path: 'jurisdiction',
         loadChildren: 'app/mask-setting/jurisdiction/jurisdiction.module#JurisdictionModule',
         data: {pageTitle: 'jurisdiction'}
+    },
+    {
+        path: 'dealer-finance',
+        loadChildren: 'app/mask-setting/dealer-finance/dealer-finance.module#DealerFinanceModule',
+        data: {pageTitle: 'dealer-finance'}
+    },
+    {
+        path: 'dealer-order',
+        loadChildren: 'app/mask-setting/dealer-order/dealer-order.module#DealerOrderModule',
+        data: {pageTitle: 'dealer-order'}
     }
 ];
 

@@ -37,3 +37,27 @@
     width:200px;
     height:200px;
 }
+
+/*版块*/
+.finance{
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding:20px;
+}
+.finance-item{
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 0 10px 10px 0;
+    border-radius: 4px;
+}
+.finance-xs{
+    width: 160px;
+}
+.finance-sm{
+    width: 240px;
+}
+.finance-title{
+    font-size:2rem;
+}
