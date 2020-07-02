@@ -43,7 +43,7 @@ export class SmartMenuDirective implements OnInit, AfterContentInit {
           this.layoutService.onCollapseMenu()
         }
       })
-    }, 2000);//xxx
+    }, 1000);//xxx
   }
 
   private togglersBinded = false;
@@ -64,7 +64,7 @@ export class SmartMenuDirective implements OnInit, AfterContentInit {
         });
         this.togglersBinded = true;
       }
-    }, 7000);//xxx
+    }, 2000);//xxx
   }
 
   ngOnDestroy() {

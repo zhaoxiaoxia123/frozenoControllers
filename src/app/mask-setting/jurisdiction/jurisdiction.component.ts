@@ -16,9 +16,11 @@ export class JurisdictionComponent implements OnInit {
     amount:string = '';
     start_date:string = '';
     end_date:string = '';
-  shareCodeImg:string = '';
+    shareCodeImg:string = '';
 
     customerInfo:any = [];
+    levels:any = [];
+
     /**菜单id */
     menu_id:any;
     /** 权限 */
@@ -29,7 +31,7 @@ export class JurisdictionComponent implements OnInit {
       private router : Router,
       private cookieStore:CookieStoreService,
       private globalService:GlobalService) {
-
+        this.getLevel();
     }
 
     ngOnInit() {
@@ -43,6 +45,17 @@ export class JurisdictionComponent implements OnInit {
         },this.globalService.getMenuPermissionDelayTime());
     }
 
+  /**
+   * 获取等级列表信息
+   */
+  getLevel(){
+    let url = 'getLevelList?sid='+this.cookieStore.getCookie('sid');
+    this.globalService.httpRequest('get',url)
+      .subscribe((data)=>{
+        console.log(data);
+        this.levels = data['result'];
+      });
+  }
     /**
      * 获取用户详情
      * @param num

@@ -38,12 +38,12 @@
                                                     <div class="input-group-text">等级</div>
                                                 </div>
                                                 <select class="form-control" name="level" [(ngModel)]="level" [ngModelOptions]="{standalone: true}">
-                                                    <option value="1" [selected]="customerInfo.frozeno_level == 1">普通</option>
-                                                    <option value="2" [selected]="customerInfo.frozeno_level == 2">VIP</option>
-                                                    <option value="3" [selected]="customerInfo.frozeno_level == 3">SVIP</option>
-                                                    <option value="4" [selected]="customerInfo.frozeno_level == 4">钻卡</option>
-                                                    <option value="5" [selected]="customerInfo.frozeno_level == 5">执行董事</option>
-                                                    <option value="6" [selected]="customerInfo.frozeno_level == 6">二级渠道商</option>
+                                                    <option *ngFor="let l of levels" value="{{l.level_value}}" [selected]="customerInfo.frozeno_level == l.level_value">{{l.level_name}}</option>
+                                                    <!--<option value="2" [selected]="customerInfo.frozeno_level == 2">VIP</option>-->
+                                                    <!--<option value="3" [selected]="customerInfo.frozeno_level == 3">SVIP</option>-->
+                                                    <!--<option value="4" [selected]="customerInfo.frozeno_level == 4">钻卡</option>-->
+                                                    <!--<option value="5" [selected]="customerInfo.frozeno_level == 5">执行董事</option>-->
+                                                    <!--<option value="6" [selected]="customerInfo.frozeno_level == 6">二级渠道商</option>-->
                                                 </select>
                                             </div>
                                         </div>
