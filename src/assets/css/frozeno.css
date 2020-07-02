@@ -35,7 +35,7 @@
 }
 .mall-routine{
     width:200px;
-    height:200px;
+    margin:20px;
 }
 
 /*版块*/
@@ -48,7 +48,7 @@
 }
 .finance-item{
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #e2e3e5;
     margin: 0 10px 10px 0;
     border-radius: 4px;
 }
@@ -60,4 +60,20 @@
 }
 .finance-title{
     font-size:2rem;
+}
+
+/*多选*/
+.checkbox-item{
+    padding-top:10px;
+}
+.checkbox-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#e2e3e5;
+    border-radius: 4px;
+    margin: 0 6px 6px 0;
+}
+.checkbox-close{
+    margin-left:6px;
 }
