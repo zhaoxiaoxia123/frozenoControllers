@@ -414,37 +414,16 @@
                     </div>
 
 
-
-
-
-
                 </form>
             </div>
 
 
             <div class="modal-footer">
-                <div *ngIf="isPermission(menu_id,'verify')">
-                    <button type="button" class="btn btn-primary ml-2"  (click)="showDetail('transfer')" *ngIf="uid == assetsInfo?.result?.assets_verify_status">
-                        转交
-                    </button>
-                    <button type="button" class="btn btn-primary ml-2" (click)="showModal('urge','urge','add')" *ngIf="uid == assetsInfo?.result?.u_id && assetsInfo?.result?.assets_verify_status != 'yes' && assetsInfo?.result?.assets_verify_status != 'no' && assetsInfo?.result?.assets_verify_status != 'cancel'">
-                        催办
-                    </button>
-                    <button type="button" class="btn btn-primary ml-2" (click)="showModal('operation','back_cancel','add')" *ngIf="uid == assetsInfo?.result?.u_id && assetsInfo?.result?.assets_verify_status == 'cancel'">
-                        弃废
-                    </button>
-                    <button type="button" class="btn btn-warning ml-2"  (click)="showModal('operation','cancel','add')" *ngIf="uid == assetsInfo?.result?.u_id && assetsInfo?.result?.assets_verify_status != 'yes' && assetsInfo?.result?.assets_verify_status != 'no' && assetsInfo?.result?.assets_verify_status != 'cancel'">
-                        作废
-                    </button>
-                    <button type="button" class="btn btn-warning ml-2" (click)="showModal('operation','operation','add')" *ngIf="uid == assetsInfo?.result?.assets_verify_status">
-                        审核
-                    </button>
-                </div>
                 <button type="submit" class="btn btn-primary ml-2" >保存</button>
 
                 <button  class="btn btn-success ml-2" type="button" >保存并新增</button>
 
-                <button type="button" class="btn btn-default ml-2" (click)="clear_('add')">返回</button>
+                <button type="button" class="btn btn-default ml-2">返回</button>
             </div>
 
         </div>
