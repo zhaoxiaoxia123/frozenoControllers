@@ -106,62 +106,256 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body height-overflow-380">
+            <div class="modal-body height-overflow-roll">
                 <form>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label txt-color-blue">商品名称<span class="asterisk-color">*</span></label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" placeholder="商品名称" name="category_desc" [(ngModel)]="category_desc" [ngModelOptions]="{standalone: true}">
+                    <div class="form-row">
+
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >商品名称<span class="asterisk-color">*</span></span>
+                                </div>
+                                <input class="form-control" type="text" placeholder="商品名称" name="category_desc" [(ngModel)]="category_desc" [ngModelOptions]="{standalone: true}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row ">
-                        <label class="col-sm-2 col-form-label txt-color-blue">商品价格<span class="asterisk-color">*</span></label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" placeholder="商品价格" name="frozeno_amount" [(ngModel)]="frozeno_amount" [ngModelOptions]="{standalone: true}">
+
+                        <div class="form-group col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >商品价格<span class="asterisk-color">*</span></span>
+                                </div>
+                                <input class="form-control" type="text" placeholder="商品价格" name="frozeno_amount" [(ngModel)]="frozeno_amount" [ngModelOptions]="{standalone: true}">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row ">
-                        <label class="col-sm-2 col-form-label txt-color-blue">优惠价格<span class="asterisk-color">*</span></label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" placeholder="优惠价格" name="frozeno_discount_amount" [(ngModel)]="frozeno_discount_amount" [ngModelOptions]="{standalone: true}">
+
+                        <div class="form-group col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >优惠价格<span class="asterisk-color">*</span></span>
+                                </div>
+                                <input class="form-control" type="text" placeholder="优惠价格" name="frozeno_discount_amount" [(ngModel)]="frozeno_discount_amount" [ngModelOptions]="{standalone: true}">
+                            </div>
                         </div>
+
+                        <div class="form-group col-md-6 ">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >是否显示在商城</span>
+                                </div>
+                                <div class="form-control">
+                                    <ng-container>
+                                        <input type="radio" name="frozeno_is_show_app" [(ngModel)]="frozeno_is_show_app" [value]="1" [checked]="frozeno_is_show_app==1" (click)="onCheck(1,1)"> 是
+                                        <input type="radio" name="frozeno_is_show_app" [(ngModel)]="frozeno_is_show_app" [value]="0" [checked]="frozeno_is_show_app==0" (click)="onCheck(1,0)"> 否
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6 ">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >是否享受折扣</span>
+                                </div>
+                                <div class="form-control">
+                                    <ng-container>
+                                        <input type="radio" name="frozeno_is_discount" [(ngModel)]="frozeno_is_discount" [value]="1" [checked]="frozeno_is_discount==1" (click)="onCheck(2,1)"> 是
+                                        <input type="radio" name="frozeno_is_discount" [(ngModel)]="frozeno_is_discount" [value]="0" [checked]="frozeno_is_discount==0" (click)="onCheck(2,0)"> 否
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group col-md-6 ">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >是否减去导入仪后计算折扣</span>
+                                </div>
+                                <div class="form-control">
+                                    <ng-container>
+                                        <input type="radio" name="frozeno_is_sub_dry" [(ngModel)]="frozeno_is_sub_dry" [value]="1" [checked]="frozeno_is_sub_dry==1" (click)="onCheck(3,1)"> 是
+                                        <input type="radio" name="frozeno_is_sub_dry" [(ngModel)]="frozeno_is_sub_dry" [value]="0" [checked]="frozeno_is_sub_dry==0" (click)="onCheck(3,0)"> 否
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6 ">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >可使用的新人卡券金额</span>
+                                </div>
+                                <input class="form-control" type="text" placeholder="可使用的新人卡券金额" name="frozeno_ticket_amount" [(ngModel)]="frozeno_ticket_amount" [ngModelOptions]="{standalone: true}">
+                            </div>
+                        </div>
+
+
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label ">是否显示在商城</label>
-                        <div class="col-sm-10">
-                            <ng-container>
-                                <input type="radio" name="frozeno_is_show_app" [(ngModel)]="frozeno_is_show_app" [value]="1" [checked]="frozeno_is_show_app==1" (click)="onCheck(1,1)"> 是
-                                <input type="radio" name="frozeno_is_show_app" [(ngModel)]="frozeno_is_show_app" [value]="0" [checked]="frozeno_is_show_app==0" (click)="onCheck(1,0)"> 否
-                            </ng-container>
+                    <div class="form-row">
+
+                        <div class="card form-group" style="width:100%;">
+                            <h5 class="card-header">产品首页图片</h5>
+                            <div class="card-body">
+                                <div class="picture-img">
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <div class="picture-file">
+                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="picture-icon">
+                                                <a  class="picture-file-upload" >图片上传</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                            </div>
                         </div>
+
+                        <div class="card form-group" style="width:100%;">
+                            <h5 class="card-header">产品顶部图片</h5>
+                            <div class="card-body">
+                                <div class="picture-img">
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <div class="picture-file">
+                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="picture-icon">
+                                                <a  class="picture-file-upload" >图片上传</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                            </div>
+                        </div>
+
+                        <div class="card form-group" style="width:100%;">
+                            <h5 class="card-header">产品详情图片</h5>
+                            <div class="card-body">
+                                <div class="picture-img">
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <div class="picture-file">
+                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="picture-icon">
+                                                <a  class="picture-file-upload" >图片上传</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                            </div>
+                        </div>
+
+                        <div class="card form-group" style="width:100%;">
+                            <h5 class="card-header">产品详情科技图片</h5>
+                            <div class="card-body">
+                                <div class="picture-img">
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <div class="picture-icon">
+                                                <a class="fa-fw fa fa-chevron-left  "></a>
+                                                <a class="fa-fw fa fa-trash  "></a>
+                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="picture-item" >
+                                        <div class="picture-item-img">
+                                            <div class="picture-file">
+                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="picture-icon">
+                                                <a  class="picture-file-upload" >图片上传</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label ">是否享受折扣</label>
-                        <div class="col-sm-10">
-                            <ng-container>
-                                <input type="radio" name="frozeno_is_discount" [(ngModel)]="frozeno_is_discount" [value]="1" [checked]="frozeno_is_discount==1" (click)="onCheck(2,1)"> 是
-                                <input type="radio" name="frozeno_is_discount" [(ngModel)]="frozeno_is_discount" [value]="0" [checked]="frozeno_is_discount==0" (click)="onCheck(2,0)"> 否
-                            </ng-container>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label ">是否减去导入仪后计算折扣</label>
-                        <div class="col-sm-10">
-                            <ng-container>
-                                <input type="radio" name="frozeno_is_sub_dry" [(ngModel)]="frozeno_is_sub_dry" [value]="1" [checked]="frozeno_is_sub_dry==1" (click)="onCheck(3,1)"> 是
-                                <input type="radio" name="frozeno_is_sub_dry" [(ngModel)]="frozeno_is_sub_dry" [value]="0" [checked]="frozeno_is_sub_dry==0" (click)="onCheck(3,0)"> 否
-                            </ng-container>
-                        </div>
-                    </div>
-                    <div class="form-group row" >
-                        <label class="col-sm-2 col-form-label">可使用的新人卡券金额</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" placeholder="可使用的新人卡券金额" name="frozeno_ticket_amount" [(ngModel)]="frozeno_ticket_amount" [ngModelOptions]="{standalone: true}">
-                        </div>
-                    </div>
                 </form>
                 <div class="form-group row">
                     <div class="">
@@ -276,12 +470,6 @@
                     </div>
                 </div>
 
-                <!--<div class="form-group row">-->
-                    <!--<label class="col-sm-2 col-form-label">排序</label>-->
-                    <!--<div class="col-sm-10">-->
-                        <!--<input class="form-control" type="number" placeholder="请输入顺序" name="weight" [(ngModel)]="weight" [ngModelOptions]="{standalone: true}">-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  (click)="submitCategory()">保存</button>
@@ -323,28 +511,41 @@
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">是否减去导入仪后参加折扣：</span>{{productInfo?.result?.frozeno_is_sub_dry == 1 ? '是':'否'}}</div>
                     </div>
 
-                    <div class="row m-orderdetails">
-                        <div><span>首页主页图片：</span>
-                            <div *ngFor="let pi of productInfo?.result?.product_image">
-                                <img src="{{pi.image_url}}" *ngIf="pi.type == 3">
-                            </div>
+                    <div class="m-order">
+                        <div class="alert alert-secondary" role="alert">
+                            首页主页图片
                         </div>
-                        <div><span>详情顶部图片：</span>
-                            <div *ngFor="let pi1 of productInfo?.result?.product_image">
-                                <img src="{{pi1.image_url}}" *ngIf="pi1.type == 1">
-                            </div>
-                        </div>
-                        <div><span>详情图片：</span>
-                            <div *ngFor="let pi2 of productInfo?.result?.product_image">
-                                <img src="{{pi2.image_url}}" *ngIf="pi2.type == 2 && pi2.detail_type == 1">
-                            </div>
-                        </div>
-                        <div><span>详情科技图片：</span>
-                            <div *ngFor="let pi3 of productInfo?.result?.product_image">
-                                <img src="{{pi3.image_url}}" *ngIf="pi3.type == 2 && pi3.detail_type == 2">
-                            </div>
+                        <div class="row col-12" *ngFor="let pi of productInfo?.result?.product_image">
+                            <img   src="assets/img/s1.jpg" src="{{pi.image_url}}" *ngIf="pi.type == 3">
                         </div>
                     </div>
+
+                    <div class="m-order">
+                        <div class="alert alert-secondary" role="alert">
+                            详情顶部图片
+                        </div>
+                        <div class="row col-12" *ngFor="let pi1 of productInfo?.result?.product_image">
+                            <img  src="assets/img/glass.jpg" src="{{pi1.image_url}}" *ngIf="pi1.type == 1">
+                        </div>
+                    </div>
+
+                    <div class="m-order">
+                        <div class="alert alert-secondary" role="alert">
+                            详情图片
+                        </div>
+                        <div class="row col-12" *ngFor="let pi2 of productInfo?.result?.product_image">
+                            <img  src="assets/img/glass.jpg" src="{{pi2.image_url}}" *ngIf="pi2.type == 2 && pi2.detail_type == 1">
+                        </div>
+                    </div>
+                    <div class="m-order">
+                        <div class="alert alert-secondary" role="alert">
+                            详情科技图片
+                        </div>
+                        <div class="row col-12" *ngFor="let pi3 of productInfo?.result?.product_image">
+                            <img  src="assets/img/glass.jpg" src="{{pi3.image_url}}" *ngIf="pi3.type == 2 && pi3.detail_type == 2">
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <div class="modal-footer">
