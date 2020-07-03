@@ -608,7 +608,6 @@ export class UserOrderComponent implements OnInit {
    * 计算当前扫码个数
    */
   sumPCount(code,index){
-
     let strArr = [];
     let n = 13;
     for (let i = 0, l = code.length; i < l/n; i++) {

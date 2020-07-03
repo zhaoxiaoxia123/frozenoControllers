@@ -27,7 +27,7 @@ export class SmartMenuDirective implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    setTimeout(()=>{ //xxx
+    // setTimeout(()=>{ //xxx
       this.layoutSub = this.layoutService.subscribe((store)=> {
         this.processLayout(store)
       });
@@ -37,13 +37,12 @@ export class SmartMenuDirective implements OnInit, AfterContentInit {
         }, 1);
         this.routerSub.unsubscribe()
       });
-
       $('[routerLink]', this.$menu).on('click',()=>{
         if(this.layoutService.store.mobileViewActivated){
           this.layoutService.onCollapseMenu()
         }
       })
-    }, 1000);//xxx
+    // }, 500);//xxx
   }
 
   private togglersBinded = false;
@@ -60,7 +59,6 @@ export class SmartMenuDirective implements OnInit, AfterContentInit {
             e.stopPropagation();
             return false;
           }).append(sign);
-
         });
         this.togglersBinded = true;
       }

@@ -67,14 +67,11 @@
                                         <tr *ngFor="let sl of orderList?.result?.data;let ind = index;" (click)="isStatusShow(sl.o_id,sl.frozeno_order_state,sl.frozeno_prepare_state)" [ngClass]="{'table-color':editStatusUserOrderId == sl.o_id}">
                                             <td>{{(ind+1)}}</td>
                                             <td *ngIf="sl.o_is_complete == 3" style="color: blue;">{{ sl.o_order }}</td>
-                                            <td data-toggle="tooltip" data-placement="top" title="{{sl.order_name}}">{{ sl.frozeno_order_name }}</td>
+                                            <td *ngIf="sl.o_is_complete != 3">{{ sl.o_order }}</td>
                                             <!--姓名  手机号码-->
-                                            <td>{{ sl.c_name?sl.c_name:sl.c_phone }}&nbsp;&nbsp;15228592891</td>
-                                            <!--小程序商城
-                                            经销商管理平台
-                                            -->
-                                            <td data-toggle="tooltip" data-placement="top" title="无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20">无创水光尊享礼盒*1，润月雅水光精华套装*3，纯钛金属表皮电子套装*3，纯钛金属表皮电子*20，润月雅水光精华*20</td>
-                                            <td>{{ sl.frozeno_rate_amount }}</td>
+                                            <td>{{ sl.c_name }}&nbsp;&nbsp;{{ sl.c_phone }}</td>
+                                            <td data-toggle="tooltip" data-placement="top" title="{{sl.order_name}}">{{ sl.order_name }}</td>
+                                            <td>{{ sl.frozeno_order_amount }}</td>
                                             <td>
                                                 <!--管理员可取消——未支付、待备货、待发货销售单里面的订单审核通过自动生成用户订单
                                                 状态：未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款
@@ -97,17 +94,17 @@
                                                   <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>
                                             </td>
-                                            <td>12</td>
+                                            <td>{{ sl.commission.total_amount? sl.commission.total_amount:'0.00' }}</td>
                                             <td>
                                                 <span>
-                                                    <span class="label-normal" >未结算</span>
-                                                    <span class="label-full" >已结算</span>
+                                                    <span class="label-normal" *ngIf="! sl.commission.is_settlement">未结算</span>
+                                                    <span class="label-full" *ngIf="sl.commission.is_settlement">已结算</span>
                                                 </span>
                                             </td>
                                             <td>{{ sl.created_at }}</td>
                                         </tr>
                                         </tbody>
-                                        <tbody *ngIf="orderList?.result?.data.length == 0">
+                                        <tbody *ngIf="! orderList?.result?.data">
                                         <tr style="text-align: center;">
                                             <td colspan="10">没有数据。</td>
                                         </tr>
@@ -118,7 +115,7 @@
 
                             <!-- 底部-（分页部分）-->
                             <div class="footer-size flex-justify-end">
-                                <ul class="pagination" *ngIf="orderList.length > 0" >
+                                <ul class="pagination" *ngIf="orderList?.page" >
                                     <li *ngFor="let p of orderList?.page" class="{{p.class}}">
                                         <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
                                         <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>
@@ -154,12 +151,9 @@
                         </div>
                         <div class="row m-orderdetails">
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">订单编号：</span>{{orderInfo?.result?.o_order}}</div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">购买人：</span>{{orderInfo?.result?.c_name}}&nbsp;&nbsp;15228592891</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">购买人：</span>{{orderInfo?.result?.c_name}}&nbsp;&nbsp;{{orderInfo?.result?.c_phone}}</div>
                         </div>
-
                     </div>
-
-
                     <div class="m-order">
                         <div class="alert alert-secondary" role="alert">
                             订单信息
@@ -181,7 +175,7 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">序号</th>
-                                        <th scope="col">商品编号</th>
+                                        <!--<th scope="col">商品编号</th>-->
                                         <th scope="col">名称</th>
                                         <th scope="col">数量</th>
                                         <th scope="col">单价</th>
@@ -194,25 +188,14 @@
 
                                     <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
                                         <td>{{(ind+1)}}</td>
-                                        <td>64646464</td>
                                         <td>{{pd.category_desc}}</td>
                                         <td>{{pd.product_count}}</td>
                                         <td>{{pd.product_before_amount}}</td>
                                         <td>{{pd.frozeno_customer_discount?pd.frozeno_customer_discount:0}}折</td>
-                                        <td>222</td>
+                                        <td *ngIf="pd.frozeno_customer_discount">{{pd.product_before_amount*pd.frozeno_customer_discount}}</td>
+                                        <td *ngIf="!pd.frozeno_customer_discount">{{pd.product_before_amount}}</td>
                                         <td>{{pd.product_amount}}</td>
                                     <tr>
-                                        <td >1</td>
-                                        <td>64646464</td>
-                                        <td>无创水光尊享礼盒</td>
-                                        <td>1</td>
-                                        <td>222</td>
-                                        <td>3.5折</td>
-                                        <td>222</td>
-                                        <td>222</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -274,17 +257,16 @@
 
                     <!--财务信息自己的订单不显示-->
                     <!--佣金可提现总金额：订单金额-导入仪-运费-税费 -->
-                    <div class="m-order">
+                    <div class="m-order" *ngIf="c_id != orderInfo?.result?.frozeno_customer_id">
                         <div class="alert alert-secondary" role="alert">
                             财务信息
                         </div>
-                        <div class="row m-orderdetails">
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">会员等级：</span>VIP</div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">可结算总金额：</span>4545</div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title ">佣金：</span><span class="m-order-money">12</span></div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">状态：</span>未结算</div>
+                        <div class="row m-orderdetails" *ngFor="let cp of orderInfo?.result?.commission.parents">
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">会员等级：</span>{{cp.parent_info.c_name}}&nbsp;&nbsp;{{cp.parent_info.level_name}}</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">可结算总金额：</span>{{orderInfo?.result?.totalAmount}}</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title ">佣金：</span><span class="m-order-money">{{cp.rebate_amount}}</span></div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">状态：</span>{{cp.is_settlement ? '已结算' : '未结算'}}</div>
                         </div>
-
                     </div>
 
                 </div>
