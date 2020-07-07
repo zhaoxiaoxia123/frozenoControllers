@@ -47,7 +47,7 @@ export class DealerOrderComponent implements OnInit {
     stateShow:string = '全部';
     printCSS: string[];
     printStyle: string;
-
+    c_id:string;
 
     // 这一步很重要：获取打印标签的按钮组件，然后调用提供的print方法
     @ViewChild('printBtn', { static: true }) printBtn: EssenceNg2PrintComponent;
@@ -70,6 +70,7 @@ export class DealerOrderComponent implements OnInit {
         });
         this.getUserOrderList('1','');
         window.scrollTo(0,0);
+        this.c_id = this.cookieStore.getCookie('cid');
     }
 
     ngOnInit() {
