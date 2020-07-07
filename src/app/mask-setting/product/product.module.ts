@@ -5,6 +5,7 @@ import { ProductComponent } from './product.component';
 import {I3otpModule} from "../../shared/i3otp.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FileUploadModule} from "ng2-file-upload";
+import {dragsortinstruct} from "../../core/dragsortbeauty";
 
 @NgModule({
   imports: [
@@ -14,6 +15,6 @@ import {FileUploadModule} from "ng2-file-upload";
     ProductRoutingModule,
     FileUploadModule
   ],
-  declarations: [ProductComponent]
+  declarations: [ProductComponent,dragsortinstruct]
 })
 export class ProductModule { }

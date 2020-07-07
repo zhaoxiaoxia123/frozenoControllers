@@ -165,7 +165,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group col-md-6 ">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -179,7 +178,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-group col-md-6 ">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -188,44 +186,42 @@
                                 <input class="form-control" type="text" placeholder="可使用的新人卡券金额" name="frozeno_ticket_amount" [(ngModel)]="frozeno_ticket_amount" [ngModelOptions]="{standalone: true}">
                             </div>
                         </div>
-
-
                     </div>
-
                     <div class="form-row">
-
                         <div class="card form-group" style="width:100%;">
                             <h5 class="card-header">产品首页图片</h5>
                             <div class="card-body">
                                 <div class="picture-img">
-                                    <div class="picture-item" >
+
+                                    <div class="picture-item" *ngFor="let img1 of selectedImageUrl1;let ind1 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <img class="picture-item-imge" src="{{img1.url}}">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeUpload(1,img1.uploadID)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="picture-item" >
+
+                                    <div class="picture-item" *ngFor="let imga1 of imageAd1;let imgInd1 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <img class="picture-item-imge" [src]="imga1.image_url">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeImg(1,imga1.img_id,imgInd1)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
                                     </div>
                                     <div class="picture-item" >
                                         <div class="picture-item-img">
                                             <div class="picture-file">
-                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <input type="file" class="custom-file-input picture-file-input" ng2FileSelect [uploader]="uploader1" multiple (change)="selectedFileOnChangedFun(1)">
                                                 <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
                                             </div>
                                             <div class="picture-icon">
-                                                <a  class="picture-file-upload" >图片上传</a>
+                                                <a class="picture-file-upload">图片上传</a>
                                             </div>
                                         </div>
                                     </div>
@@ -238,34 +234,37 @@
                             <h5 class="card-header">产品顶部图片</h5>
                             <div class="card-body">
                                 <div class="picture-img">
-                                    <div class="picture-item" >
+                                    <div class="picture-item"  *ngFor="let img3 of selectedImageUrl3;let ind3 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <img class="picture-item-imge" src="{{img3.url}}">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeUpload(3,img3.uploadID)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="picture-item" >
-                                        <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
-                                            <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+
+                                    <div dragsortbeauty>
+                                        <div class="picture-item" *ngFor="let img3 of imageAd3;let imgInd3 = index;">
+                                            <div class="picture-item-img">
+                                                <img class="dsimg picture-item-imge" [src]="img3.image_url" (mousedown)="imgmousedown($event,img3.image_url)" (mouseup)="imgmouseup(img3.image_url,2,3)">
+                                                <div class="picture-icon">
+                                                    <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                    <a class="fa-fw fa fa-trash" (click)="removeImg(3,img3.img_id,imgInd3)"></a>
+                                                    <!--<a class="fa-fw fa fa-chevron-right"></a>-->
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="picture-item" >
                                         <div class="picture-item-img">
                                             <div class="picture-file">
-                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <input type="file" class="custom-file-input picture-file-input" ng2FileSelect [uploader]="uploader3" multiple (change)="selectedFileOnChangedFun(3)">
                                                 <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
                                             </div>
                                             <div class="picture-icon">
-                                                <a  class="picture-file-upload" >图片上传</a>
+                                                <a class="picture-file-upload">图片上传</a>
                                             </div>
                                         </div>
                                     </div>
@@ -278,30 +277,32 @@
                             <h5 class="card-header">产品详情图片</h5>
                             <div class="card-body">
                                 <div class="picture-img">
-                                    <div class="picture-item" >
+                                    <div class="picture-item" *ngFor="let img2 of selectedImageUrl2;let ind2 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <img class="picture-item-imge" src="{{img2.url}}">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeUpload(2,img2.uploadID)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="picture-item" >
+                                    <div dragsortbeauty>
+                                    <div class="picture-item" *ngFor="let img2 of imageAd2;let imgInd2 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <img class="dsimg picture-item-imge" [src]="img2.image_url" (mousedown)="imgmousedown($event,img3.image_url)" (mouseup)="imgmouseup(img3.image_url,2,2)">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeImg(2,img2.img_id,imgInd2)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
+                                    </div>
                                     </div>
                                     <div class="picture-item" >
                                         <div class="picture-item-img">
                                             <div class="picture-file">
-                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <input type="file" class="custom-file-input picture-file-input" ng2FileSelect [uploader]="uploader2" multiple (change)="selectedFileOnChangedFun(2)">
                                                 <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
                                             </div>
                                             <div class="picture-icon">
@@ -318,34 +319,36 @@
                             <h5 class="card-header">产品详情科技图片</h5>
                             <div class="card-body">
                                 <div class="picture-img">
-                                    <div class="picture-item" >
+                                    <div class="picture-item" *ngFor="let img4 of selectedImageUrl4;let ind4 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/s1.jpg">
+                                            <img class="picture-item-imge" src="{{img4.url}}">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeUpload(4,img4.uploadID)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="picture-item" >
+                                    <div dragsortbeauty>
+                                    <div class="picture-item" *ngFor="let img4 of imageAd4;let imgInd4 = index;">
                                         <div class="picture-item-img">
-                                            <img  class="picture-item-imge"  src="assets/img/glass.jpg">
+                                            <img class="dsimg picture-item-imge" [src]="img4.image_url"(mousedown)="imgmousedown($event,img3.image_url)" (mouseup)="imgmouseup(img3.image_url,2,4)">
                                             <div class="picture-icon">
-                                                <a class="fa-fw fa fa-chevron-left  "></a>
-                                                <a class="fa-fw fa fa-trash  "></a>
-                                                <a class="fa-fw fa fa-chevron-right "></a>
+                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
+                                                <a class="fa-fw fa fa-trash" (click)="removeImg(4,img4.img_id,imgInd4)"></a>
+                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
                                             </div>
                                         </div>
+                                    </div>
                                     </div>
                                     <div class="picture-item" >
                                         <div class="picture-item-img">
                                             <div class="picture-file">
-                                                <input type="file" class="custom-file-input picture-file-input" >
+                                                <input type="file" class="custom-file-input picture-file-input" ng2FileSelect [uploader]="uploader4" multiple (change)="selectedFileOnChangedFun(4)">
                                                 <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
                                             </div>
                                             <div class="picture-icon">
-                                                <a  class="picture-file-upload" >图片上传</a>
+                                                <a class="picture-file-upload" >图片上传</a>
                                             </div>
                                         </div>
                                     </div>
@@ -353,123 +356,120 @@
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
                             </div>
                         </div>
-
                     </div>
-
                 </form>
-                <div class="form-group row">
-                    <div class="">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">产品首页图片</h5>
-                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <span class="picture-list" *ngFor="let img1 of selectedImageUrl1;let ind1 = index;">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(1,img1.uploadID)"></a>
-                                        <img width="90px" height="90px" src="{{img1.url}}">
-                                    </span>
-                                    <span class="picture-list" *ngFor="let pi1 of path1;let pind1 = index;">
-                                        <img width="90px" height="90px" src="{{pi1}}">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(1,pind1)"></a>
-                                    </span>
-                                    <span class="picture-list" *ngFor="let imga1 of imageAd1;let imgInd1 = index;">
-                                        <img width="90px" height="90px" [src]="imga1.image_url">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(1,imga1.img_id,imgInd1)"></a>
-                                    </span>
-                                    <div class="picture-list">
-                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader1" multiple (change)="selectedFileOnChangedFun(1)"/>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(1)">图片上传</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">产品顶部图片</h5>
-                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <span class="picture-list 1" *ngFor="let img3 of selectedImageUrl3;let ind3 = index;">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(3,img3.uploadID)"></a>
-                                        <img width="90px" height="90px" src="{{img3.url}}">
-                                    </span>
-                                    <span class="picture-list 2" *ngFor="let pi3 of path3;let pind3 = index;">
-                                        <img width="90px" height="90px" src="{{pi3}}">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(3,pind3)"></a>
-                                    </span>
-                                    <span class="picture-list 3" *ngFor="let img3 of imageAd3;let imgInd3 = index;">
-                                        <img width="90px" height="90px" [src]="img3.image_url">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(3,img3.img_id,imgInd3)"></a>
-                                    </span>
-                                    <div class="picture-list">
-                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader3" multiple (change)="selectedFileOnChangedFun(3)"/>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(3)">图片上传</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">产品详情图片</h5>
-                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <span class="picture-list 1" *ngFor="let img2 of selectedImageUrl2;let ind2 = index;">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(2,img2.uploadID)"></a>
-                                        <img width="90px" height="90px" src="{{img2.url}}">
-                                    </span>
-                                    <span class="picture-list 2" *ngFor="let pi2 of path2;let pind2 = index;">
-                                        <img width="90px" height="90px" src="{{pi2}}">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(2,pind2)"></a>
-                                    </span>
-                                    <span class="picture-list 3" *ngFor="let img2 of imageAd2;let imgInd2 = index;">
-                                        <img width="90px" height="90px" [src]="img2.image_url">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(2,img2.img_id,imgInd2)"></a>
-                                    </span>
-                                    <div class="picture-list">
-                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader2" multiple (change)="selectedFileOnChangedFun(2)"/>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(2)">图片上传</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">产品详情科技图片</h5>
-                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <span class="picture-list 1" *ngFor="let img4 of selectedImageUrl4;let ind4 = index;">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(4,img4.uploadID)"></a>
-                                        <img width="90px" height="90px" src="{{img4.url}}">
-                                    </span>
-                                    <span class="picture-list 2" *ngFor="let pi4 of path4;let pind4 = index;">
-                                        <img width="90px" height="90px" src="{{pi4}}">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(4,pind4)"></a>
-                                    </span>
-                                    <span class="picture-list 3" *ngFor="let img4 of imageAd4;let imgInd4 = index;">
-                                        <img width="90px" height="90px" [src]="img4.image_url">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(4,img4.img_id,imgInd4)"></a>
-                                    </span>
-                                    <div class="picture-list">
-                                        <input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader4" multiple (change)="selectedFileOnChangedFun(4)"/>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-primary" (click)="uploadFileFun(4)">图片上传</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <!--<div class="form-group row">-->
+                    <!--<div class="">-->
+                        <!--<div class="card">-->
+                            <!--<div class="card-body">-->
+                                <!--<h5 class="card-title">产品首页图片</h5>-->
+                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
+                                <!--<div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<span class="picture-list" *ngFor="let img1 of selectedImageUrl1;let ind1 = index;">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(1,img1.uploadID)"></a>-->
+                                        <!--<img width="90px" height="90px" src="{{img1.url}}">-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list" *ngFor="let pi1 of path1;let pind1 = index;">-->
+                                        <!--<img width="90px" height="90px" src="{{pi1}}">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(1,pind1)"></a>-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list" *ngFor="let imga1 of imageAd1;let imgInd1 = index;">-->
+                                        <!--<img width="90px" height="90px" [src]="imga1.image_url">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(1,imga1.img_id,imgInd1)"></a>-->
+                                    <!--</span>-->
+                                    <!--<div class="picture-list">-->
+                                        <!--<input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader1" multiple (change)="selectedFileOnChangedFun(1)"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<button type="button" class="btn btn-primary" (click)="uploadFileFun(1)">图片上传</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                    <!--<div class="">-->
+                        <!--<div class="card">-->
+                            <!--<div class="card-body">-->
+                                <!--<h5 class="card-title">产品顶部图片</h5>-->
+                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
+                                <!--<div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<span class="picture-list 1" *ngFor="let img3 of selectedImageUrl3;let ind3 = index;">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(3,img3.uploadID)"></a>-->
+                                        <!--<img width="90px" height="90px" src="{{img3.url}}">-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list 2" *ngFor="let pi3 of path3;let pind3 = index;">-->
+                                        <!--<img width="90px" height="90px" src="{{pi3}}">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(3,pind3)"></a>-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list 3" *ngFor="let img3 of imageAd3;let imgInd3 = index;">-->
+                                        <!--<img width="90px" height="90px" [src]="img3.image_url">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(3,img3.img_id,imgInd3)"></a>-->
+                                    <!--</span>-->
+                                    <!--<div class="picture-list">-->
+                                        <!--<input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader3" multiple (change)="selectedFileOnChangedFun(3)"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<button type="button" class="btn btn-primary" (click)="uploadFileFun(3)">图片上传</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                    <!--<div class="">-->
+                        <!--<div class="card">-->
+                            <!--<div class="card-body">-->
+                                <!--<h5 class="card-title">产品详情图片</h5>-->
+                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
+                                <!--<div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<span class="picture-list 1" *ngFor="let img2 of selectedImageUrl2;let ind2 = index;">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(2,img2.uploadID)"></a>-->
+                                        <!--<img width="90px" height="90px" src="{{img2.url}}">-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list 2" *ngFor="let pi2 of path2;let pind2 = index;">-->
+                                        <!--<img width="90px" height="90px" src="{{pi2}}">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(2,pind2)"></a>-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list 3" *ngFor="let img2 of imageAd2;let imgInd2 = index;">-->
+                                        <!--<img width="90px" height="90px" [src]="img2.image_url">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(2,img2.img_id,imgInd2)"></a>-->
+                                    <!--</span>-->
+                                    <!--<div class="picture-list">-->
+                                        <!--<input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader2" multiple (change)="selectedFileOnChangedFun(2)"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<button type="button" class="btn btn-primary" (click)="uploadFileFun(2)">图片上传</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group row">-->
+                    <!--<div class="">-->
+                        <!--<div class="card">-->
+                            <!--<div class="card-body">-->
+                                <!--<h5 class="card-title">产品详情科技图片</h5>-->
+                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
+                                <!--<div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<span class="picture-list 1" *ngFor="let img4 of selectedImageUrl4;let ind4 = index;">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(4,img4.uploadID)"></a>-->
+                                        <!--<img width="90px" height="90px" src="{{img4.url}}">-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list 2" *ngFor="let pi4 of path4;let pind4 = index;">-->
+                                        <!--<img width="90px" height="90px" src="{{pi4}}">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(4,pind4)"></a>-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list 3" *ngFor="let img4 of imageAd4;let imgInd4 = index;">-->
+                                        <!--<img width="90px" height="90px" [src]="img4.image_url">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(4,img4.img_id,imgInd4)"></a>-->
+                                    <!--</span>-->
+                                    <!--<div class="picture-list">-->
+                                        <!--<input class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader4" multiple (change)="selectedFileOnChangedFun(4)"/>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<button type="button" class="btn btn-primary" (click)="uploadFileFun(4)">图片上传</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary"  (click)="submitCategory()">保存</button>

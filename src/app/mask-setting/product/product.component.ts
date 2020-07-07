@@ -6,6 +6,7 @@ import {GlobalService} from '../../core/global.service';
 import {ModalDirective} from "ngx-bootstrap";
 import {FileUploader} from "ng2-file-upload";
 import {isUndefined} from "util";
+import {interval} from "rxjs/index";
 
 @FadeInTop()
 @Component({
@@ -27,6 +28,11 @@ export class ProductComponent implements OnInit {
   frozeno_is_sub_dry:number=0;
   frozeno_ticket_amount:string='';
 
+  upimg = '';
+  downimg = '';
+  uploadImageCount : number = 0;
+
+  private interval;
   // 初始化上次图片变量
   public uploader1:FileUploader = new FileUploader({
     url: this.globalService.getDomain() + "/api/v1/uploadFile",
@@ -74,6 +80,10 @@ export class ProductComponent implements OnInit {
   selectedImageUrl4 : any[] = [];
   path4:any = [];
 
+  editImageWeight2:any=[];    //商品详情顶部滚动图片
+  editImageWeight3:any=[];    //商品详情图片
+  editImageWeight4:any=[];    //商品详情科技图片
+
   editImgWeight : any = [];
   // url : string = this.globalService.getDomain();
   /**菜单id */
@@ -116,6 +126,7 @@ export class ProductComponent implements OnInit {
 
   // C: 定义事件，选择文件
   selectedFileOnChangedFun(num=0) {
+    console.log(num);
     if(num == 1){
       this.selectedFileOnChanged(this.selectedImageUrl1,this.uploader1.queue);
     }else if(num == 2){
@@ -221,19 +232,25 @@ export class ProductComponent implements OnInit {
   // D: 定义事件，上传文件  单个文件
   //num :1:首页 2：顶部滚动 3：详情
   uploadFile(uploader,selectedImageUrl,path,imageAd) {
+    let that = this;
     let len = uploader.length;
     uploader.forEach((q, i) => {
       if (!isUndefined(uploader[i])) {
         uploader[i].onSuccess = function (response, status, headers) {
           let tempRes = JSON.parse(response);
+          console.log('status:----');
+          console.log(status);
           // 上传文件成功
           if (status == 200) {
             path.push(tempRes['result']);
             imageAd = [];
             if ((i + 1) >= len) {
               selectedImageUrl = [];
-              alert("上传成功!");
+              // alert("上传成功!");
             }
+            that.uploadImageCount += 1;
+            console.log('that.uploadImageCount');
+            console.log(that.uploadImageCount);
           } else {
             alert(tempRes['msg']);
           }
@@ -315,6 +332,133 @@ export class ProductComponent implements OnInit {
     }
   }
 
+  imgmousedown(e,img) {
+    console.log('down');
+    console.log(img);
+    this.downimg =  img;
+    //防止浏览器默认行为(W3C)
+    if(e && e.preventDefault){
+      e.preventDefault();
+    }
+    //IE中组织浏览器行为
+    else{
+      window.event.returnValue=false;
+      return false;
+    }
+  }
+
+  /**
+   *
+   * @param img
+   * @param num  移动图片 1:上传前  2:上传后
+   * @param type  移动图片类型  1:首页 2:详情顶部 3:详情图片 4:详情科技
+   */
+  imgmouseup(img,num,type) {
+    console.log('up');
+    console.log(img);
+    console.log(num);
+    console.log(type);
+    this.upimg =  img;
+    // 这里为排序方式 这里用的是按下鼠标图片和抬起鼠标图片相互替换
+    let downimgnum = 0;
+    let upimgnum = 0;
+    let downimgtext = '';
+    let upimgtext = '';
+
+    let editImgList: any = [];
+    // if(num == 1){
+    //   if(type == 1) {
+    //     editImgList = this.selectedImageUrl1;
+    //   }else if(type == 2) {
+    //     editImgList = this.selectedImageUrl2;
+    //   }else if(type == 3) {
+    //     editImgList = this.selectedImageUrl3;
+    //   }else if(type == 4) {
+    //     editImgList = this.selectedImageUrl4;
+    //   }
+    // }else
+    if(num == 2){
+      // if(type == 1) {
+      //   editImgList = this.imageAd1;
+      // }else
+      if(type == 2) {
+        editImgList = this.imageAd2;
+      }else if(type == 3) {
+        editImgList = this.imageAd3;
+      }else if(type == 4) {
+        editImgList = this.imageAd4;
+      }
+    }
+    for (let i = 0; i < editImgList.length; i++) {
+      if (editImgList[i]['image_url'] === this.downimg) {
+        downimgnum = i;
+        downimgtext = editImgList[i]['image_url'];
+      }
+      if (editImgList[i]['image_url'] === this.upimg) {
+        upimgnum = i;
+        upimgtext = editImgList[i]['image_url'];
+      }
+    }
+    editImgList[downimgnum]['image_url'] = upimgtext;
+    editImgList[upimgnum]['image_url'] = downimgtext;
+
+    // if(num == 1){
+    //   if(type == 1) {
+    //     this.selectedImageUrl1 = editImgList;
+    //   }else if(type == 2) {
+    //     this.selectedImageUrl2 = editImgList;
+    //   }else if(type == 3) {
+    //     this.selectedImageUrl3 = editImgList;
+    //   }else if(type == 4) {
+    //     this.selectedImageUrl4 = editImgList;
+    //   }
+    // }else
+      if(num == 2){
+      // if(type == 1) {
+      //   this.imageAd1 = editImgList;
+      // }else
+      if(type == 2) {
+        this.imageAd2 = editImgList;
+
+        this.editImageWeight2.forEach((val, idx, array) => {
+          if(val['img_id'] == editImgList[downimgnum]['img_id']){
+            this.editImageWeight2.splice(idx,1);
+          }
+          if(val['img_id'] == editImgList[upimgnum]['img_id']){
+            this.editImageWeight2.splice(idx,1);
+          }
+        });
+        this.editImageWeight2.push(editImgList[downimgnum]);
+        this.editImageWeight2.push(editImgList[upimgnum]);
+      }else if(type == 3) {
+        this.imageAd3 = editImgList;
+        this.editImageWeight3.forEach((val, idx, array) => {
+          if(val['img_id'] == editImgList[downimgnum]['img_id']){
+            this.editImageWeight3.splice(idx,1);
+          }
+          if(val['img_id'] == editImgList[upimgnum]['img_id']){
+            this.editImageWeight3.splice(idx,1);
+          }
+        });
+        this.editImageWeight3.push(editImgList[downimgnum]);
+        this.editImageWeight3.push(editImgList[upimgnum]);
+      }else if(type == 4) {
+        this.imageAd4 = editImgList;
+        this.editImageWeight4.forEach((val, idx, array) => {
+          if(val['img_id'] == editImgList[downimgnum]['img_id']){
+            this.editImageWeight4.splice(idx,1);
+          }
+          if(val['img_id'] == editImgList[upimgnum]['img_id']){
+            this.editImageWeight4.splice(idx,1);
+          }
+        });
+        this.editImageWeight4.push(editImgList[downimgnum]);
+        this.editImageWeight4.push(editImgList[upimgnum]);
+      }
+    }
+    console.log(this.imageAd2);
+    console.log(this.imageAd3);
+  }
 
   onCheck(type,radio) {
     if(type == 1) {
@@ -361,51 +505,65 @@ export class ProductComponent implements OnInit {
    * 添加
    */
   submitCategory(){
-    if(this.category_desc.trim() == ''){
+    let that = this;
+    if(that.category_desc.trim() == ''){
       alert('请填写商品名称！');
       return false;
-    }else if(this.frozeno_amount.trim() == ''){
+    }else if(that.frozeno_amount.trim() == ''){
       alert('请填写商品价格！');
       return false;
-    }else if(this.frozeno_discount_amount.trim() == ''){
+    }else if(that.frozeno_discount_amount.trim() == ''){
       alert('请填写商品优惠价格！');
       return false;
     }
-    this.globalService.httpRequest('post','editCategory',{
-      'category_id':this.editId,
-      'category_type':this.globalService.category_type,
-      'category_desc':this.category_desc,
-      'frozeno_amount':this.frozeno_amount,
-      'frozeno_discount_amount':this.frozeno_discount_amount,
-      'frozeno_is_show_app':this.frozeno_is_show_app,
-      'frozeno_is_discount':this.frozeno_is_discount,
-      'frozeno_is_sub_dry':this.frozeno_is_sub_dry,
-      'frozeno_ticket_amount':this.frozeno_ticket_amount,
-      'image_url_home':JSON.stringify(this.path1),
-      'delete_id_home':JSON.stringify(this.deleteImgId1),
-      'image_url_detail':JSON.stringify(this.path2),
-      'delete_id_detail':JSON.stringify(this.deleteImgId2),
-      'image_url_main':JSON.stringify(this.path3),
-      'delete_id_main':JSON.stringify(this.deleteImgId3),
-      'image_url_detail_kj':JSON.stringify(this.path4),
-      'delete_id_detail_kj':JSON.stringify(this.deleteImgId4),
-      'sid':this.cookieStore.getCookie('sid')
-    }).subscribe( (data)=>{
-      if(data) {
-        alert(data['msg']);
-        if (data['status'] == 200) {
-          this.lgModal.hide();
-          this.getProductList(1);
-          this.clear();  //清除数据
-        } else if (data['status'] == 202) {
-          this.cookieStore.removeAll(this.rollback_url);
-          this.router.navigate(['/auth/login']);
-        }
+    that.uploadFileFun(1);
+    that.uploadFileFun(2);
+    that.uploadFileFun(3);
+    that.uploadFileFun(4);
+    let imgCount = that.uploader1.queue.length+that.uploader2.queue.length+that.uploader3.queue.length+that.uploader4.queue.length;
+    that.interval = setInterval(() => {
+      if(that.uploadImageCount == imgCount){
+        this.interval && clearInterval(this.interval);
+        that.globalService.httpRequest('post','editCategory',{
+          'category_id':that.editId,
+          'category_type':that.globalService.category_type,
+          'category_desc':that.category_desc,
+          'frozeno_amount':that.frozeno_amount,
+          'frozeno_discount_amount':that.frozeno_discount_amount,
+          'frozeno_is_show_app':that.frozeno_is_show_app,
+          'frozeno_is_discount':that.frozeno_is_discount,
+          'frozeno_is_sub_dry':that.frozeno_is_sub_dry,
+          'frozeno_ticket_amount':that.frozeno_ticket_amount,
+          'image_url_home':JSON.stringify(that.path1),
+          'delete_id_home':JSON.stringify(that.deleteImgId1),
+          'image_url_detail':JSON.stringify(that.path2),
+          'delete_id_detail':JSON.stringify(that.deleteImgId2),
+          'image_url_main':JSON.stringify(that.path3),
+          'delete_id_main':JSON.stringify(that.deleteImgId3),
+          'image_url_detail_kj':JSON.stringify(that.path4),
+          'delete_id_detail_kj':JSON.stringify(that.deleteImgId4),
+          'edit_image_weight2':JSON.stringify(that.editImageWeight2),
+          'edit_image_weight3':JSON.stringify(that.editImageWeight3),
+          'edit_image_weight4':JSON.stringify(that.editImageWeight4),
+          'sid':that.cookieStore.getCookie('sid')
+        }).subscribe( (data)=>{
+            if(data) {
+              alert(data['msg']);
+              if (data['status'] == 200) {
+                that.lgModal.hide();
+                that.getProductList(1);
+                that.clear();  //清除数据
+              } else if (data['status'] == 202) {
+                that.cookieStore.removeAll(that.rollback_url);
+                that.router.navigate(['/auth/login']);
+              }
+            }
+          },
+          response => {
+            console.log('PATCH call in error', response);
+          });
       }
-    },
-    response => {
-      console.log('PATCH call in error', response);
-    });
+    }, 1000);
   }
 
   doPushEditImg(pimg){
