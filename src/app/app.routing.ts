@@ -135,6 +135,11 @@ export const routes: Routes = [
             path: 'marketing',
             loadChildren: 'app/marketing/marketing.module#MarketingModule',
             data: {pageTitle: 'Marketing'}
+        },
+        {
+            path: 'online-retailers',
+            loadChildren: 'app/online-retailers/online-retailers.module#OnlineRetailersModule',
+            data: {pageTitle: 'OnlineRetailers'}
         }
     ]
   },
