@@ -14,6 +14,7 @@ import { AuthLayoutComponent } from './app-layouts/auth-layout.component';
 import {TooltipModule, BsDropdownModule} from "ngx-bootstrap";
 import { RouteBreadcrumbsComponent } from './ribbon/route-breadcrumbs.component';
 import {UtilsModule} from "../utils/utils.module";
+import {ShortcutComponent} from "./shortcut/shortcut.component";
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import {UtilsModule} from "../utils/utils.module";
     EmptyLayoutComponent,
     AuthLayoutComponent,
     RouteBreadcrumbsComponent,
+    ShortcutComponent,
   ],
   exports:[
     HeaderModule,
@@ -41,6 +43,7 @@ import {UtilsModule} from "../utils/utils.module";
     FooterComponent,
     RibbonComponent,
     LayoutSwitcherComponent,
+    ShortcutComponent,
   ]
 })
 export class I3otpLayoutModule{
