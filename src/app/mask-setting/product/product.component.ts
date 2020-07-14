@@ -547,17 +547,17 @@ export class ProductComponent implements OnInit {
           'edit_image_weight4':JSON.stringify(that.editImageWeight4),
           'sid':that.cookieStore.getCookie('sid')
         }).subscribe( (data)=>{
-            if(data) {
-              alert(data['msg']);
-              if (data['status'] == 200) {
-                that.lgModal.hide();
-                that.getProductList(1);
-                that.clear();  //清除数据
-              } else if (data['status'] == 202) {
-                that.cookieStore.removeAll(that.rollback_url);
-                that.router.navigate(['/auth/login']);
-              }
+          if(data) {
+            alert(data['msg']);
+            if (data['status'] == 200) {
+              that.lgModal.hide();
+              that.getProductList(1);
+              that.clear();  //清除数据
+            } else if (data['status'] == 202) {
+              that.cookieStore.removeAll(that.rollback_url);
+              that.router.navigate(['/auth/login']);
             }
+          }
           },
           response => {
             console.log('PATCH call in error', response);
