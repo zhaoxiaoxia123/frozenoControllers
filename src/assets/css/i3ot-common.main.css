@@ -2907,7 +2907,7 @@ label input[type=checkbox][disabled].checkbox+span:before,label input[type=check
     width: 100%;
     background-color: #33302F;
     background-color: rgba(0,0,0,.85);
-    z-index: 907;
+    z-index: 1800;
     display: none;
     color: #fff;
     -webkit-box-sizing: border-box;
@@ -2925,6 +2925,7 @@ label input[type=checkbox][disabled].checkbox+span:before,label input[type=check
 #shortcut ul li {
     display: inline-block;
     width: auto;
+    padding:0 6px;
 }
 #shortcut ul li .jarvismetro-tile {
     margin: 0 3px 3px;
@@ -2981,12 +2982,13 @@ label input[type=checkbox][disabled].checkbox+span:before,label input[type=check
 .jarvismetro-tile .iconbox i {
     display: block;
     margin: 15px auto 0;
-    height: 75px
+    height: 66px
 }
 
 .jarvismetro-tile .iconbox span {
     display: block;
-    text-align: left
+    text-align: center;
+    font-size:1rem;
 }
 
 .jarvismetro-tile .iconbox span>span {

@@ -818,7 +818,7 @@ body.nooverflow {
 .jarviswidget header .nav-tabs>li>a {
     border-radius: 0;
     border: none;
-    padding: 10px;
+    padding: 10px 20px;
 }
 .nav-tabs>li.active>a {
     border-top-width: 0!important;
