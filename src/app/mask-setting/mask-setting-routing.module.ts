@@ -40,21 +40,7 @@ export const routes: Routes = [
         path: 'jurisdiction',
         loadChildren: 'app/mask-setting/jurisdiction/jurisdiction.module#JurisdictionModule',
         data: {pageTitle: 'jurisdiction'}
-<<<<<<< HEAD
-    },
-    // {
-    //     path: 'dealer-finance',
-    //     loadChildren: 'app/mask-setting/dealer-finance/dealer-finance.module#DealerFinanceModule',
-    //     data: {pageTitle: 'dealer-finance'}
-    // },
-    // {
-    //     path: 'dealer-order',
-    //     loadChildren: 'app/mask-setting/dealer-order/dealer-order.module#DealerOrderModule',
-    //     data: {pageTitle: 'dealer-order'}
-    // }
-=======
     }
->>>>>>> 964c2efc7d9215776146698a9399c191d0c1b471
 ];
 
 export const routing = RouterModule.forChild(routes);
