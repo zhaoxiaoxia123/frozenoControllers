@@ -621,11 +621,6 @@
     margin-left: 240px;
     margin-top: -15px;
 }
-button:not([size='mini']) {
-    width: 120px;
-    margin-left: auto;
-    margin-right: auto;
-}
 /* .colour-bg1{
    background:linear-gradient(-90deg,rgb(219, 147, 59),rgba(254,50,103,1));
 } */
