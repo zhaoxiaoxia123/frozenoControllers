@@ -21,14 +21,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="money-grade" >
-                                                    <!-- 按会员等级进行显示(普通用户)不显示图标、（VIP）、（SVIP）、（钻卡） -->
+                                                    <!-- 按会员等级进行显示 注册会员、VIP、钻卡、执行董事、高级董事、地区合伙人 -->
                                                     <img src="assets/img/mask/drill_golden@2x.png" >
                                                     <img src="assets/img/mask/svip_golden@2x.png" >
                                                     <img src="assets/img/mask/vip_golden@2x.png" >
                                                     <span class="money-grade-span">VIP</span>
                                                 </div>
                                             </div>
-                                            <div class="money-image">
+                                            <div class="money-image" data-toggle="modal" data-target="#onedimensional">
                                                 <img src="assets/img/mask/one_code@2x.png" >
                                             </div>
 
@@ -75,23 +75,6 @@
 
                                 </div>
 
-                                <div class="card-bg">
-                                    <div class=" mask-con mask-con-show">
-                                        <div class="card-one-center">
-                                            <div class="card-one-item">
-                                                <div class="card-one-img">
-                                                    <img src="assets/img/mask/one1.jpg" >
-                                                </div>
-                                                <div class="card-one-text">
-                                                    <span>(01)95012345678903(3102)000400</span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-
 
 
 
@@ -112,13 +95,13 @@
                                         <div class="integral-box">
                                             <div class="integral">
                                                 <div class="integral-current">
-                                                    <span class="current1">75787587</span>
+                                                    <span class="current1">5565</span>
                                                     <span>当前积分 </span>
                                                 </div>
 
                                                 <div class="integral-current1">
                                                     <span class="" >历史总积分： </span>
-                                                    <span class="current1-span" >800 </span>
+                                                    <span class="current1-span" >75787587 </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,9 +117,24 @@
                                                         <span >+</span>
                                                         <span >-</span>
                                                     </div>
-                                                    <div > 22</div>
-                                        </div>
+                                                        <div > 22</div>
+                                                    </div>
                                             </div>
+
+                                            <div class="integral-span" >
+                                                <div class="integral-title">
+                                                    <span class="span-title">购物返积分</span>
+                                                    <span class="span-date">2020-07-14 12:00：05 </span>
+                                                </div>
+                                                <div class="span-add">
+                                                    <div class="span-add-left">
+                                                        <span >+</span>
+                                                        <span >-</span>
+                                                    </div>
+                                                    <div > 22</div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <div class="integral-footer">
                                             <span class="">仅展示近六个月的消费积分</span>
@@ -146,42 +144,242 @@
                                 </div>
                                 <div class="tab-pane fade" id="nav-grow" role="tabpanel" aria-labelledby="nav-grow-tab">
 
+                                    <div class="integral-item">
+                                        <div class="integral-box">
+                                            <div class="integral">
+                                                <div class="integral-current">
+                                                    <span class="current1">VIP</span>
+                                                </div>
+
+                                                <div class="integral-box-text">
+                                                    <span>成长值255</span>
+                                                </div>
+
+                                                <div class="progress">
+                                                    <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+
+                                                <div class="integral-current1">
+                                                    <span class="" >截止到2020-04-05，合计5646成长值将失效 </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="integral-content">
+                                            <div class="integral-span" >
+                                                <div class="integral-title">
+                                                    <span class="span-title">购物返成长值</span>
+                                                    <span class="span-date">2020-07-14 12:00：05 </span>
+                                                </div>
+                                                <div class="span-add">
+                                                    <div class="span-add-left">
+                                                        <span >+</span>
+                                                        <span >-</span>
+                                                    </div>
+                                                    <div > 22</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="integral-span" >
+                                                <div class="integral-title">
+                                                    <span class="span-title">购物返积分</span>
+                                                    <span class="span-date">2020-07-14 12:00：05 </span>
+                                                </div>
+                                                <div class="span-add">
+                                                    <div class="span-add-left">
+                                                        <span >+</span>
+                                                        <span >-</span>
+                                                    </div>
+                                                    <div > 22</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="integral-footer">
+                                            <span class="">仅展示近六个月的成长值</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="nav-coupon" role="tabpanel" aria-labelledby="nav-coupon-tab">
+
+                                    <nav class="nav nav-pills nav-fill colour">
+                                        <a class="nav-item nav-link active" href="#">全部</a>
+                                        <a class="nav-item nav-link" href="#">未使用</a>
+                                        <a class="nav-item nav-link" href="#">已使用</a>
+                                        <a class="nav-item nav-link " href="#" tabindex="-1" aria-disabled="true">已过期</a>
+                                    </nav>
+
+                                    <div class="search-no" style="display: none;">
+                                        <div class="">
+                                            <img  class="scimg" src="assets/img/mask/wu.png" >
+                                        </div>
+                                        <span>您还没有优惠券~~</span>
+                                    </div>
+
+                                    <div class="container">
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <div class="coupon-wrapper colour-bg1" >
+                                                    <div class="coupon-content">
+                                                        <div class="box-hd">
+                                                            <div class="box-hd-text2">在线商城/门店通用</div>
+                                                        </div>
+                                                        <div class="box">
+                                                            <div class="money">
+                                                                <div class="money-text">
+                                                                    <span class="money-small">¥</span>54
+                                                                </div>
+                                                            </div>
+                                                            <div class="co">
+                                                                <div class="coupon-hd">
+                                                                    新人优惠券
+                                                                </div>
+                                                                <div class="conditions" >
+                                                                    全场通用
+                                                                </div>
+                                                                <div class="conditions" >
+                                                                    满200元使用
+                                                                </div>
+                                                                <div class="date">
+                                                                    2020-06-01至2020-08-01
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="split-line"></div>
+                                                    <div class="tip">
+                                                        <div class="coupon-img">
+                                                            <img  class="img-coupon" src="assets/img/mask/coupon1.png" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col"><div class="coupon-wrapper colour-bg2" >
+                                                <div class="coupon-content">
+                                                    <div class="box-hd">
+                                                        <div class="box-hd-text2">在线商城/门店通用</div>
+                                                    </div>
+                                                    <div class="box">
+                                                        <div class="money">
+                                                            <div class="money-text">
+                                                                <span class="money-small">¥</span>54
+                                                            </div>
+                                                        </div>
+                                                        <div class="co">
+                                                            <div class="coupon-hd">
+                                                                新人优惠券
+                                                            </div>
+                                                            <div class="conditions" >
+                                                                全场通用
+                                                            </div>
+                                                            <div class="conditions" >
+                                                                满200元使用
+                                                            </div>
+                                                            <div class="date">
+                                                                2020-06-01至2020-08-01
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="split-line"></div>
+                                                <div class="tip">
+                                                    <div class="coupon-img">
+                                                        <img  class="img-coupon" src="assets/img/mask/coupon1.png" >
+                                                    </div>
+                                                </div>
+                                            </div></div>
+                                            <div class="col"><div class="coupon-wrapper colour-bg2" >
+                                                <div class="coupon-content">
+                                                    <div class="box-hd">
+                                                        <div class="box-hd-text2">在线商城/门店通用</div>
+                                                    </div>
+                                                    <div class="box">
+                                                        <div class="money">
+                                                            <div class="money-text">
+                                                                <span class="money-small">¥</span>54
+                                                            </div>
+                                                        </div>
+                                                        <div class="co">
+                                                            <div class="coupon-hd">
+                                                                新人优惠券
+                                                            </div>
+                                                            <div class="conditions" >
+                                                                全场通用
+                                                            </div>
+                                                            <div class="conditions" >
+                                                                满200元使用
+                                                            </div>
+                                                            <div class="date">
+                                                                2020-06-01至2020-08-01
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="split-line"></div>
+                                                <div class="tip">
+                                                    <div class="coupon-img">
+                                                        <img  class="img-coupon" src="assets/img/mask/coupon2.png" >
+                                                    </div>
+                                                </div>
+                                            </div></div>
+                                            <div class="col"><div class="coupon-wrapper colour-bg2" >
+                                                <div class="coupon-content">
+                                                    <div class="box-hd">
+                                                        <div class="box-hd-text2">在线商城/门店通用</div>
+                                                    </div>
+                                                    <div class="box">
+                                                        <div class="money">
+                                                            <div class="money-text">
+                                                                <span class="money-small">¥</span>54
+                                                            </div>
+                                                        </div>
+                                                        <div class="co">
+                                                            <div class="coupon-hd">
+                                                                新人优惠券
+                                                            </div>
+                                                            <div class="conditions" >
+                                                                全场通用
+                                                            </div>
+                                                            <div class="conditions" >
+                                                                满200元使用
+                                                            </div>
+                                                            <div class="date">
+                                                                2020-06-01至2020-08-01
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="split-line"></div>
+                                                <div class="tip">
+                                                    <div class="coupon-img">
+                                                        <img  class="img-coupon" src="assets/img/mask/coupon3ng .png" >
+                                                    </div>
+                                                </div>
+                                            </div></div>
+                                        </div>
+                                    </div>
+
+
+
+
+
 
 
                                 </div>
 
-                                <div class="tab-pane fade" id="nav-invoice" role="tabpanel" aria-labelledby="nav-invoice-tab">
+                                <div class="tab-pane fade" id="nav-grade" role="tabpanel" aria-labelledby="nav-grade-tab">
 
-                                    <div class="data-main">
-                                        <div class="data-item">
-                                            <div class="row data-box">
-                                                <div class="col">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-primary"   data-toggle="modal" data-target="#invoiceModal"><span class="fa-fw fa fa-plus  mr-5" ></span>添加发票</button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="data-flex-sp">
-                                                        <div class="data-box-hd">
-                                                            <div class="date-name"><span>单位名称</span> <span>15928592794</span>   </div>
-                                                            <div class="news-box-span ">
-                                                                <span >税号：</span>564651321611111111111131613131651561
-                                                            </div>
-                                                        </div>
-                                                        <div class="date-edit">
-                                                            <div class="btn-group">
-                                                                <button type="button"  class="btn btn-outline-warning" data-toggle="modal" data-target="#invoiceModal"><span class="fa-fw fa fa-pencil mr-5"></span>修改</button>
-                                                            </div>
-                                                            <div class="btn-group">
-                                                                <button type="button"  class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteModal"><span class="fa-fw fa fa-trash-o mr-5"></span>删除</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
+                                    <div class="member-img">
+                                        <div class="text-align-center">
+                                            <img src="assets/img/grade/grade_01.jpg" >
                                         </div>
+                                        <div class="text-align-center"><img src="assets/img/grade/grade_02.jpg" ></div>
+                                        <div class="text-align-center"> <img src="assets/img/grade/grade_03.jpg" ></div>
+
+
+
                                     </div>
 
                                 </div>
@@ -194,4 +392,40 @@
             </article>
         </div>
     </sa-widgets-grid>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="onedimensional" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="onedimensionalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="onedimensionalLabel">一维码</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-bg">
+                    <div class=" mask-con mask-con-show">
+                        <div class="card-one-center">
+                            <div class="card-one-item">
+                                <div class="card-one-img">
+                                    <img src="assets/img/mask/one1.jpg" >
+                                </div>
+                                <div class="card-one-text">
+                                    <span>(01)95012345678903(3102)000400</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
 </div>

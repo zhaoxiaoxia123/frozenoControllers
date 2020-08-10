@@ -84,10 +84,15 @@
     margin:0 10px 50px 0;
     /*position: relative;*/
 }
+.picture-box{
+    display: inline-block;
+    zoom: 1;
+    margin:0 10px 20px 0;
+    border:1px solid #e2e3e5;
+}
 .picture-item-img{
     width:148px;
     height:148px;
-    border: 1px solid #e2e3e5;
 }
 .picture-item-imge{
     width:100%;
@@ -119,6 +124,7 @@
     justify-content: center;
     align-items: center;
     height: 148px;
+    font-size:42px;
 }
 .picture-file-upload{
     width: 100%;
@@ -312,6 +318,7 @@
     flex-direction: row-reverse;
     color: #D6A848;
     font-size:1.5rem;
+    font-weight:bold;
 }
 .member-branch{
     background-color: #333;
@@ -351,9 +358,9 @@
 .money-image img{
     width:40px;;
 }
-.card-one-center{
-    display: flex;
-}
+/*.card-one-center{*/
+    /*display: flex;*/
+/*}*/
 .card-one-item{
     display: flex;
     justify-content: center;
@@ -384,23 +391,27 @@
     border-radius:10px;
     font-size:0.8rem;
     line-height:1.5;
-    padding:30px;
+    padding:20px 30px;
     background:#f2f2f2;
     color:#333;
     margin: 30px 0;
-    width: 600px;
+    width: 100%;
 }
 .integral-current{
     display: flex;
     flex-direction: column;
     align-items:center;
     color: #333;
-    padding: 60px 0 40px 0;
+    padding:20px 0;
+}
+.integral-box-text{
+    font-size:1rem;
 }
 .current1{
     color:#DAB866;
     font-size:2.2rem;
     line-height:1.5;
+    font-weight: bold;
 }
 .integral-current1{
     display: flex;
@@ -432,14 +443,14 @@
     font-size:0.8rem;
     line-height:1.5;
     padding-top:10px;
-    color:#c6c6c6;
+    color:#333;
 }
 .span-add{
     display: flex;
     align-items: center;
     color:#DAB866;
-    font-size:1.5rem;
-    line-height:1.5;
+    font-size:1.8rem;
+    font-weight:bold;
 }
 .span-add-left{
     padding-right:10px;
@@ -450,4 +461,180 @@
     font-size:0.8rem;
     line-height:1.5;
     padding-top:60px;
+}
+.member-img{
+    padding:40px 0;
+}
+
+/* 无 */
+.search-no {
+    width: 100%;
+    display: block;
+    text-align: center;
+    padding:100px 0;
+    color:#8b8b8b;
+}
+.scimg {
+    width: 200px;
+    height: 233px;
+    display: inline-block;
+    padding-bottom:30px;
+}
+
+/* 优惠券 */
+.coupon-wrapper {
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    border-radius: 10px;
+    margin-bottom:30px;
+
+}
+.colour{
+    padding:20px 0;
+}
+.box-hd{
+    display: flex;
+    padding-bottom:10px;
+}
+.box-hd-text1{
+    background:#DAB866;
+    color: #fff;
+    padding:10px 20px;
+    border-radius: 10px 0 10px 0;
+}
+.box-hd-text2{
+    background:#646464;
+    color: #ccc;
+    padding:10px 20px;
+    border-radius: 10px 0 10px 0;
+}
+.box{
+    padding: 20px;
+    display: flex;
+}
+/*前半部分样式*/
+.coupon-content {
+    /* position: relative; */
+    flex: 1;
+}
+/*后半部分样式*/
+.tip {
+    /* position: relative;
+    padding:  50px 30px;
+    flex: 0 0 200px;
+    text-align: center; */
+    display: flex;
+    align-items: center;
+}
+/*中间竖直虚线样式*/
+.split-line {
+    position: relative;
+    flex: 0 0 0;
+    margin: 0 10px 0 6px;
+    border-left: 4px dashed #fff;
+}
+/*给虚线加两个伪类，基本样式如下*/
+.split-line:before, .split-line:after {
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 16px;
+    background: #fff;
+    left: -18px;
+    z-index: 1;
+}
+/*给前半部分加两个伪类，基本样式如下*/
+/* .coupon-content:before, .coupon-content:after{
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 16px;
+    background: #333;
+    left: -16px;
+    z-index: 1;
+} */
+
+/*给前半部分加两个伪类，基本样式如下*/
+/* .tip:before, .tip:after{
+    content: '';
+    position: absolute;
+    width: 32px;
+    height: 16px;
+    background:#333;
+    right: -16px;
+    z-index: 1;
+} */
+/*几个伪类化成的圆弧的样式以及位置（置于顶部）我把它放在一起了*/
+.coupon-content:before, .tip:before, .split-line:before{
+    border-radius: 0 0 16px 16px;
+    top: 0;
+}
+
+/*几个伪类化成的圆弧的样式以及位置（置于底部）我把它放在一起了*/
+.coupon-content:after, .tip:after, .split-line:after{
+    border-radius: 16px 16px 0 0;
+    bottom: 0;
+}
+.img-coupon{
+    width:160px;
+    height:160px;
+    padding-left:10px;
+    opacity: 0.9;
+}
+.coupon-hd{
+    font-size:1.2rem;
+    padding-bottom:20px;
+}
+.conditions{
+    font-size:0.8rem;
+}
+.date{
+    font-size:0.8rem;
+}
+.money {
+    font-size: 1.8rem;
+}
+.money-small{
+    font-size:1rem;
+    padding-right:10px;
+}
+.money-text{
+    display: flex;
+    align-items: flex-star;
+    padding-top:10px;
+}
+.useNow {
+    font-size: 28px;
+    border-radius: 50px;
+    border-style: none;
+}
+.co {
+    padding-left:40px;
+}
+.co .co_w {
+    width: 64px;
+    height: 1px;
+    background: #fff;
+    margin-left: 40px;
+    margin-bottom: -20px;
+}
+
+.co .co_l {
+    width: 64px;
+    height: 1px;
+    background: #fff;
+    margin-left: 240px;
+    margin-top: -15px;
+}
+/* .colour-bg1{
+   background:linear-gradient(-90deg,rgb(219, 147, 59),rgba(254,50,103,1));
+} */
+.colour-bg1{
+    background: linear-gradient(to right, #565656, #404040);
+    color:#fff;
+}
+.colour-bg2{
+    background: linear-gradient(to right, #565656, #404040);
+    color:#ccc;
 }
