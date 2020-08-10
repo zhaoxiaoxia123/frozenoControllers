@@ -45,7 +45,8 @@ export class PostComponent implements OnInit {
   imgCount : number = 0;
   selectedImageUrl : any[] = [];
 
-  typeList:any = [];
+  categoryType:number = 53;
+  categoryList:any = [];
   checkTypeId: number = 0;
   checkTypeName: string = '全部';
   url : string = this.globalService.getDomain();
@@ -66,28 +67,30 @@ export class PostComponent implements OnInit {
       // private sanitizer: DomSanitizer
   ) {
     window.scrollTo(0,0);
-    this.typeList = [
-      {'id':1,'name':'帮助与客服'},
-      {'id':2,'name':'成长课堂'},
-      {'id':3,'name':'产品百科'},
-      {'id':4,'name':'规则中心'},
-      {'id':5,'name':'政策中心'},
-      {'id':6,'name':'系统通知'},
-      {'id':7,'name':'冻龄智美通知'},
-      {'id':8,'name':'激励中心'},
-      {'id':9,'name':'app商城广告'},
-      {'id':10,'name':'工作台腰部广告'},
-      {'id':11,'name':'冻龄智会员协议'},
-      {'id':12,'name':'app商城其他广告'},
-      {'id':13,'name':'app商城关于我们广告'},
-      {'id':14,'name':'冻龄智美服务协议'},
-      {'id':15,'name':'隐私政策'},
-      {'id':16,'name':'会员体系图片'},
-      {'id':17,'name':'售后图片'},
-      {'id':18,'name':'工作台发圈头部广告'},
-      {'id':19,'name':'工作台发圈文章'},
-      {'id':20,'name':'公众号发文对应'}
-    ];
+    // this.categoryList = [
+    //   {'id':1,'name':'帮助与客服'},
+    //   {'id':2,'name':'成长课堂'},
+    //   {'id':3,'name':'产品百科'},
+    //   {'id':4,'name':'规则中心'},
+    //   {'id':5,'name':'政策中心'},
+    //   {'id':6,'name':'系统通知'},
+    //   {'id':7,'name':'冻龄智美通知'},
+    //   {'id':8,'name':'激励中心'},
+    //   {'id':9,'name':'app商城广告'},
+    //   {'id':10,'name':'工作台腰部广告'},
+    //   {'id':11,'name':'冻龄智会员协议'},
+    //   {'id':12,'name':'app商城其他广告'},
+    //   {'id':13,'name':'app商城关于我们广告'},
+    //   {'id':14,'name':'冻龄智美服务协议'},
+    //   {'id':15,'name':'隐私政策'},
+    //   {'id':16,'name':'会员体系图片'},
+    //   {'id':17,'name':'售后图片'},
+    //   {'id':18,'name':'工作台发圈头部广告'},
+    //   {'id':19,'name':'工作台发圈文章'},
+    //   {'id':20,'name':'公众号发文对应'},
+    //   {'id':21,'name':'学习中心顶部广告'},
+    //   {'id':22,'name':'押金协议'}
+    // ];
   }
 
   ngOnInit() {
@@ -100,6 +103,7 @@ export class PostComponent implements OnInit {
       this.permissions = this.globalService.getPermissions();
       this.menuInfos = this.globalService.getMenuInfos();
     },this.globalService.getMenuPermissionDelayTime());
+    this.getPostCategoryList();
     this.getPostList(1);
   }
   /**
@@ -249,6 +253,23 @@ export class PostComponent implements OnInit {
   }
 
   /**
+   * 获取文章分类
+   */
+  getPostCategoryList(){
+    let url = 'getCategoryList?category_type='+this.categoryType+'&type=post&sid='+this.cookieStore.getCookie('sid');
+    this.globalService.httpRequest('get',url)
+      .subscribe((data)=>{
+        this.categoryList = data;
+        if(this.categoryList) {
+          if (this.categoryList['status'] == 202) {
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+          }
+        }
+      });
+  }
+
+  /**
    * 分页
    */
   pagination(page : string) {
@@ -294,6 +315,7 @@ export class PostComponent implements OnInit {
       'state':this.state,
       'is_href':this.is_href,
       'theme':this.theme,
+      'weight':this.weight,
       'start_date':this.startDate,
       'end_date':this.endDate,
       'sid':this.cookieStore.getCookie('sid')

@@ -63,7 +63,7 @@
                                             <th>下单时间</th>
                                         </tr>
                                         </thead>
-                                        <tbody *ngIf="orderList?.result">
+                                        <tbody *ngIf="orderList?.result?.data">
                                         <tr *ngFor="let sl of orderList?.result?.data;let ind = index;" (click)="isStatusShow(sl.o_id,sl.frozeno_order_state,sl.frozeno_prepare_state)" [ngClass]="{'table-color':editStatusUserOrderId == sl.o_id}">
                                             <td>{{(ind+1)}}</td>
                                             <td *ngIf="sl.o_is_complete == 3" style="color: blue;">{{ sl.o_order }}</td>

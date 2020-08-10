@@ -219,7 +219,7 @@ export class DealerOrderComponent implements OnInit {
         if(search_type != '') {
             this.searchType = search_type;
         }
-        let url = 'getDLZMOrderList?page='+number+'&role='+this.cookieStore.getCookie('urole')+'&sid='+this.cookieStore.getCookie('sid');
+        let url = 'getDealerAndChildOrderList?page='+number+'&sid='+this.cookieStore.getCookie('sid');
         if(this.formModel.value['keyword'].trim() != ''){
             url += '&keyword='+this.formModel.value['keyword'].trim();
         }
@@ -229,6 +229,7 @@ export class DealerOrderComponent implements OnInit {
         this.globalService.httpRequest('get',url)
             .subscribe((data)=>{
                 this.orderList = data;
+                console.log(this.orderList);
                 if(this.orderList) {
                     if (this.orderList['status'] == 202) {
                         this.cookieStore.removeAll(this.rollback_url);

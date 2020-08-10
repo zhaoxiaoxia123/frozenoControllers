@@ -21,9 +21,9 @@
                                                     <span class="btn btn-primary dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">筛选-{{checkTypeName}}</span>
                                                     <div class="dropdown-menu">
                                                         <span class="dropdown-item" (click)="checkType(0,'全部')">全部</span>
-                                                        <div *ngFor="let t of typeList;let inde = index;">
+                                                        <div *ngFor="let t of categoryList?.result;let inde = index;">
                                                             <div class="dropdown-divider" *ngIf="inde%4 == 0"></div>
-                                                            <span class="dropdown-item" (click)="checkType(t.id,t.name)">{{t.name}}</span>
+                                                            <span class="dropdown-item" (click)="checkType(t.category_tab,t.category_desc)">{{t.category_desc}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -62,8 +62,8 @@
                                                 <td>{{ pl.title }}</td>
                                                 <td>
                                                 <span [ngSwitch]="pl.type">
-                                                    <span *ngFor="let tl of typeList">
-                                                        <span [ngClass]="{'label-normal':(ind%2==0),'label-blue':(ind%3==0),'label-full':(ind%2!=0&&ind%3!=0)}" *ngSwitchCase="tl.id">{{tl.name}}</span>
+                                                    <span *ngFor="let tl of categoryList?.result">
+                                                        <span [ngClass]="{'label-normal':(ind%2==0),'label-blue':(ind%3==0),'label-full':(ind%2!=0&&ind%3!=0)}" *ngSwitchCase="tl.category_tab">{{tl.category_desc}}</span>
                                                     </span>
                                                     <!--<span class="label-blue" *ngSwitchCase="2">成长课堂</span>-->
                                                     <!--<span class="label-full" *ngSwitchCase="3">产品百科</span>-->
@@ -139,7 +139,7 @@
                         <div class="col-sm-10">
                             <select  class="form-control" [(ngModel)]="type" [ngModelOptions]="{standalone: true}">
                                 <option value="0">--请选择分类--</option>
-                                <option *ngFor="let tl of typeList" value="{{ tl.id }}">{{tl.name}}</option>
+                                <option *ngFor="let tl of categoryList?.result" value="{{tl.category_tab}}">{{tl.category_desc}}</option>
                             </select>
                         </div>
                     </div>
@@ -289,6 +289,7 @@
                         <ng-container>
                             <input type="radio" name="is_href" [(ngModel)]="is_href" [value]="1" [checked]="is_href==1" (click)="onCheckHerf(1)"> 是
                             <input type="radio" name="is_href" [(ngModel)]="is_href" [value]="2" [checked]="is_href==2" (click)="onCheckHerf(2)"> 否
+                            <input type="radio" name="is_href" [(ngModel)]="is_href" [value]="3" [checked]="is_href==3" (click)="onCheckHerf(3)"> 跳转到小程序页面
                         </ng-container>
                     </div>
                 </div>

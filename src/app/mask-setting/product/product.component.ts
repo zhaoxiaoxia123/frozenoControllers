@@ -30,6 +30,7 @@ export class ProductComponent implements OnInit {
 
   upimg = '';
   downimg = '';
+  dgTypeNum: number = 0;
   uploadImageCount : number = 0;
 
   private interval;
@@ -65,23 +66,24 @@ export class ProductComponent implements OnInit {
   selectedImageUrl1 : any[] = [];
   path1:any = [];
 
-  imageAd2:any=[];    //商品详情顶部滚动图片
+  imageAd3:any=[];    //商品详情顶部滚动图片
+  deleteImgId3:any=[];    //delete img_id
+  selectedImageUrl3 : any[] = [];
+  showImg3:any = [];
+  path3:any = [];
+
+  imageAd2:any=[];    //商品详情图片
   deleteImgId2:any=[];    //delete img_id
   selectedImageUrl2 : any[] = [];
   path2:any = [];
 
-  imageAd3:any=[];    //商品详情图片
-  deleteImgId3:any=[];    //delete img_id
-  selectedImageUrl3 : any[] = [];
-  path3:any = [];
-
   imageAd4:any=[];    //商品详情科技图片
   deleteImgId4:any=[];    //delete img_id
-  selectedImageUrl4 : any[] = [];
-  path4:any = [];
+  selectedImageUrl4: any[] = [];
+  path4:any=[];
 
-  editImageWeight2:any=[];    //商品详情顶部滚动图片
-  editImageWeight3:any=[];    //商品详情图片
+  editImageWeight2:any=[];    //商品详情图片
+  editImageWeight3:any=[];    //商品详情顶部滚动图片
   editImageWeight4:any=[];    //商品详情科技图片
 
   editImgWeight : any = [];
@@ -128,68 +130,57 @@ export class ProductComponent implements OnInit {
   selectedFileOnChangedFun(num=0) {
     console.log(num);
     if(num == 1){
-      this.selectedFileOnChanged(this.selectedImageUrl1,this.uploader1.queue);
+      this.selectedImageUrl1 = this.selectedFileOnChanged(this.uploader1.queue);
     }else if(num == 2){
-      this.selectedFileOnChanged(this.selectedImageUrl2,this.uploader2.queue);
+      this.selectedImageUrl2 = this.selectedFileOnChanged(this.uploader2.queue);
     }else if(num == 3){
-      this.selectedFileOnChanged(this.selectedImageUrl3,this.uploader3.queue);
+      this.selectedImageUrl3 = this.selectedFileOnChanged(this.uploader3.queue);
+
     }else if(num == 4){
-      this.selectedFileOnChanged(this.selectedImageUrl4,this.uploader4.queue);
+      this.selectedImageUrl4 = this.selectedFileOnChanged(this.uploader4.queue);
     }
-    // let $this = this;
-    // let selectedArr = this.selectedImageUrl1;
-    // this.uploader1.queue.forEach((q,i)=>{
-    //   let reader = new FileReader();
-    //   reader.readAsDataURL(q.some);
-    //   reader.onload = function(e){
-    //     let imgs = {
-    //       url:this.result,
-    //       uploadID:i,
-    //       // pIndex:index
-    //     };
-    //     if(selectedArr.length > 0){
-    //       let isSame = false;
-    //       if(!isSame){
-    //         selectedArr.push(imgs);
-    //       }else{
-    //         $this.uploader1.queue[i].remove();
-    //       }
-    //     }else{
-    //       selectedArr.push(imgs);
-    //     }
-    //   }
-    // });
-    // // this.imgCount = this.uploader.queue.length;
-    // this.selectedImageUrl1 = selectedArr;
+    console.log('this.selectedImageUrl3:--- ');
+    console.log(this.selectedImageUrl3 );
   }
 
-  // C: 定义事件，选择文件
-  selectedFileOnChanged(selectedImageUrl,uploader) {
-    let that = this;
-    let selectedArr = selectedImageUrl;
-    uploader.forEach((q,i)=>{
-        let reader = new FileReader();
-        reader.readAsDataURL(q.some);
-        reader.onload = function(e){
-          let imgs = {
-            url:this.result,
-            uploadID:i,
-            // pIndex:index
-          };
-          if(selectedArr.length > 0){
-            let isSame = false;
-            if(!isSame){
-              selectedArr.push(imgs);
-            }else{
-              uploader[i].remove();
-            }
-          }else{
-            selectedArr.push(imgs);
-          }
-        }
+  goShowImg(){
+    this.imageAd3.forEach((v1,i1)=>{
+      this.showImg3.push(v1);
     });
-    // this.imgCount = this.uploader.queue.length;
-    selectedImageUrl = selectedArr;
+    this.selectedImageUrl3.forEach((v,i)=>{
+      this.showImg3.push(v);
+    });
+
+  }
+
+  //数组字段根据某一字段进行排序
+  compare(property){
+    return function(a,b){
+      let value1 = a[property];
+      let value2 = b[property];
+      return value1 - value2;
+    }
+  }
+  // C: 定义事件，选择文件
+  selectedFileOnChanged(uploader) {
+    let that = this;
+    let selectedArr = [];
+    console.log('uploader:-----');
+    console.log(uploader);
+    uploader.forEach((q,i)=>{
+      let reader = new FileReader();
+      reader.readAsDataURL(q.some);
+      reader.onload = function(e){
+        let imgs = {
+          url:this.result,
+          uploadID:i,
+          type:'new',
+        };
+        selectedArr.push(imgs);
+      }
+    });
+    let selectedArrs = selectedArr.sort(that.compare('uploadID'));
+    return selectedArrs;
   }
 
   // D: 定义事件，上传文件  单个文件
@@ -260,7 +251,6 @@ export class ProductComponent implements OnInit {
         alert('找不到要上传的图片！');
       }
     });
-
     this.clearSelectImage();
   }
 
@@ -298,6 +288,10 @@ export class ProductComponent implements OnInit {
         up.uploadID = i//重构与上传数据一致的结构
       });
     }
+    console.log('this.uploader3.queue');
+    console.log(uploadID);
+    console.log(this.uploader3.queue);
+    console.log(this.selectedImageUrl3);
     // this.uploader.queue.length;
     // console.log(this.uploader);
   }
@@ -332,16 +326,17 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  imgmousedown(e,img) {
+  //num  1: 数据库的读取数据   2：新上传数据
+  imgmousedown(e,img,num=0) {
     console.log('down');
     console.log(img);
-    this.downimg =  img;
+    this.dgTypeNum = num;
+    console.log(this.dgTypeNum);
+    this.downimg = img;
     //防止浏览器默认行为(W3C)
     if(e && e.preventDefault){
       e.preventDefault();
-    }
-    //IE中组织浏览器行为
-    else{
+    } else {//IE中组织浏览器行为
       window.event.returnValue=false;
       return false;
     }
@@ -350,7 +345,7 @@ export class ProductComponent implements OnInit {
   /**
    *
    * @param img
-   * @param num  移动图片 1:上传前  2:上传后
+   * @param num  移动图片 1:  数据库图片拖拽   2：新上传图片拖拽
    * @param type  移动图片类型  1:首页 2:详情顶部 3:详情图片 4:详情科技
    */
   imgmouseup(img,num,type) {
@@ -364,20 +359,21 @@ export class ProductComponent implements OnInit {
     let upimgnum = 0;
     let downimgtext = '';
     let upimgtext = '';
+    let downimg = {};
+    let upimg = {};
 
     let editImgList: any = [];
-    // if(num == 1){
+    if(num == 1){
     //   if(type == 1) {
     //     editImgList = this.selectedImageUrl1;
     //   }else if(type == 2) {
     //     editImgList = this.selectedImageUrl2;
     //   }else if(type == 3) {
-    //     editImgList = this.selectedImageUrl3;
+        editImgList = this.selectedImageUrl3;
     //   }else if(type == 4) {
     //     editImgList = this.selectedImageUrl4;
     //   }
-    // }else
-    if(num == 2){
+    }else if(num == 2){
       // if(type == 1) {
       //   editImgList = this.imageAd1;
       // }else
@@ -393,14 +389,18 @@ export class ProductComponent implements OnInit {
       if (editImgList[i]['image_url'] === this.downimg) {
         downimgnum = i;
         downimgtext = editImgList[i]['image_url'];
+        downimg = editImgList[i];
       }
       if (editImgList[i]['image_url'] === this.upimg) {
         upimgnum = i;
         upimgtext = editImgList[i]['image_url'];
+        upimg = editImgList[i];
       }
     }
-    editImgList[downimgnum]['image_url'] = upimgtext;
-    editImgList[upimgnum]['image_url'] = downimgtext;
+
+    editImgList.splice(downimgnum, 0, downimg);
+    // editImgList[downimgnum]['image_url'] = upimgtext;
+    // editImgList[upimgnum]['image_url'] = downimgtext;
 
     // if(num == 1){
     //   if(type == 1) {
@@ -457,6 +457,7 @@ export class ProductComponent implements OnInit {
       }
     }
     console.log(this.imageAd2);
+    console.log('this.imageAd3');
     console.log(this.imageAd3);
   }
 
@@ -558,10 +559,10 @@ export class ProductComponent implements OnInit {
               that.router.navigate(['/auth/login']);
             }
           }
-          },
-          response => {
-            console.log('PATCH call in error', response);
-          });
+        },
+        response => {
+          console.log('PATCH call in error', response);
+        });
       }
     }, 1000);
   }

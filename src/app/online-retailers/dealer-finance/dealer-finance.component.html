@@ -1,6 +1,5 @@
 <div id="content" >
     <sa-widgets-grid>
-
         <div class="row">
             <article class="col-sm-12 ">
                 <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false">
@@ -11,31 +10,27 @@
                     <div>
                         <div class="widget-body" >
                             <div class="card-columns">
-
                                 <div class="card text-center text-white bg-primary">
                                     <div class="card-body">
-                                        <h5 class="card-title" style="font-size:3rem;">12.00</h5>
+                                        <h5 class="card-title" style="font-size:3rem;">{{income.today_income?income.today_income:'0.00'}}</h5>
                                         <p class="card-text">今日收益指数</p>
                                     </div>
                                 </div>
                                 <div class="card text-center text-white bg-info">
                                     <div class="card-body">
-                                        <h5 class="card-title" style="font-size:3rem;">42.00</h5>
+                                        <h5 class="card-title" style="font-size:3rem;">{{income.month_income?income.month_income:'0.00'}}</h5>
                                         <p class="card-text">本月收益指数</p>
                                     </div>
                                 </div>
                                 <div class="card text-center text-white bg-success">
                                     <div class="card-body" >
-                                        <h5 class="card-title" style="font-size:3rem;">88.00</h5>
+                                        <h5 class="card-title" style="font-size:3rem;">{{income.frozeno_rebate_amount?income.frozeno_rebate_amount:'0.00'}}</h5>
                                         <p class="card-text">总收益指数</p>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="widget-body no-padding" >
-
-
                             <article>
                                 <div class="navbar navbar-default">
                                     <form  class="navbar-form" novalidate="" role="search" >
@@ -49,99 +44,22 @@
                                         </div>
                                         <div class="btn-group">
                                             <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                2020年6月
+                                                {{monthGlance?.result?.now_year}}年{{now_month}}月
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#">2020年6月</a>
-                                                <a class="dropdown-item" href="#">2020年5月</a>
-                                                <a class="dropdown-item" href="#">2020年4月</a>
+                                                <a class="dropdown-item" *ngFor="let sd of selectData" (click)="getGlanceList('day',monthGlance?.result?.now_year,sd)">{{monthGlance?.result?.now_year}}年{{sd}}</a>
                                             </div>
                                         </div>
                                     </form>
-
                                 </div>
                             </article>
                             <div class="form-row" style="padding:20px 10px;">
                                 <div class="form-group col-sm-8">
                                     <div class="finance">
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
+                                        <div class="text-center finance-item finance-xs" *ngFor="let m of monthGlance?.result?.ret?.child.child">
+                                            <h5 class="finance-title">{{m.value}}</h5>
+                                            <p class="finance-text">{{monthGlance?.result?.now_month}}月{{m.key}}日</p>
                                         </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-xs">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">6月1日</p>
-                                        </div>
-
-
                                     </div>
                                 </div>
                                 <div class="form-group col-sm-4">
@@ -150,7 +68,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <article>
                                 <div class="navbar navbar-default">
                                     <form  class="navbar-form" novalidate="" role="search" >
@@ -164,54 +81,23 @@
                                         </div>
                                         <div class="btn-group">
                                             <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                2020年
+                                                {{now_year}}年
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#">2020年</a>
-                                                <a class="dropdown-item" href="#">2019年</a>
+                                                <a class="dropdown-item" (click)="getGlanceList('month',2020,0)">2020年</a>
+                                                <a class="dropdown-item" (click)="getGlanceList('month',2019,0)">2019年</a>
                                             </div>
                                         </div>
                                     </form>
-
                                 </div>
                             </article>
                             <div class="form-row" style="padding:20px 10px;">
                                 <div class="form-group col-sm-8">
                                     <div class="finance">
-
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">一月份</p>
+                                        <div class="text-center finance-item finance-sm" *ngFor="let ym of yearGlance?.result?.ret?.child">
+                                            <h5 class="finance-title">{{ym.income}}</h5>
+                                            <p class="finance-text">{{ym.month}}月份</p>
                                         </div>
-
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">二月份</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">三月份</p>
-                                        </div>
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">四月份</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">五月份</p>
-                                        </div>
-
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">六月份</p>
-                                        </div>
-                                        <div class="text-center finance-item finance-sm">
-                                            <h5 class="finance-title">42.00</h5>
-                                            <p class="finance-text">七月份</p>
-                                        </div>
-
                                     </div>
                                 </div>
                                 <div class="form-group col-sm-4">
@@ -220,20 +106,10 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                         </div>
-
                     </div>
                 </sa-widget>
             </article>
-
-
-
         </div>
-
-
-
     </sa-widgets-grid>
 </div>

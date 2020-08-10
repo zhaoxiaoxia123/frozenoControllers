@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {GlobalService} from "../../core/global.service";
+import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-dealer-finance',
@@ -6,9 +9,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DealerFinanceComponent implements OnInit {
 
-    constructor() { }
+    income : any = [];
+    monthGlance : any = [];
+    yearGlance : any = [];
+    now_month: number;
+    now_year: number;
+    c_id:string;
+
+    selectData:any = ['1月', '2月', '3月','4月', '5月', '6月', '7月','8月', '9月', '10月', '11月', '12月'];
+    rollback_url : string = '';
+    /**菜单id */
+    menu_id:any;
+    /** 权限 */
+    permissions : Array<any> = [];
+    menuInfos : any = [];
+    constructor(
+      private router:Router,
+      private cookieStore:CookieStoreService,
+      private globalService:GlobalService
+    ) {
+        this.getCustomerIncome();
+        window.scrollTo(0,0);
+        this.c_id = this.cookieStore.getCookie('cid');
+    }
 
     ngOnInit() {
+        //顶部菜单读取
+        this.globalService.getMenuInfo();
+        setTimeout(()=>{
+            this.menu_id = this.globalService.getMenuId();
+            this.rollback_url = this.globalService.getMenuUrl();
+            this.permissions = this.globalService.getPermissions();
+            this.menuInfos = this.globalService.getMenuInfos();
+        },this.globalService.getMenuPermissionDelayTime())
+
+        this.getGlanceList('day');
+        this.getGlanceList('month');
+
     }
     securityoption = {
         title: {
@@ -86,5 +123,50 @@ export class DealerFinanceComponent implements OnInit {
             }
         ]
     };
+
+
+
+    /**
+     * 获取用户日月年收益指数
+     */
+    getCustomerIncome() {
+        let url = 'getCustomerIncome?sid='+this.cookieStore.getCookie('sid');
+        this.globalService.httpRequest('get',url)
+          .subscribe((data)=>{
+              if(data) {
+                  this.income = data['result']['data'];
+                  if (data['status'] == 202) {
+                      this.cookieStore.removeAll(this.rollback_url);
+                      this.router.navigate(['/auth/login']);
+                  }
+              }
+          });
+    }
+
+    /**
+     * 获取用户月收益指数一览
+     */
+    getGlanceList(type='day',year=0,month=0) {
+        let url = 'getGlanceList?type='+type+'&year='+year+'&month='+month+'&sid='+this.cookieStore.getCookie('sid');
+        this.globalService.httpRequest('get',url)
+          .subscribe((data)=>{
+              if(data) {
+                  if(type == 'day') {
+                      this.monthGlance = data;
+                      this.now_month = this.monthGlance['result']['now_month'];
+                  }else if(type == 'month') {
+                      this.yearGlance = data;
+                      this.now_year = this.yearGlance['result']['now_year'];
+                  }
+                  if (data['status'] == 202) {
+                      this.cookieStore.removeAll(this.rollback_url);
+                      this.router.navigate(['/auth/login']);
+                  }
+              }
+          });
+    }
+
+
+
 
 }

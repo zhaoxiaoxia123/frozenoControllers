@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 export class CouponComponent implements OnInit {
     isStatus: number = 0;
     assetsInfo:any = [];
-    approve_user:any=[];
-    follower_user:any=[];
+    approve_user:any= [];
+    follower_user:any= [];
     rollback_url : string = '';
     /**菜单id */
     menu_id:any;
