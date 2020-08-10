@@ -137,6 +137,11 @@ export const routes: Routes = [
             data: {pageTitle: 'Marketing'}
         },
         {
+            path: 'after-sales',
+            loadChildren: 'app/after-sales/after-sales.module#AfterSalesModule',
+            data: {pageTitle: 'AfterSales'}
+        },
+        {
             path: 'online-retailers',
             loadChildren: 'app/online-retailers/online-retailers.module#OnlineRetailersModule',
             data: {pageTitle: 'OnlineRetailers'}

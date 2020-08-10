@@ -84,10 +84,15 @@
     margin:0 10px 50px 0;
     /*position: relative;*/
 }
+.picture-box{
+    display: inline-block;
+    zoom: 1;
+    margin:0 10px 20px 0;
+    border:1px solid #e2e3e5;
+}
 .picture-item-img{
     width:148px;
     height:148px;
-    border: 1px solid #e2e3e5;
 }
 .picture-item-imge{
     width:100%;
@@ -119,6 +124,7 @@
     justify-content: center;
     align-items: center;
     height: 148px;
+    font-size:42px;
 }
 .picture-file-upload{
     width: 100%;
@@ -476,7 +482,7 @@
 }
 
 /* 优惠券 */
-.wrapper {
+.coupon-wrapper {
     margin: 0 auto;
     width: 100%;
     display: flex;
@@ -508,7 +514,7 @@
     display: flex;
 }
 /*前半部分样式*/
-.content {
+.coupon-content {
     /* position: relative; */
     flex: 1;
 }
@@ -526,7 +532,7 @@
     position: relative;
     flex: 0 0 0;
     margin: 0 10px 0 6px;
-    border-left: 4px dashed #333;
+    border-left: 4px dashed #fff;
 }
 /*给虚线加两个伪类，基本样式如下*/
 .split-line:before, .split-line:after {
@@ -534,12 +540,12 @@
     position: absolute;
     width: 32px;
     height: 16px;
-    background: #333;
+    background: #fff;
     left: -18px;
     z-index: 1;
 }
 /*给前半部分加两个伪类，基本样式如下*/
-/* .content:before, .content:after{
+/* .coupon-content:before, .coupon-content:after{
     content: '';
     position: absolute;
     width: 32px;
@@ -560,13 +566,13 @@
     z-index: 1;
 } */
 /*几个伪类化成的圆弧的样式以及位置（置于顶部）我把它放在一起了*/
-.content:before, .tip:before, .split-line:before{
+.coupon-content:before, .tip:before, .split-line:before{
     border-radius: 0 0 16px 16px;
     top: 0;
 }
 
 /*几个伪类化成的圆弧的样式以及位置（置于底部）我把它放在一起了*/
-.content:after, .tip:after, .split-line:after{
+.coupon-content:after, .tip:after, .split-line:after{
     border-radius: 16px 16px 0 0;
     bottom: 0;
 }
