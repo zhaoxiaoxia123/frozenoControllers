@@ -11,7 +11,7 @@
                         <div class="widget-body no-padding">
                             <article>
                                 <div class="navbar navbar-default">
-                                    <!--详情一直都显示，打印、备货（在有待备货状态的时候一直显示，其他情况显示灰色）、发货（在待备货时显示，其他时候显示灰色），添加删除不显示。修改需管理才显示（可以修改订单状态-针对退换货的，功能先不做，修改也可以先不显示）。作废管理员有权限（未支付、待备货和待发货的订单可以作废，状态显示交易失败）-->
+
                                     <form  class="navbar-form" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" novalidate >
                                         <div class="btn-group">
                                             <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editStatusUserOrderId == 0}" (click)="detailUserOrder('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
@@ -266,6 +266,8 @@
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">可结算总金额：</span>{{orderInfo?.result?.totalAmount}}</div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title ">佣金：</span><span class="m-order-money">{{cp.rebate_amount}}</span></div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">状态：</span>{{cp.is_settlement ? '已结算' : '未结算'}}</div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">成长值：</span></div>
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">优惠券：</span></div>
                         </div>
                     </div>
 
