@@ -23,7 +23,7 @@
                                         <!--<button type="button" [ngClass]="{'btn btn-danger':true,'not-click':editStatusUserOrderId == 0}" (click)="deleteUserOrder('id')"><span class="fa-fw fa  fa-trash-o mr-5"></span>删除</button>-->
                                         <!--</div>-->
                                         <div class="btn-group">
-                                            <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 2 && editPrepareState == 1)}" (click)="choiceOrder()">备货并发货</button>
+                                            <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 2 && editPrepareState == 1)}" (click)="choiceOrder()">备货</button>
                                         </div>
                                         <div class="btn-group">
                                             <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 2 && editPrepareState == 2)}" (click)="sendOrder(1)">发货</button>
@@ -498,8 +498,8 @@
                         <tr>
                             <th scope="col">用户名</th>
                             <th scope="col">会员等级</th>
-                            <th scope="col">佣金（智美豆）</th>
                             <th scope="col">成长值</th>
+                            <th scope="col">优惠券</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -508,22 +508,17 @@
                             <td></td>
                             <td>VIP</td>
                             <td>
-                                <span class="label-normal">12 已结算</span>
-                                <span class="label-blue" >12 未结算</span>
+                             10
                            </td>
                             <td>12</td>
                         <tr>
-                        <!--无优惠券整条不显示-->
-                        <tr class="m-order-colspan">
-                            <td colspan="4">优惠券：<span class="m-order-money">20</span></td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="m-order">
                     <div class="alert alert-secondary" role="alert">
-                        分享财务信息
+                        其他财务信息
                     </div>
 
                     <!--佣金可提现总金额：订单金额-导入仪-运费-税费 -->
@@ -547,11 +542,11 @@
                             <td>{{cp.parent_info.level_name}}</td>
                             <td>{{cp.parent_depth}}级</td>
                             <td>{{orderInfo?.result?.totalAmount}}</td>
-                            <td>2</td>
                             <td>{{cp.rebate_amount}}{{cp.is_settlement ? '已结算' : '未结算'}}</td>
+                            <td>2</td>
                         <tr>
                         <tr class="m-order-colspan">
-                            <td colspan="7">订单总佣金：<span class="m-order-money">{{orderInfo?.result?.commission.total_amount}}</span></td>
+                            <td colspan="6">订单总佣金（智美豆）：<span class="m-order-money">{{orderInfo?.result?.commission.total_amount}}</span></td>
                         </tr>
                         </tbody>
                     </table>

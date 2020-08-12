@@ -263,8 +263,8 @@
                         </div>
                         <div class="row m-orderdetails" *ngFor="let cp of orderInfo?.result?.commission.parents">
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">会员等级：</span>{{cp.parent_info.c_name}}&nbsp;&nbsp;{{cp.parent_info.level_name}}</div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title">可结算总金额：</span>{{orderInfo?.result?.totalAmount}}</div>
-                            <div class="col-6 col-md-4"><span class="m-orderdetails-title ">佣金：</span><span class="m-order-money">{{cp.rebate_amount}}</span></div>
+                            <!--<div class="col-6 col-md-4"><span class="m-orderdetails-title">可结算总金额：</span>{{orderInfo?.result?.totalAmount}}</div>-->
+                            <div class="col-6 col-md-4"><span class="m-orderdetails-title ">佣金(智美豆)：</span><span class="m-order-money">{{cp.rebate_amount}}</span></div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">状态：</span>{{cp.is_settlement ? '已结算' : '未结算'}}</div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">成长值：</span></div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">优惠券：</span></div>
