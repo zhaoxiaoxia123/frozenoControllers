@@ -11,7 +11,7 @@
                         <div class="widget-body no-padding">
                             <article>
                                 <div class="navbar navbar-default">
-                                    <!--详情一直都显示，打印、备货（在有待备货状态的时候一直显示，其他情况显示灰色）、发货（在待备货时显示，其他时候显示灰色），添加删除不显示。修改需管理才显示（可以修改订单状态-针对退换货的，功能先不做，修改也可以先不显示）。作废管理员有权限（未支付、待备货和待发货的订单可以作废，状态显示交易失败）-->
+                                    <!--详情一直都显示，打印、备货（在订单已发货前一直显示，订单发货后显示灰色）、发货（在用户收货前显示，用户收货后显示灰色），添加删除不显示。修改需管理才显示（可以修改订单状态-针对退换货的，功能先不做，修改也可以先不显示）。作废管理员有权限（未支付、待备货和待发货的订单可以作废，状态显示交易失败）-->
                                     <form  class="navbar-form" role="search" [formGroup]="formModel" (ngSubmit)="onSubmit()" novalidate >
                                         <!--<div class="btn-group" *ngIf="isPermission(menu_id,'add')">-->
                                             <!--<button type="button" class="btn btn-primary" (click)="isDemo('/forms/inventory1','0')"><span class="fa-fw fa fa-plus  mr-5"></span>添加</button>-->
@@ -173,12 +173,6 @@
                     </button>
                 </div>
                 <div class="modal-body text-overflow-y">
-                    <!--<div class="m-order">-->
-                        <!--<div class="row m-orderdetails">-->
-                            <!--<div class="col-6 col-md-6"><span class="m-orderdetails-title">订单编号：</span>{{orderInfo.result?.o_order}}</div>-->
-                            <!--<div class="col-6 col-md-6"><span class="m-orderdetails-title">快递单号：</span>{{orderInfo.result?.frozeno_express_code}}</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
                     <div class="m-order">
                         <div class="alert alert-secondary" role="alert">
                             配送信息
@@ -194,68 +188,14 @@
                         </div>
                     </div>
                     <div class="m-order">
-                        <!--表格默认最少显示5行-->
-                        <!--<div class="bg-light" style="padding:10px;">-->
-                            <!--<form  class="navbar-form" role="search">-->
-                                <!--<div class="btn-group" style="display: inline-block;">-->
-                                    <!--<essence-ng2-print-->
-                                            <!--[mode]="'popup'"-->
-                                            <!--[popTitle]="'用户订单表格打印'"-->
-                                            <!--[btnText]="'打印'"-->
-                                            <!--[btnClass]="{'btn': true, 'btn-warning': true}"-->
-                                            <!--[printHTML]="print_div"-->
-                                            <!--[printStyle]="printStyle"-->
-                                            <!--[printCSS]="printCSS"-->
-                                            <!--(click)="beforePrint()"-->
-                                            <!--(printComplete)="printComplete()">-->
-                                    <!--</essence-ng2-print>-->
-                                <!--</div>-->
-                                <!--<div class="btn-group">-->
-                                    <!--<input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">-->
-                                <!--</div>-->
-                                <!--<div class="btn-group" >-->
-                                    <!--<input type="text" class="form-control"  name="count" placeholder="请输入个数">-->
-                                <!--</div>-->
-                                <!--<div class="btn-group">-->
-                                    <!--<button type="button" class="btn btn-primary" >备货录入</button>-->
-                                <!--</div>-->
-                            <!--</form>-->
-                        <!--</div>-->
-                        <!--<span style="color: red;">*备货列表扫码或输入完成后，点击右下角‘备货’按钮即可录入成功。</span>-->
                         <div class="btn-group" style="display: inline-block;float: right">
-                            <!--<essence-ng2-print-->
-                                    <!--[mode]="'popup'"-->
-                                    <!--[popTitle]="'用户订单表格打印'"-->
-                                    <!--[btnText]="'打印'"-->
-                                    <!--[btnClass]="{'btn': true, 'btn-warning': true}"-->
-                                    <!--[printHTML]="print_div"-->
-                                    <!--[printStyle]="printStyle"-->
-                                    <!--[printCSS]="printCSS"-->
-                                    <!--(click)="beforePrint()"-->
-                                    <!--(printComplete)="printComplete()">-->
-                            <!--</essence-ng2-print>-->
+
                             <button type="button" class="btn btn-danger" (click)="clearStock()">全部清空</button>
                         </div>
                         <div class="bg-light" style="padding:10px;">
-                            <!--<p>下单套装：</p>-->
-                            <!--<span *ngFor="let p of orderInfo?.result?.products">-->
-                                <!--<span>{{p.category_desc}}*{{p.product_count}}</span>&nbsp;&nbsp;-->
-                            <!--</span>-->
+
 
                             <form  class="navbar-form" role="search">
-                                <!--<div class="btn-group" style="display: inline-block;">-->
-                                    <!--<essence-ng2-print-->
-                                            <!--[mode]="'popup'"-->
-                                            <!--[popTitle]="'用户订单表格打印'"-->
-                                            <!--[btnText]="'打印'"-->
-                                            <!--[btnClass]="{'btn': true, 'btn-warning': true}"-->
-                                            <!--[printHTML]="print_div"-->
-                                            <!--[printStyle]="printStyle"-->
-                                            <!--[printCSS]="printCSS"-->
-                                            <!--(click)="beforePrint()"-->
-                                            <!--(printComplete)="printComplete()">-->
-                                    <!--</essence-ng2-print>-->
-                                <!--</div>-->
                                 <div class="btn-group">
                                     <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
                                 </div>
@@ -269,7 +209,6 @@
                             </form>
 
                         </div>
-                        <!--<button type="button" class="btn btn-primary" style="float: right" (click)="stockEntry()">备货录入</button>-->
                         <table class="table table-striped table-forum">
                             <thead>
                                 <tr>
@@ -283,22 +222,9 @@
                                     <td>{{pd.category_desc}}</td>
                                     <td>{{pd.product_count}}</td>
                                     <td>{{pd.choice_count}}</td>
-                                    <!--<td>-->
-                                        <!--<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="pd.product_code" value="{{pd.product_code}}" (change)="sumPCount(pd.product_code,ind)" placeholder="请扫码或输入" [ngStyle]="{'border-color': (((pd.product_count != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}">-->
-                                    <!--</td>-->
                                 </tr>
                             </tbody>
                         </table>
-                        <!--<div class="bg-light" style="padding:10px;">-->
-                            <!--<form  class="navbar-form" role="search">-->
-                                <!--<div class="btn-group">-->
-                                    <!--<input type="text" class="form-control" style="width: 300px" [ngModelOptions]="{standalone: true}" name="stockExpressCode" [(ngModel)]="stockExpressCode" placeholder="请扫码或输入快递单号">-->
-                                <!--</div>-->
-                                <!--<div class="btn-group">-->
-                                    <!--<button type="button" class="btn btn-primary" (click)="expressCodeEntry()">快递单号录入</button>-->
-                                <!--</div>-->
-                            <!--</form>-->
-                        <!--</div>-->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -565,13 +491,39 @@
 
                 <div class="m-order">
                     <div class="alert alert-secondary" role="alert">
-                        个人财务信息
+                        财务信息
                     </div>
+                    <table class="table table-striped table-forum">
+                        <thead>
+                        <tr>
+                            <th scope="col">用户名</th>
+                            <th scope="col">会员等级</th>
+                            <th scope="col">佣金（智美豆）</th>
+                            <th scope="col">成长值</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr >
+                            <td></td>
+                            <td>VIP</td>
+                            <td>
+                                <span class="label-normal">12 已结算</span>
+                                <span class="label-blue" >12 未结算</span>
+                           </td>
+                            <td>12</td>
+                        <tr>
+                        <!--无优惠券整条不显示-->
+                        <tr class="m-order-colspan">
+                            <td colspan="4">优惠券：<span class="m-order-money">20</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="m-order">
                     <div class="alert alert-secondary" role="alert">
-                        佣金（智美豆）财务信息
+                        分享财务信息
                     </div>
 
                     <!--佣金可提现总金额：订单金额-导入仪-运费-税费 -->
@@ -585,7 +537,7 @@
                             <th scope="col">等级</th>
                             <th scope="col">可结算总金额</th>
                             <th scope="col">佣金（智美豆）</th>
-                            <th scope="col">状态</th>
+                            <th scope="col">成长值</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -595,8 +547,8 @@
                             <td>{{cp.parent_info.level_name}}</td>
                             <td>{{cp.parent_depth}}级</td>
                             <td>{{orderInfo?.result?.totalAmount}}</td>
-                            <td>{{cp.rebate_amount}}</td>
-                            <td>{{cp.is_settlement ? '已结算' : '未结算'}}</td>
+                            <td>2</td>
+                            <td>{{cp.rebate_amount}}{{cp.is_settlement ? '已结算' : '未结算'}}</td>
                         <tr>
                         <tr class="m-order-colspan">
                             <td colspan="7">订单总佣金：<span class="m-order-money">{{orderInfo?.result?.commission.total_amount}}</span></td>
