@@ -255,7 +255,6 @@
 }
 .member-hd{
     display: flex;
-    justify-content: space-between;
     margin-bottom: 20px;
 }
 .member-card content{
@@ -298,7 +297,6 @@
 }
 .member-value{
     display: flex;
-    justify-content: flex-end;
     padding-top:20px;
     font-size:1.2rem;
 }
@@ -394,7 +392,6 @@
     padding:20px 30px;
     background:#f2f2f2;
     color:#333;
-    margin: 30px 0;
     width: 100%;
 }
 .integral-current{
@@ -462,9 +459,7 @@
     line-height:1.5;
     padding-top:60px;
 }
-.member-img{
-    padding:40px 0;
-}
+
 
 /* 无 */
 .search-no {
@@ -637,4 +632,18 @@
 .colour-bg2{
     background: linear-gradient(to right, #565656, #404040);
     color:#ccc;
+}
+
+/*选项卡竖*/
+.vertical-tab-pills{
+    background:#f2f2f2;
+    border:1px solid #c6c6c6;
+
+}
+.vertical-tab-link{
+    padding:20px;
+    border-radius:0!important;
+    border-bottom:1px solid #c6c6c6;
+    font-size:1rem;
+    color:#333;
 }
