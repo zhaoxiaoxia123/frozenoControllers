@@ -212,49 +212,58 @@
             </div>
             <div class="modal-body text-overflow-y">
                 <div class="m-order">
-                    <div class="bg-light" style="padding:10px;margin-top:20px;">
-
-                        <form  class="navbar-form" role="search">
-                            <div class="btn-group">
-                                <span>套装</span>
-                            </div>
-                            <div class="btn-group">
-                                <select  class="form-control">
-                                    <option selected>成都仓库</option>
-                                    <option>温江仓库</option>
-                                </select>
-                            </div>
-                            <div class="btn-group">
-                                <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
-                            </div>
-                            <div class="btn-group">
-                                <select  class="form-control">
-                                    <option selected>无创水光尊享礼盒（8+8+1）</option>
-                                    <option>润月雅水光精华套装（3）</option>
-                                    <option>润月雅水光精华套装（3）</option>
-                                </select>
-                            </div>
-                        </form>
-
+                    <div class="bg-light" style="padding:10px;">
+                        <div class="navbar navbar-default">
+                            <form  class="navbar-form" role="search">
+                                <div class="btn-group">
+                                    <span>套装</span>
+                                </div>
+                                <div class="btn-group">
+                                    <select  class="form-control">
+                                        <option selected>成都仓库</option>
+                                        <option>温江仓库</option>
+                                    </select>
+                                </div>
+                                <div class="btn-group">
+                                    <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
+                                </div>
+                                <div class="btn-group">
+                                    <select  class="form-control">
+                                        <option selected>无创水光 单次导入装</option>
+                                        <option>无创水光 三次导入装</option>
+                                        <option>冻龄智美钛金属导入仪</option>
+                                        <option>无创水光尊享礼盒（8+8+1）</option>
+                                        <option>无创水光轻雅套装（3+3+1）</option>
+                                        <option>无创水光基础套装（3+3）</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
-                    <div class="bg-light" style="padding:10px;margin-top:20px;">
+                    <div class="bg-light" style="margin-top:20px;">
+                        <div class="navbar navbar-default">
+                            <form  class="navbar-form" role="search">
+                                <div class="btn-group">
+                                    <span>子商品</span>
+                                </div>
+                                <div class="btn-group">
+                                    <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
+                                </div>
+                                <!--扫码过后默认为1，可更改-->
+                                <div class="btn-group" >
+                                    <input type="text" class="form-control"  name="count" placeholder="请输入数量">
+                                </div>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" >录入</button>
+                                </div>
 
-                        <form  class="navbar-form" role="search">
-                            <div class="btn-group">
-                                <span>子商品</span>
-                            </div>
-                            <div class="btn-group">
-                                <input type="text" class="form-control" style="width: 300px"  name="code" placeholder="请扫码或输入">
-                            </div>
-                            <!--扫码过后默认为1，可更改-->
-                            <div class="btn-group" >
-                                <input type="text" class="form-control"  name="count" placeholder="请输入数量">
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary" >录入</button>
-                            </div>
-                        </form>
+                            </form>
+                            <form  class="navbar-form" role="search">
+                                <div class="btn-group"><button type="button" class="btn btn-danger">清空重新录入</button></div>
+                            </form>
+                        </div>
+
 
                     </div>
                     <table class="table table-striped table-forum">
@@ -283,7 +292,6 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger">清空重新录入</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                 <button type="button" class="btn btn-warning">保存</button>
                 <button type="button" class="btn btn-warning">保存并新增</button>
