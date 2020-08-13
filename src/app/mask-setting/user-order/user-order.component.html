@@ -78,6 +78,7 @@
                                             <th>购买人</th>
                                             <th>商品明细</th>
                                             <th>总金额</th>
+                                            <th>实付款</th>
                                             <th>订单状态</th>
                                             <th>应返佣金</th>
                                             <th>返佣状态</th>
@@ -97,6 +98,7 @@
                                             </td>
                                             <td>{{sl.c_name}}&nbsp;&nbsp;{{sl.c_phone}}</td>
                                             <td data-toggle="tooltip" data-placement="top" title="{{sl.order_name}}">{{ sl.order_name }}</td>
+                                            <td></td>
                                             <td>{{ sl.frozeno_order_amount }}</td>
                                             <td>
                                                 <!--管理员可取消——未支付、待备货、待发货销售单里面的订单审核通过自动生成用户订单
@@ -399,13 +401,16 @@
                     </div>
 
                     <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品金额（{{orderInfo?.result?.totalCount}}件）：</span>¥{{orderInfo?.result?.totalAmount}}</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">运费：</span>¥ 0.00</div>
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">优惠券：</span>¥ {{orderInfo?.result?.ticket_amount?orderInfo?.result?.ticket_amount:0}}</div>
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">积分抵扣：</span>¥ {{orderInfo?.result?.frozeno_point}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">会员优惠：</span>¥ 0.00</div>
+
+
                     </div>
                     <div class="row m-orderdetails">
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品金额（{{orderInfo?.result?.totalCount}}件）：</span>¥{{orderInfo?.result?.totalAmount}}</div>
-                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">总金额：</span>¥ {{orderInfo?.result?.frozeno_order_amount}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">优惠券：</span>¥ {{orderInfo?.result?.ticket_amount?orderInfo?.result?.ticket_amount:0}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">智美豆抵扣：</span>¥ {{orderInfo?.result?.frozeno_point}}</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">实付款：</span>¥ {{orderInfo?.result?.frozeno_order_amount}}</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">支付方式：</span>微信支付</div>
                     </div>
                     <div class="row m-orderdetails">
