@@ -96,7 +96,7 @@ export class SalesDepositComponent implements OnInit {
             alert('请在列表选中要操作的信息。');
             return false;
         }
-        let url = 'getOrderInfo?o_id='+this.orderId+'&is_log=1&log_id='+this.editId+'&sid='+this.cookieStore.getCookie('sid');
+        let url = 'getOrderInfo?o_id='+this.orderId+'&type=log&log_id='+this.editId+'&sid='+this.cookieStore.getCookie('sid');
         this.globalService.httpRequest('get',url)
           .subscribe((data)=>{
               this.orderInfo = data;

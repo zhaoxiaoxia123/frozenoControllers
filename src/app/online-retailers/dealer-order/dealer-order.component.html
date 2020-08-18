@@ -94,11 +94,11 @@
                                                   <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>
                                             </td>
-                                            <td>{{ sl.commission.total_amount? sl.commission.total_amount:'0.00' }}</td>
+                                            <td>{{sl.commission_total_amount? sl.commission_total_amount:'0.00'}}</td>
                                             <td>
                                                 <span>
-                                                    <span class="label-normal" *ngIf="! sl.commission.is_settlement">未结算</span>
-                                                    <span class="label-full" *ngIf="sl.commission.is_settlement">已结算</span>
+                                                    <span class="label-normal" *ngIf="! sl.is_entry">未结算</span>
+                                                    <span class="label-full" *ngIf="sl.is_entry">已结算</span>
                                                 </span>
                                             </td>
                                             <td>{{ sl.created_at }}</td>

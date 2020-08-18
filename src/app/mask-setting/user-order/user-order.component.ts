@@ -37,18 +37,19 @@ export class UserOrderComponent implements OnInit {
   isAll : number = 0;
   width : string = '0%';
   width_1 : string = '100%';
+  isSucc :boolean = false;
 
   orderInfo : any = [];
+  expressCompany: string = '';
   expressCode:string = '';
   stockExpressCode:string = '';
-  products_disintegrate:any = [];
 
   searchType: string = 'all';  //状态筛选
   stateShow:string = '全部';
   printCSS: string[];
   printStyle: string;
 
-
+  dryCategoryId:number = 0;
   // 这一步很重要：获取打印标签的按钮组件，然后调用提供的print方法
   @ViewChild('printBtn', { static: true }) printBtn: EssenceNg2PrintComponent;
 
@@ -70,6 +71,7 @@ export class UserOrderComponent implements OnInit {
     });
     this.getUserOrderList('1','');
     window.scrollTo(0,0);
+    this.dryCategoryId = this.globalService.category44;
   }
 
   ngOnInit() {
@@ -403,7 +405,7 @@ export class UserOrderComponent implements OnInit {
       return false;
     }else{
       this.choiceExampleModal.show();
-      this.getOrderInfo();
+      this.getOrderInfo('beihuo');
     }
   }
 
@@ -423,9 +425,10 @@ export class UserOrderComponent implements OnInit {
 
   /**
    * 获取订单详情
+   * type beihuo:备货弹框
    */
-  getOrderInfo() {
-    let url = 'getOrderInfo?o_id='+this.editStatusUserOrderId+'&sid='+this.cookieStore.getCookie('sid');
+  getOrderInfo(type='') {
+    let url = 'getOrderInfo?o_id='+this.editStatusUserOrderId+'&type='+type+'&sid='+this.cookieStore.getCookie('sid');
     if(this.isNext) {
       url += '&is_next='+this.isNext;
     }
@@ -448,6 +451,7 @@ export class UserOrderComponent implements OnInit {
         this.editOrderState = this.orderInfo['result']['frozeno_order_state'];
         this.stockExpressCode = this.orderInfo?this.orderInfo['result']['frozeno_express_code']:'';
         this.expressCode = this.orderInfo?this.orderInfo['result']['frozeno_express_code']:'';
+        this.expressCompany = this.orderInfo?this.orderInfo['result']['frozeno_express_company']:'';
         this.cdr.markForCheck();
         this.cdr.detectChanges();
         if(this.isPrint) {
@@ -467,6 +471,7 @@ export class UserOrderComponent implements OnInit {
     let param = {
       'o_id':this.editStatusUserOrderId,
       'express_code':this.stockExpressCode,
+      'expres_company':this.expressCompany,
       // 'frozeno_order_state':3,
       'u_id':this.cookieStore.getCookie('uid'),
       'sid':this.cookieStore.getCookie('sid')
@@ -498,7 +503,8 @@ export class UserOrderComponent implements OnInit {
         alert(data['msg']);
         if(data['status'] == 200){
           // this.orderInfo['result']['frozeno_express_company'] = "顺丰";
-          this.orderInfo['result']['frozeno_express_code'] = this.expressCode;
+          // this.orderInfo['result']['frozeno_express_code'] = this.expressCode;
+          this.getUserOrderList(this.page,'');
         }else if(data['status'] == 202){
           this.cookieStore.removeAll(this.rollback_url);
           this.router.navigate(['/auth/login']);
@@ -519,41 +525,30 @@ export class UserOrderComponent implements OnInit {
   stockEntry(num){
     let isError = 0;
     let arrStr = [];
-    for (let i = 0 ;i < this.orderInfo['result']['products_disintegrate'].length;i++){
-      let arr = this.sumPCount(this.orderInfo['result']['products_disintegrate'][i]['product_code'],i);
+    for (let i = 0 ;i < this.orderInfo['result']['products'].length;i++){
+      let arr = this.sumPCount(i);
       let goArray = {
-        'attach_id':this.orderInfo['result']['products_disintegrate'][i]['attach_id'],
-        'product_code':this.orderInfo['result']['products_disintegrate'][i]['product_code'],
-        'count':this.orderInfo['result']['products_disintegrate'][i]['choice_count']
+        'attach_id':this.orderInfo['result']['products'][i]['attach_id'],
+        'product_code':this.orderInfo['result']['products'][i]['product_code'],
+        'count':this.orderInfo['result']['products'][i]['choice_count']
       };
       arrStr.push(goArray);
-      if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == this.globalService.category29){
-        for (let a = 0 ;a < arr.length;a++){
-          if(arr[a].indexOf("0102") != 3){
-            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
-            isError++;
+      let beihuoDetail = this.orderInfo['result']['products'][i]['beihuoDetail'];
+      for (let b = 0 ;b < beihuoDetail.length;b++) {
+        let totalCount = 0;
+        for (let a = 0 ;a < arr.length;a++) {
+          if (arr[a].indexOf(beihuoDetail[b]['key']) == 3 && beihuoDetail[b]['count'] >= 1) {
+            totalCount += 1;
           }
         }
-      }else if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'm30' || this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'm31'){
-        for (let a = 0 ;a < arr.length;a++){
-          if(arr[a].indexOf("0105") != 3){
-            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
-            isError++;
-          }
-        }
-      }else if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'j30' || this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'j31'){
-        for (let a = 0 ;a < arr.length;a++){
-          if(arr[a].indexOf("0106") != 3){
-            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
-            isError++;
-          }
-        }
-      }else if(this.orderInfo['result']['products_disintegrate'][i]['category_id'] == this.globalService.category44 || this.orderInfo['result']['products_disintegrate'][i]['category_id'] == 'd30'){
-        for (let a = 0 ;a < arr.length;a++){
-          if(arr[a].indexOf("0103") != 3){
-            this.orderInfo['result']['products_disintegrate'][i]['border_color'] = 'red';
-            isError++;
-          }
+        console.log('totalCount:-----');
+        console.log(totalCount);
+        console.log('count:-----');
+        console.log(beihuoDetail[b]['count']);
+
+        if(totalCount != beihuoDetail[b]['count']){
+          isError ++;
+          this.orderInfo['result']['products'][i]['border_color'] = "red";
         }
       }
     }
@@ -568,7 +563,7 @@ export class UserOrderComponent implements OnInit {
       }).subscribe( (data)=>{
           alert(data['msg']);
           if(data['status'] == 200){
-            // this.orderInfo['result']['frozeno_express_company'] = "顺丰";
+            this.orderInfo['result']['frozeno_express_company'] = this.expressCompany;
             this.orderInfo['result']['frozeno_express_code'] = this.expressCode;
             this.getUserOrderList(this.page,'');
             if(num == 1){
@@ -596,10 +591,10 @@ export class UserOrderComponent implements OnInit {
    * 清空备货录入
    */
   clearStock(){
-    if(this.orderInfo['result']['products_disintegrate']){
-      for (let i = 0 ;i < this.orderInfo['result']['products_disintegrate'].length;i++){
-        this.orderInfo['result']['products_disintegrate'][i]['product_code'] = '';
-        this.orderInfo['result']['products_disintegrate'][i]['choice_count'] = 0;
+    if(this.orderInfo['result']['products']){
+      for (let i = 0 ;i < this.orderInfo['result']['products'].length;i++){
+        this.orderInfo['result']['products'][i]['product_code'] = '';
+        this.orderInfo['result']['products'][i]['choice_count'] = 0;
         // this.sumPCount(this.orderInfo['result']['products_disintegrate'][i]['product_code'],i);
       }
     }
@@ -607,14 +602,22 @@ export class UserOrderComponent implements OnInit {
   /**
    * 计算当前扫码个数
    */
-  sumPCount(code,index){
+  sumPCount(index){
+    let item = this.orderInfo['result']['products'][index];
+    let code = item['product_code'];
     let strArr = [];
     let n = 13;
     for (let i = 0, l = code.length; i < l/n; i++) {
       let a = code.slice(n * i, n * (i + 1));
       strArr.push(a);
     }
-    this.orderInfo['result']['products_disintegrate'][index]['choice_count'] = strArr.length;
+    item['choice_count'] = strArr.length;
+    this.orderInfo['result']['products'][index]['choice_count'] = strArr.length;
+    console.log(this.orderInfo['result']['products'][index]['beihuoTotalCount']);
+    console.log(item);
+    if(!((this.orderInfo['result']['products'][index]['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '')|| item['border_color']=='red')){
+      this.isSucc = true;
+    }
     return strArr;
   }
 
@@ -629,6 +632,7 @@ export class UserOrderComponent implements OnInit {
     let param = {
       'o_id':this.editStatusUserOrderId,
       'express_code':this.expressCode,
+      'express_company':this.expressCompany,
       // 'frozeno_order_state':3,
       'u_id':this.cookieStore.getCookie('uid'),
       'sid':this.cookieStore.getCookie('sid')
