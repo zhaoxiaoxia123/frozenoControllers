@@ -65,16 +65,24 @@
 
 
 /*登录页面*/
+.root-login{
+    width:100%;
+    height:600px;
+    margin:0 auto;
+    padding-top:380px;
+    text-align: center;
+    font-size:24px;
+}
 .login-text{
     display: flex;
     align-items: flex-start;
 }
 .login-box{
     background: #fff;
-    padding: 0 20px 30px;
+    padding: 0 20px 10px;
     box-shadow: 0 0 6px #eee;
     border: 1px solid #f0f0f0;
-    min-height: 500px;
+    min-height: 480px;
 }
 .login-user{
     margin-top:20px;
