@@ -28,6 +28,9 @@
                                         <div class="btn-group">
                                             <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 2 && editPrepareState == 2)}" (click)="sendOrder(1)">发货</button>
                                         </div>
+                                        <div class="btn-group" data-toggle="modal" data-target="#exampleModal">
+                                            <button type="button" class="btn btn-primary" ><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>
+                                        </div>
                                         <div class="btn-group">
                                             <button type="button" [ngClass]="{'btn btn-danger':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 1 || editOrderState == 2)}" (click)="cancelOrder()">作废</button>
                                         </div>
@@ -44,7 +47,7 @@
                                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 {{stateShow}}
                                             </button>
-                                            <!--未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款-->
+                                            <!--未支付、待备货、待发货、待收货、退款中、交易成功、交易失败、已退款、部分退款、换货中、维修中、补寄、已处理-->
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" (click)="getUserOrderList('1','all','全部')">全部</a>
                                                 <a class="dropdown-item" (click)="getUserOrderList('1','1','未支付')">未支付</a>
@@ -679,6 +682,79 @@
                     <div class="rt-table-right" style="padding: 10px 0 10px;">收据</div>
                     <div class="rt-center rt-ft">谢谢惠顾！</div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 审核 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">订单号：B643541339278<span class="label-blue">待收货</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <!--<div class="form-row">-->
+                        <!--<div class="form-group col-md-12">-->
+                            <!--<h4>订单状态：待收货</h4>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--业务类型
+                    待备货、待发货：仅退款(未发货)
+                    待收货：退货退款(已发货)、补寄
+                    交易成功：维修、换货、补寄
+                    未支付、退款中、交易失败、已退款、部分退款、换货中、维修中、补寄、已处理：不显示审核按钮
+                    -->
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >业务类型<span class="asterisk-color">*</span></span>
+                                </div>
+                                <select class="custom-select" >
+                                    <option selected>--请选择分类--</option>
+                                    <option value="1">仅退款(未发货)</option>
+                                    <option value="2">退货退款(已发货)</option>
+                                    <option value="3">维修</option>
+                                    <option value="4">换货</option>
+                                    <option value="5">补寄</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >买家备注</span>
+                                </div>
+                                <textarea class="form-control" aria-label="备注"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" >卖家备注</span>
+                                </div>
+                                <textarea class="form-control" aria-label="备注"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>
             </div>
         </div>
     </div>
