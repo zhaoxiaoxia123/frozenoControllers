@@ -307,17 +307,23 @@
                             <h5 class="card-title">图片</h5>
                             <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
                             <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                <span class="picture-list" *ngFor="let img of selectedImageUrl;let ind = index;">
-                                    <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(img.uploadID)"></a>
-                                    <img width="90px" height="90px" src="{{img.url}}">
+                                <span *ngIf="selectedImageUrl">
+                                    <span class="picture-list" *ngFor="let img of selectedImageUrl;let ind = index;">
+                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(img.uploadID)"></a>
+                                        <img width="90px" height="90px" src="{{img.url}}">
+                                    </span>
                                 </span>
+                                <span *ngIf="path">
                                 <span class="picture-list" *ngFor="let pi of path;let pind = index;">
                                     <img width="90px" height="90px" src="{{pi}}">
                                     <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(pind)"></a>
                                 </span>
+                                </span>
+                                <span *ngIf="imageAd">
                                 <span class="picture-list" *ngFor="let img of imageAd;let imgInd = index;">
                                     <img width="90px" height="90px" [src]="img">
                                     <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(imgInd)"></a>
+                                </span>
                                 </span>
                                 <!--*ngIf="imgCount < 1"-->
                                 <div class="picture-list">
