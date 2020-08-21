@@ -253,7 +253,7 @@ export class SalesDepositComponent implements OnInit {
     /**
      * 保存审核内容
      */
-    submitVerify() {
+    submitVerify(num) {
         if(this.express_company == ''){
             alert('请填写选中分类！');
             return false;
@@ -267,6 +267,7 @@ export class SalesDepositComponent implements OnInit {
             'buyer_mark':this.buyer_mark,
             'image_url':JSON.stringify(this.path),
             'delete_id':JSON.stringify(this.deleteImgId),
+            'is_verify':num,
             'sid':this.cookieStore.getCookie('sid')
         }).subscribe( (data)=>{
               alert(data['msg']);

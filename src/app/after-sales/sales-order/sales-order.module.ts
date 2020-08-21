@@ -4,12 +4,14 @@ import {I3otpModule} from "../../shared/i3otp.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {SalesOrderComponent} from "./sales-order.component";
 import {SalesOrderRoutingModule} from "./sales-order-routing.module";
+import {FileUploadModule} from "ng2-file-upload";
 @NgModule({
     imports: [
         CommonModule,
         I3otpModule,
         ReactiveFormsModule,
-        SalesOrderRoutingModule
+        SalesOrderRoutingModule,
+        FileUploadModule
     ],
     declarations: [SalesOrderComponent]
 })

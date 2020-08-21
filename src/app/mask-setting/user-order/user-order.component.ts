@@ -29,6 +29,11 @@ export class UserOrderComponent implements OnInit {
   editOrderState : any = 0;
   editPrepareState : any = 0;
 
+  verifyInfo: any = [];
+  select_order_state: number = 0;
+  seller_mark: string = "";
+  buyer_mark: string = "";
+
   isNext : boolean = false;
   isNextSend : boolean = false;
   isPrint : boolean = false;
@@ -707,6 +712,79 @@ export class UserOrderComponent implements OnInit {
     }
   }
 
+  /**
+   * 显示审核表单
+   */
+  showVerify(){
+    this.clearValue();
+    let url = 'getOrderInfo?o_id='+this.editStatusUserOrderId+'&type=sales&sid='+this.cookieStore.getCookie('sid');
+    this.globalService.httpRequest('get',url)
+      .subscribe((data)=>{
+        this.verifyInfo = data['result'];
+        console.log(this.verifyInfo);
+        this.verifyModal.show();
+        if(this.verifyInfo) {
+          if (data['status'] == 200) {
+            this.setValue();
+          }else if (data['status'] == 202) {
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+          }
+        }
+      });
+  }
+  /**
+   * 赋值
+   */
+  setValue() {
+    this.select_order_state = this.verifyInfo['frozeno_order_state'];
+    this.seller_mark = this.verifyInfo['apply_detail']['seller_mark'];
+    this.buyer_mark = this.verifyInfo['apply_detail']['buyer_mark'];
+  }
+
+
+  /**
+   * 赋空值
+   */
+  clearValue() {
+    this.verifyInfo = [];
+    this.select_order_state = 0;
+    this.seller_mark = '';
+    this.buyer_mark = '';
+  }
+  /**
+   * 保存审核内容
+   */
+  submitVerify(num) {
+    if(this.buyer_mark == '' && this.seller_mark == ''){
+      alert('请填写需提交的信息后再保存！');
+      return false;
+    }
+    this.globalService.httpRequest('post','submitOrderVerify',{
+      'o_id':this.editStatusUserOrderId,
+      'seller_mark':this.seller_mark,
+      'buyer_mark':this.buyer_mark,
+      'order_state':this.select_order_state,
+      'is_verify':num,
+      'sid':this.cookieStore.getCookie('sid')
+    }).subscribe( (data)=>{
+        alert(data['msg']);
+        if(data['status'] == 200){
+          this.verifyModal.hide();
+          this.getUserOrderList(this.page,'');
+        }else if(data['status'] == 202){
+          this.cookieStore.removeAll(this.rollback_url);
+          this.router.navigate(['/auth/login']);
+        }
+      },
+      response => {
+        console.log('PATCH call in error', response);
+      }
+    );
+  }
+
+
+  @ViewChild('verifyModal', { static: true }) public verifyModal:ModalDirective;
   @ViewChild('lgModal', { static: true }) public lgModal:ModalDirective;
   @ViewChild('choiceExampleModal', { static: true }) public choiceExampleModal:ModalDirective;
   @ViewChild('sendExampleModal', { static: true }) public sendExampleModal:ModalDirective;

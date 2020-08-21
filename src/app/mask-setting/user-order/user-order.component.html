@@ -28,8 +28,8 @@
                                         <div class="btn-group">
                                             <button type="button" [ngClass]="{'btn btn-warning':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 2 && editPrepareState == 2)}" (click)="sendOrder(1)">发货</button>
                                         </div>
-                                        <div class="btn-group" data-toggle="modal" data-target="#exampleModal">
-                                            <button type="button" class="btn btn-primary" ><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>
+                                        <div class="btn-group">
+                                            <button type="button" [ngClass]="{'btn btn-danger':true,'not-click':editStatusUserOrderId == 0 || (editOrderState == 1 ||editOrderState == 5 || editOrderState == 7 || editOrderState == 11 || editOrderState == 12 || editOrderState == 13)}" (click)="showVerify()"><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>
                                         </div>
                                         <div class="btn-group">
                                             <button type="button" [ngClass]="{'btn btn-danger':true,'not-click':editStatusUserOrderId == 0 || !(editOrderState == 1 || editOrderState == 2)}" (click)="cancelOrder()">作废</button>
@@ -119,8 +119,8 @@
                                                   </span>
                                                   <span class="label-full" *ngSwitchCase="3">待收货</span>
                                                   <span class="label-full" *ngSwitchCase="4">交易成功</span>
-                                                  <span class="label-full" *ngSwitchCase="5">交易失败</span>
-                                                  <span class="label-full" *ngSwitchCase="6">交易失败</span>
+                                                  <span class="label-full" *ngSwitchCase="5">取消订单</span>
+                                                  <span class="label-full" *ngSwitchCase="6">取消订单并退款</span>
                                                   <span class="label-full" *ngSwitchCase="7">已退款</span>
                                                   <span class="label-unknown" *ngSwitchDefault>未知</span>
                                                 </span>
@@ -395,13 +395,10 @@
                             </table>
                         </div>
                     </div>
-
                     <div class="row m-orderdetails">
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">商品金额（{{orderInfo?.result?.totalCount}}件）：</span>¥{{orderInfo?.result?.totalAmount}}</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">运费：</span>¥ 0.00</div>
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">会员优惠：</span>¥ 0.00</div>
-
-
                     </div>
                     <div class="row m-orderdetails">
                         <div class="col-6 col-md-4"><span class="m-orderdetails-title">优惠券：</span>¥ {{orderInfo?.result?.ticket_amount?orderInfo?.result?.ticket_amount:0}}</div>
@@ -688,12 +685,31 @@
 </div>
 
 <!-- 审核 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" bsModal #verifyModal="bs-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">订单号：B643541339278<span class="label-blue">待收货</span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLabel">订单号：{{verifyInfo?.o_order}}
+                    <span [ngSwitch]="verifyInfo?.frozeno_order_state">
+                      <span class="label-blue" *ngSwitchCase="2">
+                         <span *ngIf="verifyInfo?.frozeno_prepare_state == 1">
+                          待备货</span>
+                         <span style="color: blue" *ngIf="verifyInfo?.frozeno_prepare_state == 2">
+                          待发货</span>
+                      </span>
+                      <span class="label-full" *ngSwitchCase="3">待收货</span>
+                      <span class="label-full" *ngSwitchCase="4">交易成功</span>
+                      <span class="label-full" *ngSwitchCase="5">取消订单</span>
+                      <span class="label-full" *ngSwitchCase="6">取消订单并退款</span>
+                      <span class="label-full" *ngSwitchCase="7">已退款</span>
+                      <span class="label-full" *ngSwitchCase="8">维修</span>
+                      <span class="label-full" *ngSwitchCase="9">换货</span>
+                      <span class="label-full" *ngSwitchCase="10">补寄</span>
+                      <span class="label-full" *ngSwitchCase="14">退款退货</span>
+                      <span class="label-unknown" *ngSwitchDefault>未知</span>
+                    </span>
+                </h5>
+                <button type="button" class="close" (click)="verifyModal.hide()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -716,13 +732,13 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" >业务类型<span class="asterisk-color">*</span></span>
                                 </div>
-                                <select class="custom-select" >
+                                <select class="custom-select" [(ngModel)]="select_order_state" [ngModelOptions]="{standalone: true}">
                                     <option selected>--请选择分类--</option>
-                                    <option value="1">仅退款(未发货)</option>
-                                    <option value="2">退货退款(已发货)</option>
-                                    <option value="3">维修</option>
-                                    <option value="4">换货</option>
-                                    <option value="5">补寄</option>
+                                    <option value="6">仅退款(未发货)</option>
+                                    <option value="14">退货退款(已发货)</option>
+                                    <option value="8">维修</option>
+                                    <option value="9">换货</option>
+                                    <option value="10">补寄</option>
                                 </select>
                             </div>
                         </div>
@@ -735,7 +751,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" >买家备注</span>
                                 </div>
-                                <textarea class="form-control" aria-label="备注"></textarea>
+                                <textarea class="form-control" aria-label="备注" [(ngModel)]="buyer_mark" [ngModelOptions]="{standalone: true}"></textarea>
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -743,18 +759,15 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" >卖家备注</span>
                                 </div>
-                                <textarea class="form-control" aria-label="备注"></textarea>
+                                <textarea class="form-control" aria-label="备注" [(ngModel)]="seller_mark" [ngModelOptions]="{standalone: true}"></textarea>
                             </div>
                         </div>
                     </div>
-
-
                 </form>
-
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">提交</button>
+                <button type="button" class="btn btn-secondary" (click)="verifyModal.hide()">取消</button>
+                <button type="button" class="btn btn-primary" (click)="submitVerify(1)">提交</button>
             </div>
         </div>
     </div>
