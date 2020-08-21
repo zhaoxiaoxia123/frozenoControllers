@@ -498,8 +498,8 @@
     border-radius: 10px 0 10px 0;
 }
 .box-hd-text2{
-    background:#646464;
-    color: #ccc;
+    background:#cbad63;
+    color: #fff;
     padding:10px 20px;
     border-radius: 10px 0 10px 0;
 }
@@ -583,7 +583,7 @@
 .conditions{
     font-size:0.8rem;
 }
-.date{
+.date-coupon{
     font-size:0.8rem;
 }
 .money {
@@ -621,16 +621,14 @@
     margin-left: 240px;
     margin-top: -15px;
 }
-/* .colour-bg1{
-   background:linear-gradient(-90deg,rgb(219, 147, 59),rgba(254,50,103,1));
-} */
+
 .colour-bg1{
-    background: linear-gradient(to right, #565656, #404040);
+    background: linear-gradient(to right, #909090, #646464);
     color:#fff;
 }
 .colour-bg2{
-    background: linear-gradient(to right, #565656, #404040);
-    color:#ccc;
+    background: linear-gradient(to right, #e4e4e4, #b3b3b3);
+    color:#333;
 }
 
 /*选项卡竖*/
