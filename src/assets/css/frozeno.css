@@ -155,8 +155,8 @@
     font-weight: bold;
     border-bottom: 2px solid #DAB866;
 }
-.nav-default .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    background-color: #f8f8f8;
+.nav-default .nav-item.active {
+    background-color: #f8f8f8!important;
 }
 .nav-default {
     background-color: #f8f8f8;
