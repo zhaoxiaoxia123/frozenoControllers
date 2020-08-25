@@ -206,7 +206,7 @@ export class AccountAdminComponent implements OnInit {
             if (this.isStatus == 0) {
                 return false;
             }
-            this.globalService.httpRequest('get','getCustomerInfo?c_id=' + this.editStatusCustomerId + '&c_role=1&type=user')
+            this.globalService.httpRequest('get','getCustomerDetail?c_id=' + this.editStatusCustomerId + '&c_role=1&type=user')
                 .subscribe((data) => {
                     this.customer_info = data;
                     if (this.customer_info['status'] == 200) {

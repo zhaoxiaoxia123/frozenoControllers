@@ -116,7 +116,7 @@ export class DataMapComponent implements OnInit {
 
 
     getDefault(){
-        this.globalService.httpRequest('get','getCustomerInfo?c_role=1&sid='+this.cookiestore.getCookie('sid'))
+        this.globalService.httpRequest('get','getCustomerDetail?c_role=1&sid='+this.cookiestore.getCookie('sid'))
             .subscribe((data)=>{
                 this.customerDefault = data;
                 console.log('this.customerDefault:-----');

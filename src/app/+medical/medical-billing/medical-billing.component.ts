@@ -131,7 +131,7 @@ export class MedicalBillingComponent implements OnInit {
     }else{
       id = $event;
     }
-    this.globalService.httpRequest('get','getCustomerInfo?c_id='+id)
+    this.globalService.httpRequest('get','getCustomerDetail?c_id='+id)
         .subscribe((data)=>{
           this.customerInfo = data;
           console.log(this.customerInfo['result']['c_age']);

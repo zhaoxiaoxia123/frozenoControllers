@@ -419,7 +419,7 @@ export class UnitListComponent implements OnInit {
         }else{
             this.detailModal.show();
         }
-        this.globalService.httpRequest('get','getCustomerInfo?c_id='+this.editStatusCustomerId+'&type='+type+'&role='+this.role+'&sid='+this.cookieStore.getCookie('sid'))
+        this.globalService.httpRequest('get','getCustomerDetail?c_id='+this.editStatusCustomerId+'&type='+type+'&role='+this.role+'&sid='+this.cookieStore.getCookie('sid'))
             .subscribe((data)=>{
                 this.customerInfo = data;
                 this.c_id = 0;

@@ -91,7 +91,7 @@ export class AccountCompanyComponent implements OnInit {
      * 获取默认参数
      */
     getCustomerDefault() {
-        this.globalService.httpRequest('get','getCustomerInfo?c_id='+this.cid+'&type=company&category_type='+this.category_type)
+        this.globalService.httpRequest('get','getCustomerDetail?c_id='+this.cid+'&type=company&category_type='+this.category_type)
             .subscribe((data)=>{
                 this.customerInfo = data;
                 console.log(this.customerInfo);
