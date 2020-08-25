@@ -109,7 +109,6 @@
             <div class="modal-body height-overflow-roll">
                 <form>
                     <div class="form-row">
-
                         <div class="form-group col-md-12">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -229,34 +228,30 @@
                                 <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
                             </div>
                         </div>
-
                         <div class="card form-group" style="width:100%;">
                             <h5 class="card-header">产品顶部图片</h5>
                             <div class="card-body">
                                 <div class="picture-img">
-
-                                    <div dragsortbeauty>
-                                        <div class="picture-item" *ngFor="let img3 of showImg3;let imgInd3 = index;">
-                                            <div class="picture-item-img" *ngIf="img3.type != 'new'">
-                                                <img class="dsimg picture-item-imge" [src]="img3.image_url" (mousedown)="imgmousedown($event,img3.img_id,1)" (mouseup)="imgmouseup(img3.img_id,2,3)">
-                                                <div class="picture-icon">
-                                                    <!--<a class="fa-fw fa fa-chevron-left"></a>-->
-                                                    <a class="fa-fw fa fa-trash" (click)="removeImg(3,img3.img_id,imgInd3)"></a>
-                                                    <!--<a class="fa-fw fa fa-chevron-right"></a>-->
-                                                </div>
-                                            </div>
-                                            <div class="picture-item-img" *ngIf="img3.type == 'new'">
-                                                <img class="dsimg picture-item-imge" [src]="img3.url" (mousedown)="imgmousedown($event,img3.uploadID,2)" (mouseup)="imgmouseup(img3.uploadID,1,3)">
-                                                <div class="picture-icon">
-                                                    <!--<a class="fa-fw fa fa-chevron-left"></a>-->
-                                                    <a class="fa-fw fa fa-trash" (click)="removeUpload(3,img3.uploadID,imgInd3)"></a>
-                                                    <!--<a class="fa-fw fa fa-chevron-right"></a>-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
+                                    <!--<div dragsortbeauty>-->
+                                        <!--<div class="picture-item" *ngFor="let img3 of showImg3;let imgInd3 = index;">-->
+                                            <!--<div class="picture-item-img" *ngIf="img3.type != 'new'">-->
+                                                <!--<img class="dsimg picture-item-imge" [src]="img3.image_url" (mousedown)="imgmousedown($event,img3.img_id,1)" (mouseup)="imgmouseup(img3.img_id,2,3)">-->
+                                                <!--<div class="picture-icon">-->
+                                                    <!--&lt;!&ndash;<a class="fa-fw fa fa-chevron-left"></a>&ndash;&gt;-->
+                                                    <!--<a class="fa-fw fa fa-trash" (click)="removeImg(3,img3.img_id,imgInd3)"></a>-->
+                                                    <!--&lt;!&ndash;<a class="fa-fw fa fa-chevron-right"></a>&ndash;&gt;-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="picture-item-img" *ngIf="img3.type == 'new'">-->
+                                                <!--<img class="dsimg picture-item-imge" [src]="img3.url" (mousedown)="imgmousedown($event,img3.uploadID,2)" (mouseup)="imgmouseup(img3.uploadID,1,3)">-->
+                                                <!--<div class="picture-icon">-->
+                                                    <!--&lt;!&ndash;<a class="fa-fw fa fa-chevron-left"></a>&ndash;&gt;-->
+                                                    <!--<a class="fa-fw fa fa-trash" (click)="removeUpload(3,img3.uploadID,imgInd3)"></a>-->
+                                                    <!--&lt;!&ndash;<a class="fa-fw fa fa-chevron-right"></a>&ndash;&gt;-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
                                     <div dragsortbeauty>
                                         <div class="picture-item" *ngFor="let img3 of imageAd3;let imgInd3 = index;">
@@ -271,16 +266,17 @@
                                         </div>
                                     </div>
 
-                                    <div class="picture-item" *ngFor="let img3 of selectedImageUrl3">
-                                        <div class="picture-item-img">
-                                            <img class="picture-item-imge" src="{{img3.url}}">
-                                            <div class="picture-icon">
-                                                <!--<a class="fa-fw fa fa-chevron-left"></a>-->
-                                                <a class="fa-fw fa fa-trash" (click)="removeUpload(3,img3.uploadID)"></a>
-                                                <!--<a class="fa-fw fa fa-chevron-right"></a>-->
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!--<div class="picture-item" *ngFor="let img3 of selectedImageUrl3">-->
+                                        <!--<div class="picture-item-img">-->
+                                            <!--<img class="picture-item-imge" src="{{img3.url}}">-->
+                                            <!--<div class="picture-icon">-->
+                                                <!--&lt;!&ndash;<a class="fa-fw fa fa-chevron-left"></a>&ndash;&gt;-->
+                                                <!--<a class="fa-fw fa fa-trash" (click)="removeUpload(3,img3.uploadID)"></a>-->
+                                                <!--&lt;!&ndash;<a class="fa-fw fa fa-chevron-right"></a>&ndash;&gt;-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
                                     <div class="picture-item" >
                                         <div class="picture-item-img">
                                             <div class="picture-file">

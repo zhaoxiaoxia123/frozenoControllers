@@ -89,7 +89,7 @@ export class AccountPermissionsComponent implements OnInit {
      * 获取客户列表
      */
     getCustomerDefault() {
-        let url = 'getPermissionCustomerDefault?role='+this.role+'&sid='+this.cookieStore.getCookie('sid');
+        let url = 'getMenuDefault?role='+this.role+'&sid='+this.cookieStore.getCookie('sid');
         this.globalService.httpRequest('get',url)
             .subscribe((data)=>{
                 this.customerDefault = data;
