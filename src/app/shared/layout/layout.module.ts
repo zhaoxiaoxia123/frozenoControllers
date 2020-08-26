@@ -2,7 +2,6 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
-
 import {HeaderModule} from "./header/header.module";
 import {FooterComponent} from "./footer/footer.component";
 import {NavigationModule} from "./navigation/navigation.module";
@@ -35,7 +34,7 @@ import {ShortcutComponent} from "./shortcut/shortcut.component";
     EmptyLayoutComponent,
     AuthLayoutComponent,
     RouteBreadcrumbsComponent,
-    ShortcutComponent,
+    ShortcutComponent
   ],
   exports:[
     HeaderModule,

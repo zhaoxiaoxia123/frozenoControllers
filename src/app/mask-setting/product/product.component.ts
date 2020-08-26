@@ -6,7 +6,6 @@ import {GlobalService} from '../../core/global.service';
 import {ModalDirective} from "ngx-bootstrap";
 import {FileUploader} from "ng2-file-upload";
 import {isUndefined} from "util";
-import {interval} from "rxjs/index";
 
 @FadeInTop()
 @Component({
@@ -30,10 +29,7 @@ export class ProductComponent implements OnInit {
 
   upimg = '';
   downimg = '';
-  dgTypeNum: number = 0;
-  uploadImageCount : number = 0;
 
-  private interval;
   // 初始化上次图片变量
   public uploader1:FileUploader = new FileUploader({
     url: this.globalService.getDomain() + "/api/v1/uploadFile",
@@ -59,41 +55,18 @@ export class ProductComponent implements OnInit {
     removeAfterUpload:true,
     itemAlias: "productdetailkj",
   });
-  // imgCount : number = 0;
 
+  deleteId:any=[];    //delete img_id
   imageAd1:any=[];    //首页商品图片
-  deleteImgId1:any=[];    //delete img_id
-  selectedImageUrl1 : any[] = [];
-  path1:any = [];
-
   imageAd3:any=[];    //商品详情顶部滚动图片
-  deleteImgId3:any=[];    //delete img_id
-  selectedImageUrl3 : any[] = [];
-  showImg3:any = [];
-  path3:any = [];
-
   imageAd2:any=[];    //商品详情图片
-  deleteImgId2:any=[];    //delete img_id
-  selectedImageUrl2 : any[] = [];
-  path2:any = [];
-
   imageAd4:any=[];    //商品详情科技图片
-  deleteImgId4:any=[];    //delete img_id
-  selectedImageUrl4: any[] = [];
-  path4:any=[];
 
-  editImageWeight2:any=[];    //商品详情图片
-  editImageWeight3:any=[];    //商品详情顶部滚动图片
-  editImageWeight4:any=[];    //商品详情科技图片
-
-  editImgWeight : any = [];
-  // url : string = this.globalService.getDomain();
   /**菜单id */
   menu_id:any;
   /** 权限 */
   permissions : Array<any> = [];
   menuInfos : any = [];
-
   rollback_url :string = '';
   constructor(
       private router : Router,
@@ -104,7 +77,6 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-
     //顶部菜单读取
     this.globalService.getMenuInfo();
     setTimeout(()=>{
@@ -130,27 +102,15 @@ export class ProductComponent implements OnInit {
   selectedFileOnChangedFun(num=0) {
     console.log(num);
     if(num == 1){
-      this.selectedImageUrl1 = this.selectedFileOnChanged(this.uploader1.queue);
+      this.selectedFileOnChanged(this.uploader1.queue);
     }else if(num == 2){
-      this.selectedImageUrl2 = this.selectedFileOnChanged(this.uploader2.queue);
+      this.selectedFileOnChanged(this.uploader2.queue);
     }else if(num == 3){
-      this.selectedImageUrl3 = this.selectedFileOnChanged(this.uploader3.queue);
-
+      this.selectedFileOnChanged(this.uploader3.queue);
     }else if(num == 4){
-      this.selectedImageUrl4 = this.selectedFileOnChanged(this.uploader4.queue);
+      this.selectedFileOnChanged(this.uploader4.queue);
     }
-    console.log('this.selectedImageUrl3:--- ');
-    console.log(this.selectedImageUrl3 );
-  }
-
-  goShowImg(){
-    this.imageAd3.forEach((v1,i1)=>{
-      this.showImg3.push(v1);
-    });
-    this.selectedImageUrl3.forEach((v,i)=>{
-      this.showImg3.push(v);
-    });
-
+    this.uploadFileFun(num);
   }
 
   //数组字段根据某一字段进行排序
@@ -165,8 +125,6 @@ export class ProductComponent implements OnInit {
   selectedFileOnChanged(uploader) {
     let that = this;
     let selectedArr = [];
-    console.log('uploader:-----');
-    console.log(uploader);
     uploader.forEach((q,i)=>{
       let reader = new FileReader();
       reader.readAsDataURL(q.some);
@@ -179,50 +137,25 @@ export class ProductComponent implements OnInit {
         selectedArr.push(imgs);
       }
     });
-    let selectedArrs = selectedArr.sort(that.compare('uploadID'));
-    return selectedArrs;
+    selectedArr.sort(that.compare('uploadID'));
   }
 
-  // D: 定义事件，上传文件  单个文件
   //num :1:首页 2：顶部滚动 3：详情
   uploadFileFun(num) {
     let that = this;
     if(num == 1) {
-      that.uploadFile(that.uploader1.queue,that.selectedImageUrl1,that.path1,that.imageAd1);
+      that.uploadFile(that.uploader1.queue,that.imageAd1);
     }else if(num == 2) {
-      that.uploadFile(that.uploader2.queue, that.selectedImageUrl2, that.path2, that.imageAd2);
+      that.uploadFile(that.uploader2.queue,that.imageAd2);
     }else if(num == 3) {
-      that.uploadFile(that.uploader3.queue, that.selectedImageUrl3, that.path3, that.imageAd3);
+      that.uploadFile(that.uploader3.queue,that.imageAd3);
     }else if(num == 4) {
-      that.uploadFile(that.uploader4.queue, that.selectedImageUrl4, that.path4, that.imageAd4);
+      that.uploadFile(that.uploader4.queue,that.imageAd4);
     }
-      // let len = that.uploader1.queue.length;
-      // this.uploader1.queue.forEach((q, i) => {
-      //   if (!isUndefined(that.uploader1.queue[i])) {
-      //     that.uploader1.queue[i].onSuccess = function (response, status, headers) {
-      //       let tempRes = JSON.parse(response);
-      //       // 上传文件成功
-      //       if (status == 200) {
-      //         that.path1.push(tempRes['result']);
-      //         that.imageAd1 = [];
-      //         if ((i + 1) >= len) {
-      //           that.selectedImageUrl1 = [];
-      //           alert("上传成功!");
-      //         }
-      //       } else {
-      //         alert(tempRes['msg']);
-      //       }
-      //     };
-      //     this.uploader1.queue[i].upload(); // 开始上传
-      //   } else {
-      //     alert('找不到要上传的图片！');
-      //   }
-      // });
   }
 
   // D: 定义事件，上传文件  单个文件
-  //num :1:首页 2：顶部滚动 3：详情
-  uploadFile(uploader,selectedImageUrl,path,imageAd) {
+  uploadFile(uploader,imageAd) {
     let that = this;
     let len = uploader.length;
     uploader.forEach((q, i) => {
@@ -233,15 +166,11 @@ export class ProductComponent implements OnInit {
           console.log(status);
           // 上传文件成功
           if (status == 200) {
-            path.push(tempRes['result']);
-            imageAd = [];
+            let imgs = {"image_url":tempRes['result'],"type":"new"};
+            imageAd.push(imgs);
             if ((i + 1) >= len) {
-              selectedImageUrl = [];
               // alert("上传成功!");
             }
-            that.uploadImageCount += 1;
-            console.log('that.uploadImageCount');
-            console.log(that.uploadImageCount);
           } else {
             alert(tempRes['msg']);
           }
@@ -251,87 +180,27 @@ export class ProductComponent implements OnInit {
         alert('找不到要上传的图片！');
       }
     });
-    this.clearSelectImage();
-  }
-
-  /**
-   * 移除队列中的图片
-   * @param uploadID
-   */
-  removeUpload(num,uploadID) {
-    if(num == 1) {
-      //删除图片
-      this.uploader1.queue[uploadID].remove();
-      this.selectedImageUrl1.splice(uploadID, 1);
-      this.selectedImageUrl1.forEach((up, i) => {
-        up.uploadID = i//重构与上传数据一致的结构
-      });
-    }else if(num == 2) {
-      //删除图片
-      this.uploader2.queue[uploadID].remove();
-      this.selectedImageUrl2.splice(uploadID, 1);
-      this.selectedImageUrl2.forEach((up, i) => {
-        up.uploadID = i//重构与上传数据一致的结构
-      });
-    }else if(num == 3) {
-      //删除图片
-      this.uploader3.queue[uploadID].remove();
-      this.selectedImageUrl3.splice(uploadID, 1);
-      this.selectedImageUrl3.forEach((up, i) => {
-        up.uploadID = i//重构与上传数据一致的结构
-      });
-    }else if(num == 4) {
-      //删除图片
-      this.uploader4.queue[uploadID].remove();
-      this.selectedImageUrl4.splice(uploadID, 1);
-      this.selectedImageUrl4.forEach((up, i) => {
-        up.uploadID = i//重构与上传数据一致的结构
-      });
-    }
-    console.log('this.uploader3.queue');
-    console.log(uploadID);
-    console.log(this.uploader3.queue);
-    console.log(this.selectedImageUrl3);
-    // this.uploader.queue.length;
-    // console.log(this.uploader);
-  }
-
-  //移除上传成功的图片
-  removePath(num,pind){
-    if(num == 1) {
-      this.path1.splice(pind, 1);
-    }else if(num == 2) {
-      this.path2.splice(pind, 1);
-    }else if(num == 3) {
-      this.path3.splice(pind, 1);
-    }else if(num == 4) {
-      this.path4.splice(pind, 1);
-    }
   }
 
   //移除修改数据库图片
   removeImg(num,img_id,imgIndex){
     if(num == 1) {
-      this.deleteImgId1.push(img_id);
       this.imageAd1.splice(imgIndex, 1);
     }else if(num == 2) {
-      this.deleteImgId2.push(img_id);
       this.imageAd2.splice(imgIndex, 1);
     }else if(num == 3) {
-      this.deleteImgId3.push(img_id);
       this.imageAd3.splice(imgIndex, 1);
     }else if(num == 4) {
-      this.deleteImgId4.push(img_id);
       this.imageAd4.splice(imgIndex, 1);
+    }
+    if(img_id) {
+      this.deleteId.push(img_id);
     }
   }
 
-  //num  1: 数据库的读取数据   2：新上传数据
-  imgmousedown(e,img,num=0) {
+  imgmousedown(e,img) {
     console.log('down');
     console.log(img);
-    this.dgTypeNum = num;
-    console.log(this.dgTypeNum);
     this.downimg = img;
     //防止浏览器默认行为(W3C)
     if(e && e.preventDefault){
@@ -345,14 +214,10 @@ export class ProductComponent implements OnInit {
   /**
    *
    * @param img
-   * @param num  移动图片 1:  数据库图片拖拽   2：新上传图片拖拽
    * @param type  移动图片类型  1:首页 2:详情顶部 3:详情图片 4:详情科技
    */
-  imgmouseup(img,num,type) {
+  imgmouseup(img,type) {
     console.log('up');
-    console.log(img);
-    console.log(num);
-    console.log(type);
     this.upimg =  img;
     // 这里为排序方式 这里用的是按下鼠标图片和抬起鼠标图片相互替换
     let downimgnum = 0;
@@ -363,27 +228,12 @@ export class ProductComponent implements OnInit {
     let upimg = {};
 
     let editImgList: any = [];
-    if(num == 1){
-    //   if(type == 1) {
-    //     editImgList = this.selectedImageUrl1;
-    //   }else if(type == 2) {
-    //     editImgList = this.selectedImageUrl2;
-    //   }else if(type == 3) {
-        editImgList = this.selectedImageUrl3;
-    //   }else if(type == 4) {
-    //     editImgList = this.selectedImageUrl4;
-    //   }
-    }else if(num == 2){
-      // if(type == 1) {
-      //   editImgList = this.imageAd1;
-      // }else
-      if(type == 2) {
-        editImgList = this.imageAd2;
-      }else if(type == 3) {
-        editImgList = this.imageAd3;
-      }else if(type == 4) {
-        editImgList = this.imageAd4;
-      }
+    if(type == 2) {
+      editImgList = this.imageAd2;
+    }else if(type == 3) {
+      editImgList = this.imageAd3;
+    }else if(type == 4) {
+      editImgList = this.imageAd4;
     }
     for (let i = 0; i < editImgList.length; i++) {
       if (editImgList[i]['image_url'] === this.downimg) {
@@ -391,74 +241,26 @@ export class ProductComponent implements OnInit {
         downimgtext = editImgList[i]['image_url'];
         downimg = editImgList[i];
       }
+    }
+    editImgList.splice(downimgnum, 1);  //先去掉想移动得图片
+
+    for (let i = 0; i < editImgList.length; i++) {
       if (editImgList[i]['image_url'] === this.upimg) {
         upimgnum = i;
         upimgtext = editImgList[i]['image_url'];
         upimg = editImgList[i];
       }
     }
-
-    editImgList.splice(downimgnum, 0, downimg);
-    // editImgList[downimgnum]['image_url'] = upimgtext;
-    // editImgList[upimgnum]['image_url'] = downimgtext;
-
-    // if(num == 1){
-    //   if(type == 1) {
-    //     this.selectedImageUrl1 = editImgList;
-    //   }else if(type == 2) {
-    //     this.selectedImageUrl2 = editImgList;
-    //   }else if(type == 3) {
-    //     this.selectedImageUrl3 = editImgList;
-    //   }else if(type == 4) {
-    //     this.selectedImageUrl4 = editImgList;
-    //   }
-    // }else
-      if(num == 2){
-      // if(type == 1) {
-      //   this.imageAd1 = editImgList;
-      // }else
-      if(type == 2) {
-        this.imageAd2 = editImgList;
-
-        this.editImageWeight2.forEach((val, idx, array) => {
-          if(val['img_id'] == editImgList[downimgnum]['img_id']){
-            this.editImageWeight2.splice(idx,1);
-          }
-          if(val['img_id'] == editImgList[upimgnum]['img_id']){
-            this.editImageWeight2.splice(idx,1);
-          }
-        });
-        this.editImageWeight2.push(editImgList[downimgnum]);
-        this.editImageWeight2.push(editImgList[upimgnum]);
-      }else if(type == 3) {
-        this.imageAd3 = editImgList;
-        this.editImageWeight3.forEach((val, idx, array) => {
-          if(val['img_id'] == editImgList[downimgnum]['img_id']){
-            this.editImageWeight3.splice(idx,1);
-          }
-          if(val['img_id'] == editImgList[upimgnum]['img_id']){
-            this.editImageWeight3.splice(idx,1);
-          }
-        });
-        this.editImageWeight3.push(editImgList[downimgnum]);
-        this.editImageWeight3.push(editImgList[upimgnum]);
-      }else if(type == 4) {
-        this.imageAd4 = editImgList;
-        this.editImageWeight4.forEach((val, idx, array) => {
-          if(val['img_id'] == editImgList[downimgnum]['img_id']){
-            this.editImageWeight4.splice(idx,1);
-          }
-          if(val['img_id'] == editImgList[upimgnum]['img_id']){
-            this.editImageWeight4.splice(idx,1);
-          }
-        });
-        this.editImageWeight4.push(editImgList[downimgnum]);
-        this.editImageWeight4.push(editImgList[upimgnum]);
-      }
+    editImgList.splice(upimgnum, 0, downimg);  //再将移动得图片插入到指定位置
+    console.log('this.editImgList');
+    console.log(editImgList);
+    if(type == 2) {
+      this.imageAd2 = editImgList;
+    }else if(type == 3) {
+      this.imageAd3 = editImgList;
+    }else if(type == 4) {
+      this.imageAd4 = editImgList;
     }
-    console.log(this.imageAd2);
-    console.log('this.imageAd3');
-    console.log(this.imageAd3);
   }
 
   onCheck(type,radio) {
@@ -517,92 +319,39 @@ export class ProductComponent implements OnInit {
       alert('请填写商品优惠价格！');
       return false;
     }
-    that.uploadFileFun(1);
-    that.uploadFileFun(2);
-    that.uploadFileFun(3);
-    that.uploadFileFun(4);
-    let imgCount = that.uploader1.queue.length+that.uploader2.queue.length+that.uploader3.queue.length+that.uploader4.queue.length;
-    that.interval = setInterval(() => {
-      if(that.uploadImageCount == imgCount){
-        this.interval && clearInterval(this.interval);
-        that.globalService.httpRequest('post','editCategory',{
-          'category_id':that.editId,
-          'category_type':that.globalService.category_type,
-          'category_desc':that.category_desc,
-          'frozeno_amount':that.frozeno_amount,
-          'frozeno_discount_amount':that.frozeno_discount_amount,
-          'frozeno_is_show_app':that.frozeno_is_show_app,
-          'frozeno_is_discount':that.frozeno_is_discount,
-          'frozeno_is_sub_dry':that.frozeno_is_sub_dry,
-          'frozeno_ticket_amount':that.frozeno_ticket_amount,
-          'image_url_home':JSON.stringify(that.path1),
-          'delete_id_home':JSON.stringify(that.deleteImgId1),
-          'image_url_detail':JSON.stringify(that.path2),
-          'delete_id_detail':JSON.stringify(that.deleteImgId2),
-          'image_url_main':JSON.stringify(that.path3),
-          'delete_id_main':JSON.stringify(that.deleteImgId3),
-          'image_url_detail_kj':JSON.stringify(that.path4),
-          'delete_id_detail_kj':JSON.stringify(that.deleteImgId4),
-          'edit_image_weight2':JSON.stringify(that.editImageWeight2),
-          'edit_image_weight3':JSON.stringify(that.editImageWeight3),
-          'edit_image_weight4':JSON.stringify(that.editImageWeight4),
-          'sid':that.cookieStore.getCookie('sid')
-        }).subscribe( (data)=>{
-          if(data) {
-            alert(data['msg']);
-            if (data['status'] == 200) {
-              that.lgModal.hide();
-              that.getProductList(1);
-              that.clear();  //清除数据
-            } else if (data['status'] == 202) {
-              that.cookieStore.removeAll(that.rollback_url);
-              that.router.navigate(['/auth/login']);
-            }
-          }
-        },
-        response => {
-          console.log('PATCH call in error', response);
-        });
-      }
-    }, 1000);
-  }
-
-  doPushEditImg(pimg){
-    this.editImgWeight.forEach((v, i) => {
-      if(v.img_id == pimg['img_id']){
-        this.editImgWeight.splice(i,1);
-      }
-    });
-    this.editImgWeight.push(pimg);
-  }
-  /**
-   * 提交详情图片权重
-   */
-  submitDetailImg(){
-    // if(this.productInfo['resutl']['product_image'] != ''){
-    //   alert('请填写该图片的权重信息！');
-    //   return false;
-    // }
-    console.log(this.editImgWeight);
-    this.globalService.httpRequest('post','editImagesWeigth',{
-      'images':JSON.stringify(this.editImgWeight),
-      'sid':this.cookieStore.getCookie('sid')
+    that.globalService.httpRequest('post','editCategory',{
+      'category_id':that.editId,
+      'category_type':that.globalService.category_type,
+      'category_desc':that.category_desc,
+      'frozeno_amount':that.frozeno_amount,
+      'frozeno_discount_amount':that.frozeno_discount_amount,
+      'frozeno_is_show_app':that.frozeno_is_show_app,
+      'frozeno_is_discount':that.frozeno_is_discount,
+      'frozeno_is_sub_dry':that.frozeno_is_sub_dry,
+      'frozeno_ticket_amount':that.frozeno_ticket_amount,
+      'delete_ids':JSON.stringify(that.deleteId),
+      'edit_images1':JSON.stringify(that.imageAd1),
+      'edit_images2':JSON.stringify(that.imageAd2),
+      'edit_images3':JSON.stringify(that.imageAd3),
+      'edit_images4':JSON.stringify(that.imageAd4),
+      'sid':that.cookieStore.getCookie('sid')
     }).subscribe( (data)=>{
-        if(data) {
-          alert(data['msg']);
-          if (data['status'] == 200) {
-            this.imgModal.hide();
-          } else if (data['status'] == 202) {
-            this.cookieStore.removeAll(this.rollback_url);
-            this.router.navigate(['/auth/login']);
-          }
+      if(data) {
+        alert(data['msg']);
+        if (data['status'] == 200) {
+          that.lgModal.hide();
+          that.getProductList(1);
+          that.clear();  //清除数据
+        } else if (data['status'] == 202) {
+          that.cookieStore.removeAll(that.rollback_url);
+          that.router.navigate(['/auth/login']);
         }
-      },
-      response => {
-        console.log('PATCH call in error', response);
-      });
+      }
+    },
+    response => {
+      console.log('PATCH call in error', response);
+    });
   }
-
 
   clear(){
     this.category_desc = '';
@@ -612,23 +361,12 @@ export class ProductComponent implements OnInit {
     this.frozeno_is_discount=0;
     this.frozeno_is_sub_dry=0;
     this.frozeno_ticket_amount = '';
-    this.path1 = [];
-    this.path2 = [];
-    this.path3 = [];
-    this.path4 = [];
     this.imageAd1 = [];
     this.imageAd2 = [];
     this.imageAd3 = [];
     this.imageAd4 = [];
-    this.clearSelectImage();
   }
 
-  clearSelectImage(){
-    this.selectedImageUrl1 = [];
-    this.selectedImageUrl2 = [];
-    this.selectedImageUrl3 = [];
-    this.selectedImageUrl4 = [];
-  }
   /**
    * number =4 读取冻龄智美商品详情  并查看详情图片
    * 查询商品详情
