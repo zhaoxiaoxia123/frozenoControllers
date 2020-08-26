@@ -33,6 +33,9 @@ export class PostComponent implements OnInit {
   endDate:string='';
   description:string='';
 
+  deleteId:any=[];    //delete img_id
+  upimg = '';
+  downimg = '';
   imageAd:any=[];    //广告图片
   // 初始化上次图片变量
   public uploader:FileUploader = new FileUploader({
@@ -42,16 +45,12 @@ export class PostComponent implements OnInit {
     itemAlias: "uploadedfile",
   });
 
-  imgCount : number = 0;
-  selectedImageUrl : any[] = [];
-
   categoryType:number = 53;
   categoryList:any = [];
   checkTypeId: number = 0;
   checkTypeName: string = '全部';
   url : string = this.globalService.getDomain();
   path:any = [];
-  delete_id:any = [];
   /**菜单id */
   menu_id:any;
   /** 权限 */
@@ -64,33 +63,8 @@ export class PostComponent implements OnInit {
       private router : Router,
       private cookieStore:CookieStoreService,
       private globalService:GlobalService,
-      // private sanitizer: DomSanitizer
   ) {
     window.scrollTo(0,0);
-    // this.categoryList = [
-    //   {'id':1,'name':'帮助与客服'},
-    //   {'id':2,'name':'成长课堂'},
-    //   {'id':3,'name':'产品百科'},
-    //   {'id':4,'name':'规则中心'},
-    //   {'id':5,'name':'政策中心'},
-    //   {'id':6,'name':'系统通知'},
-    //   {'id':7,'name':'冻龄智美通知'},
-    //   {'id':8,'name':'激励中心'},
-    //   {'id':9,'name':'app商城广告'},
-    //   {'id':10,'name':'工作台腰部广告'},
-    //   {'id':11,'name':'冻龄智会员协议'},
-    //   {'id':12,'name':'app商城其他广告'},
-    //   {'id':13,'name':'app商城关于我们广告'},
-    //   {'id':14,'name':'冻龄智美服务协议'},
-    //   {'id':15,'name':'隐私政策'},
-    //   {'id':16,'name':'会员体系图片'},
-    //   {'id':17,'name':'售后图片'},
-    //   {'id':18,'name':'工作台发圈头部广告'},
-    //   {'id':19,'name':'工作台发圈文章'},
-    //   {'id':20,'name':'公众号发文对应'},
-    //   {'id':21,'name':'学习中心顶部广告'},
-    //   {'id':22,'name':'押金协议'}
-    // ];
   }
 
   ngOnInit() {
@@ -118,37 +92,62 @@ export class PostComponent implements OnInit {
   }
 
   // C: 定义事件，选择文件
-  selectedFileOnChanged(index=0) {
+  selectedFileOnChanged() {
     let $this = this;
-    let selectedArr = this.selectedImageUrl;
+    let selectedArr = [];
+    // // let selectedArr = this.selectedImageUrl;
+    // this.uploader.queue.forEach((q,i)=>{
+    //     let reader = new FileReader();
+    //     reader.readAsDataURL(q.some);
+    //     reader.onload = function(e){
+    //       let imgs = {
+    //         url:this.result,
+    //         uploadID:i
+    //       };
+    //       if(selectedArr.length > 0){
+    //         let isSame = false;
+    //         if(!isSame){
+    //           selectedArr.push(imgs);
+    //         }else{
+    //           $this.uploader.queue[i].remove();
+    //         }
+    //       }else{
+    //         selectedArr.push(imgs);
+    //       }
+    //     }
+    // });
+
     this.uploader.queue.forEach((q,i)=>{
-        let reader = new FileReader();
-        reader.readAsDataURL(q.some);
-        reader.onload = function(e){
-          let imgs = {
-            url:this.result,
-            uploadID:i,
-            pIndex:index
-          };
-          if(selectedArr.length > 0){
-            let isSame = false;
-            if(!isSame){
-              selectedArr.push(imgs);
-            }else{
-              $this.uploader.queue[i].remove();
-            }
-          }else{
-            selectedArr.push(imgs);
-          }
-        }
+      let reader = new FileReader();
+      reader.readAsDataURL(q.some);
+      reader.onload = function(e){
+        let imgs = {
+          url:this.result,
+          uploadID:i,
+          type:'new',
+        };
+        selectedArr.push(imgs);
+      }
     });
-    this.imgCount = this.uploader.queue.length;
-    this.selectedImageUrl = selectedArr;
+    // let selectedArrs =
+    selectedArr.sort($this.compare('uploadID'));
+
+    this.uploadFile();
+    // this.imgCount = this.uploader.queue.length;
+    // this.selectedImageUrl = selectedArr;
+  }
+
+  //数组字段根据某一字段进行排序
+  compare(property){
+    return function(a,b){
+      let value1 = a[property];
+      let value2 = b[property];
+      return value1 - value2;
+    }
   }
 
   // D: 定义事件，上传文件  单个文件
-  uploadFile(num) {
-    // 上传
+  uploadFile() {
     let that = this;
     let len = that.uploader.queue.length;
     this.uploader.queue.forEach((q,i)=> {
@@ -157,19 +156,10 @@ export class PostComponent implements OnInit {
           let tempRes = JSON.parse(response);
           // 上传文件成功
           if (status == 200) {
-            // 上传文件后获取服务器返回的数据
-            // if(num == 1){
-              // that.path = tempRes['result'];
-              that.path.push(tempRes['result']);
-              that.imageAd = [];
-            // }else if(num == 2){
-            //   // that.path2 = tempRes['result'];
-            //   that.path2.push(tempRes['result']);
-            //   that.imageHead = '';
-            // }
+            let imgs = {"image_url":tempRes['result'],"type":"new"};
+            that.imageAd.push(imgs);
             if((i+1) >= len) {
-              that.selectedImageUrl = [];
-              alert("上传成功!");
+              // alert("上传成功!");
             }
           } else {
             // 上传文件后获取服务器返回的数据错误
@@ -183,30 +173,84 @@ export class PostComponent implements OnInit {
     });
   }
 
-  /**
-   * 移除队列中的图片
-   * @param uploadID
-   */
-  removeUpload(uploadID) {
-    //删除图片
-    this.uploader.queue[uploadID].remove();
-    this.selectedImageUrl.splice(uploadID, 1);
-    this.selectedImageUrl.forEach((up, i) => {
-      up.uploadID = i//重构与上传数据一致的结构
-    });
-    this.imgCount = this.uploader.queue.length;
-    console.log(this.uploader);
+  imgmousedown(e,img) {
+    console.log('down');
+    console.log(img);
+    this.downimg = img;
+    //防止浏览器默认行为(W3C)
+    if(e && e.preventDefault){
+      e.preventDefault();
+    } else {//IE中组织浏览器行为
+      window.event.returnValue=false;
+      return false;
+    }
   }
 
-  //移除上传成功的图片
-  removePath(pind){
-    this.path.splice(pind, 1);
+  /**
+   *
+   * @param img
+   */
+  imgmouseup(img) {
+    console.log('up');
+    this.upimg =  img;
+    // 这里为排序方式 这里用的是按下鼠标图片和抬起鼠标图片相互替换
+    let downimgnum = 0;
+    let upimgnum = 0;
+    let downimgtext = '';
+    let upimgtext = '';
+    let downimg = {};
+    let upimg = {};
+
+    let editImgList: any = [];
+    editImgList = this.imageAd;
+
+    for (let i = 0; i < editImgList.length; i++) {
+      if (editImgList[i]['image_url'] === this.downimg) {
+        downimgnum = i;
+        downimgtext = editImgList[i]['image_url'];
+        downimg = editImgList[i];
+      }
+    }
+    editImgList.splice(downimgnum, 1);  //先去掉想移动得图片
+
+    for (let i = 0; i < editImgList.length; i++) {
+      if (editImgList[i]['image_url'] === this.upimg) {
+        upimgnum = i;
+        upimgtext = editImgList[i]['image_url'];
+        upimg = editImgList[i];
+      }
+    }
+    editImgList.splice(upimgnum, 0, downimg);  //再将移动得图片插入到指定位置
+    console.log('this.editImgList');
+    console.log(editImgList);
+    this.imageAd = editImgList;
   }
+
+  //
+  // /**
+  //  * 移除队列中的图片
+  //  * @param uploadID
+  //  */
+  // removeUpload(uploadID) {
+  //   //删除图片
+  //   this.uploader.queue[uploadID].remove();
+  //   this.selectedImageUrl.splice(uploadID, 1);
+  //   this.selectedImageUrl.forEach((up, i) => {
+  //     up.uploadID = i//重构与上传数据一致的结构
+  //   });
+  //   this.imgCount = this.uploader.queue.length;
+  //   console.log(this.uploader);
+  // }
+  //
+  // //移除上传成功的图片
+  // removePath(pind){
+  //   this.path.splice(pind, 1);
+  // }
 
   //移除修改数据库图片
   removeImg(img_id,imgIndex) {
     if(img_id && !isNull(img_id)) {
-      this.delete_id.push(img_id);
+      this.deleteId.push(img_id);
     }
     this.imageAd.splice(imgIndex,1);
   }
@@ -309,8 +353,8 @@ export class PostComponent implements OnInit {
       'tag':this.tag,
       'introduction':this.introduction,
       'description':this.description,
-      'image_url':JSON.stringify(this.path),
-      'delete_id':JSON.stringify(this.delete_id),
+      'image_url':JSON.stringify(this.imageAd),
+      'delete_id':JSON.stringify(this.deleteId),
       'type':this.type,
       'state':this.state,
       'is_href':this.is_href,

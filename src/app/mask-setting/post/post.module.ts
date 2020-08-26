@@ -5,6 +5,8 @@ import { PostComponent } from './post.component';
 import {I3otpModule} from "../../shared/i3otp.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FileUploadModule} from "ng2-file-upload";
+import {ShareDragModule} from "../share.module";
+// import {dragsortinstruct} from "../../core/dragsortbeauty";
 
 @NgModule({
   imports: [
@@ -12,7 +14,8 @@ import {FileUploadModule} from "ng2-file-upload";
     I3otpModule,
     ReactiveFormsModule,
     PostRoutingModule,
-    FileUploadModule
+    FileUploadModule,
+    ShareDragModule
   ],
   declarations: [PostComponent]
 })

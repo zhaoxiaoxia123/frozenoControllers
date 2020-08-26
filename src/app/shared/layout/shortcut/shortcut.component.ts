@@ -79,7 +79,9 @@ export class ShortcutComponent implements OnInit, AfterViewInit, AfterContentIni
   }
 
   ngOnDestroy() {
-    this.layoutSub.unsubscribe();
+    if(this.layoutSub) {
+      this.layoutSub.unsubscribe();
+    }
   }
 
 

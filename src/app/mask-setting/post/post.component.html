@@ -188,35 +188,68 @@
                         </div>
                     </div>
                 </form>
-                <div class="form-group row">
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">广告图片</h5>
-                                <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
-                                <div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">
-                                    <span class="picture-list" *ngFor="let img of selectedImageUrl;let ind = index;">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(img.uploadID)"></a>
-                                        <img width="90px" height="90px" src="{{img.url}}">
-                                    </span>
-                                    <span class="picture-list" *ngFor="let pi of path;let pind = index;">
-                                        <img width="90px" height="90px" src="{{pi}}">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(pind)"></a>
-                                    </span>
-                                    <span class="picture-list" *ngFor="let img of imageAd;let imgInd = index;">
-                                        <img width="90px" height="90px" [src]="img.image_url">
-                                        <a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(img.img_id,imgInd)"></a>
-                                    </span>
-                                    <!--*ngIf="imgCount < 1"-->
-                                    <div class="picture-list">
-                                        <input id="image-input1" class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader" multiple (change)="selectedFileOnChanged()" />
+
+                <div class="card form-group" style="width:100%;">
+                    <h5 class="card-header">广告图片</h5>
+                    <div class="card-body">
+                        <div class="picture-img">
+                            <div dragsortbeauty>
+                                <div class="picture-item" *ngFor="let img of imageAd;let imgInd = index;">
+                                    <div class="picture-item-img">
+                                        <img class="dsimg picture-item-imge" [src]="img.image_url" (mousedown)="imgmousedown($event,img.image_url)" (mouseup)="imgmouseup(img.image_url)">
+                                        <div class="picture-icon">
+                                            <a class="fa-fw fa fa-trash" (click)="removeImg(img.img_id,imgInd)"></a>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-primary" (click)="uploadFile(1)">图片上传</button>
+                            </div>
+                            <div class="picture-item" >
+                                <div class="picture-item-img">
+                                    <div class="picture-file">
+                                        <input type="file" class="custom-file-input picture-file-input" ng2FileSelect [uploader]="uploader" multiple (change)="selectedFileOnChanged()">
+                                        <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="picture-icon">
+                                        <a class="picture-file-upload" >图片上传</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>
                     </div>
                 </div>
+
+
+
+                <!--<div class="form-group row">-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<div class="card">-->
+                            <!--<div class="card-body">-->
+                                <!--<h5 class="card-title">广告图片</h5>-->
+                                <!--<p class="card-text">仅支持JPG、GIF、PNG图片文件，且小于1M</p>-->
+                                <!--<div style="background:#f2f2f2;padding:8px;margin-bottom:10px;">-->
+                                    <!--<span class="picture-list" *ngFor="let img of selectedImageUrl;let ind = index;">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeUpload(img.uploadID)"></a>-->
+                                        <!--<img width="90px" height="90px" src="{{img.url}}">-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list" *ngFor="let pi of path;let pind = index;">-->
+                                        <!--<img width="90px" height="90px" src="{{pi}}">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removePath(pind)"></a>-->
+                                    <!--</span>-->
+                                    <!--<span class="picture-list" *ngFor="let img of imageAd;let imgInd = index;">-->
+                                        <!--<img width="90px" height="90px" [src]="img.image_url">-->
+                                        <!--<a class="fa fa-times-circle picture-a" style="display:block;" (click)="removeImg(img.img_id,imgInd)"></a>-->
+                                    <!--</span>-->
+                                    <!--&lt;!&ndash;*ngIf="imgCount < 1"&ndash;&gt;-->
+                                    <!--<div class="picture-list">-->
+                                        <!--<input id="image-input1" class="btn btn-default" type="file" ng2FileSelect [uploader]="uploader" multiple (change)="selectedFileOnChanged()" />-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<button type="button" class="btn btn-primary" (click)="uploadFile(1)">图片上传</button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!--<div class="form-group row" *ngIf="type == 9 || type == 10|| type == 12|| type == 13">-->
                     <!--<div class="col-sm-6">-->
                         <!--<div class="card">-->

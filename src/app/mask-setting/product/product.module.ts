@@ -5,7 +5,8 @@ import { ProductComponent } from './product.component';
 import {I3otpModule} from "../../shared/i3otp.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FileUploadModule} from "ng2-file-upload";
-import {dragsortinstruct} from "../../core/dragsortbeauty";
+import {ShareDragModule} from "../share.module";
+// import {dragsortinstruct} from "../../core/dragsortbeauty";
 
 @NgModule({
   imports: [
@@ -13,8 +14,9 @@ import {dragsortinstruct} from "../../core/dragsortbeauty";
     I3otpModule,
     ReactiveFormsModule,
     ProductRoutingModule,
-    FileUploadModule
+    FileUploadModule,
+    ShareDragModule
   ],
-  declarations: [ProductComponent,dragsortinstruct]
+  declarations: [ProductComponent]
 })
 export class ProductModule { }
