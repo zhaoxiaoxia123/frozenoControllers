@@ -6,53 +6,53 @@
     <!--动态读取--->
     <ul saSmartMenu >
 
-      <li>
-        <a href="#">
-          <i class="fa fa-lg fa-fw fa-shopping-basket"></i> <span
-                class="menu-item-parent">{{'电商管理' | i18n}}</span></a>
-        <ul>
-          <li routerLinkActive="active">
-            <a routerLink="/online-retailers/home" title=""> {{'面板' | i18n}}</a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/online-retailers/dealer-order" title=""> {{'订单管理' | i18n}}</a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/online-retailers/team" title=""> {{'团队管理' | i18n}}</a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/online-retailers/dealer-finance" title=""> {{'财务管理' | i18n}}</a>
-          </li>
-        </ul>
-      </li>
+      <!--<li>-->
+        <!--<a href="#">-->
+          <!--<i class="fa fa-lg fa-fw fa-shopping-basket"></i> <span-->
+                <!--class="menu-item-parent">{{'电商管理' | i18n}}</span></a>-->
+        <!--<ul>-->
+          <!--<li routerLinkActive="active">-->
+            <!--<a routerLink="/online-retailers/home" title=""> {{'面板' | i18n}}</a>-->
+          <!--</li>-->
+          <!--<li routerLinkActive="active">-->
+            <!--<a routerLink="/online-retailers/dealer-order" title=""> {{'订单管理' | i18n}}</a>-->
+          <!--</li>-->
+          <!--<li routerLinkActive="active">-->
+            <!--<a routerLink="/online-retailers/team" title=""> {{'团队管理' | i18n}}</a>-->
+          <!--</li>-->
+          <!--<li routerLinkActive="active">-->
+            <!--<a routerLink="/online-retailers/dealer-finance" title=""> {{'财务管理' | i18n}}</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</li>-->
 
-      <li>
-        <a href="#">
-          <i class="fa fa-lg fa-fw fa-gratipay"></i> <span
-                class="menu-item-parent">{{'售后管理' | i18n}}</span></a>
-        <ul>
-          <li routerLinkActive="active">
-            <a routerLink="/after-sales/sales-order" title=""> {{'售后单' | i18n}}</a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/after-sales/sales-deposit" title=""> {{'押金管理' | i18n}}</a>
-          </li>
-        </ul>
-      </li>
+      <!--<li>-->
+        <!--<a href="#">-->
+          <!--<i class="fa fa-lg fa-fw fa-gratipay"></i> <span-->
+                <!--class="menu-item-parent">{{'售后管理' | i18n}}</span></a>-->
+        <!--<ul>-->
+          <!--<li routerLinkActive="active">-->
+            <!--<a routerLink="/after-sales/sales-order" title=""> {{'售后单' | i18n}}</a>-->
+          <!--</li>-->
+          <!--<li routerLinkActive="active">-->
+            <!--<a routerLink="/after-sales/sales-deposit" title=""> {{'押金管理' | i18n}}</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</li>-->
       <!--<li routerLinkActive="active">-->
         <!--<a routerLink="/style/style-dashboard">{{'首页' | i18n}}</a>-->
       <!--</li>-->
       <li *ngFor="let c of menuDefault?.result?.menuList">
         <a href="#" *ngIf="c.menu_url == '#' || c.menu_url == ''">
-          <i class="fa fa-lg fa-fw {{c.menu_icon}}"></i>
+          <!--<i class="fa fa-lg fa-fw {{c.menu_icon}}"></i>-->
           <span class="menu-item-parent {{c.menu_name_class}}">{{c.menu_name}}</span>
         </a>
         <a routerLink="{{c.menu_url}}" *ngIf="c.menu_url != '#' && c.menu_url != ''&& c.menu_target == 0">
-          <i class="fa fa-lg fa-fw {{c.menu_icon}}"></i>{{c.menu_name}}
+          <!--<i class="fa fa-lg fa-fw {{c.menu_icon}}"></i>{{c.menu_name}}-->
           <span class="{{c.menu_tip_class}}">{{c.menu_tip}}</span>
         </a>
         <a href="{{c.menu_url}}" target="_blank" *ngIf="c.menu_url != '#' && c.menu_url != ''&& c.menu_target == 1">
-          <i class="fa fa-lg fa-fw {{c.menu_icon}}"></i>{{c.menu_name}}
+          <!--<i class="fa fa-lg fa-fw {{c.menu_icon}}"></i>{{c.menu_name}}-->
         </a>
         <ul  *ngIf="c.child_count != 0">
           <li routerLinkActive="active"  *ngFor="let dc of c.child">
