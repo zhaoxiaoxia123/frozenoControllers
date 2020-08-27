@@ -24,7 +24,7 @@
         <ul class="dropdown-menu dropdown-menu-right nav-pills  nav-pills-head" style="width:200px;" role="menu" aria-labelledby="dropdownMenu1">
           <li role="presentation" *ngFor="let nm of navListMore;let indm = index;" class="{{nm.class_}}">
             <a role="menuitem" tabindex="-1" routerLink="{{nm.url}}">
-              <i class="fa fa-lg fa-fw fa-home"></i>{{nm.title}}
+              <!--<i class="fa fa-lg fa-fw fa-home"></i>{{nm.title}}-->
               <span class="glyphicon glyphicon-remove" (click)="removeTopTab($event,indm,2)"></span>
             </a>
           </li>
