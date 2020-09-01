@@ -35,6 +35,21 @@ export const routes: Routes = [
         path: 'team',
         loadChildren: 'app/online-retailers/team/team.module#TeamModule',
         data: {pageTitle: 'team'}
+    },
+    {
+        path: 'team-view',
+        loadChildren: 'app/online-retailers/team-view/team-view.module#TeamViewModule',
+        data: {pageTitle: 'team-view'}
+    },
+    {
+        path: 'dealer-money',
+        loadChildren: 'app/online-retailers/dealer-money/dealer-money.module#DealerMoneyModule',
+        data: {pageTitle: 'dealer-money'}
+    },
+    {
+        path: 'dealer-orders',
+        loadChildren: 'app/online-retailers/dealer-orders/dealer-orders.module#DealerOrdersModule',
+        data: {pageTitle: 'dealer-orders'}
     }
 ];
 

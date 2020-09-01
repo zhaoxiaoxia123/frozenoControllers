@@ -1771,11 +1771,12 @@ a,button,input {
     float: left;
     border-right: 1px solid #222;
     border-left: 1px solid #4E4E4E;
+    border-bottom: 1px solid #4E4E4E;
     overflow: visible;
 }
 .menu-on-top aside#left-panel nav>ul>li>a {
     display: inline-block;
-    height: 68px;
+    min-height: 48px;
     text-shadow: none!important;
     font-size: 13px;
     text-decoration: none;
