@@ -19,11 +19,15 @@
                                                 <a class="dropdown-item" *ngFor="let s of search_array;let ind=index;" (click)="selectSearchState(ind,1)">{{s}}</a>
                                             </div>
                                         </div>
-                                        <div class="btn-group" (click)="showVerify()">
-                                            <button type="button" class="btn btn-primary" ><span class="fa-fw fa fa-stop mr-5 "></span>审核</button>
+                                        <div class="btn-group">
+                                            <button type="button" [ngClass]="{'btn btn-primary':true,'not-click':editId == 0 || timeDiff > 90}" (click)="showVerify()">
+                                                <span class="fa-fw fa fa-stop mr-5 "></span>审核
+                                            </button>
                                         </div>
                                         <div class="btn-group">
-                                            <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editId == 0}" (click)="getDepositInfo()"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                            <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editId == 0}" (click)="getDepositInfo()">
+                                                <span class="fa-fw fa fa-list-alt mr-5"></span>详情
+                                            </button>
                                         </div>
                                     </form>
                                     <form  class="navbar-form" novalidate="" role="search">
@@ -54,20 +58,21 @@
                                             </tr>
                                         </thead>
                                         <tbody >
-                                        <tr *ngFor="let dl of depositList?.result?.data;let ind = index;" (click)="isStatusShow(dl.log_id,dl.frozeno_order_id)" [ngClass]="{'table-color':editId == dl.log_id}">
+                                        <tr *ngFor="let dl of depositList?.result?.data;let ind = index;" (click)="isStatusShow(dl.log_id,dl.frozeno_order_id,dl.time_diff)" [ngClass]="{'table-color':editId == dl.log_id}">
                                             <td>
                                                 <!--审核中  已同意  已拒绝 已作废-->
                                                 <span [ngSwitch]="dl.log_type">
                                                     <span class="label-normal" *ngSwitchCase="1">审核中</span>
                                                     <span class="label-blue" *ngSwitchCase="2">已同意</span>
                                                     <span class="label-full" *ngSwitchCase="3">已拒绝</span>
+                                                    <span class="label-full" *ngSwitchCase="4">已过期</span>
                                                     <span class="label-unknown" *ngSwitchDefault>使用中</span>
                                                 </span>
                                             </td>
                                             <td>{{dl.o_order}}</td>
                                             <td>{{dl.c_name}} {{dl.c_phone}}</td>
                                             <td data-toggle="tooltip" data-placement="top" title="{{dl.log_title}}">{{dl.log_title}}</td>
-                                            <td>{{ dl.frozeno_event_trend_value}}</td>
+                                            <td>{{dl.frozeno_event_trend_value}}</td>
                                             <td>{{dl.apply_detail.apply_date}}</td>
                                             <td>{{dl.apply_detail.apply_amount?dl.apply_detail.apply_amount:dl.frozeno_event_trend_value}}</td>
                                             <td>{{dl.apply_detail.express_company}}</td>
@@ -78,6 +83,7 @@
                                                     <span class="label-blue" *ngSwitchCase="1">退款处理中</span>
                                                     <span class="label-full" *ngSwitchCase="2">已退款</span>
                                                     <span class="label-red" *ngSwitchCase="3">已拒绝退款</span>
+                                                    <span class="label-full" *ngSwitchCase="4">已过期</span>
                                                     <span class="label-unknown" *ngSwitchDefault>使用中</span>
                                                 </span>
                                             </td>
