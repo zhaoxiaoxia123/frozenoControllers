@@ -21,6 +21,9 @@ export class JurisdictionComponent implements OnInit {
     customerInfo:any = [];
     levels:any = [];
 
+  discount:number = 0;
+  discounts:any = [10.0,9.5,9.0,8.5,8.0,7.5,7.0,6.5,6.0,5.5,5.0,4.5,4.0];
+
     /**菜单id */
     menu_id:any;
     /** 权限 */
@@ -58,30 +61,29 @@ export class JurisdictionComponent implements OnInit {
   }
     /**
      * 获取用户详情
-     * @param num
      */
     getInfo(){
-        let url = 'getSettingCustomerInfo?phone='+this.phone+'&sid='+this.cookieStore.getCookie('sid');
-        this.globalService.httpRequest('get',url)
-          .subscribe((data)=>{
-            console.log(data);
-              this.customerInfo = data['result'];
-              if(this.customerInfo) {
-                this.type = this.customerInfo['type'];
-                this.satisfy_amount = this.customerInfo['satisfy_amount'];
-                this.amount = this.customerInfo['amount'];
-                this.start_date = this.customerInfo['start_date'];
-                this.end_date = this.customerInfo['end_date'];
+      let url = 'getSettingCustomerInfo?phone='+this.phone+'&sid='+this.cookieStore.getCookie('sid');
+      this.globalService.httpRequest('get',url)
+        .subscribe((data)=>{
+          console.log(data);
+          this.customerInfo = data['result'];
+          if(this.customerInfo) {
+            this.type = this.customerInfo['type'];
+            this.satisfy_amount = this.customerInfo['satisfy_amount'];
+            this.amount = this.customerInfo['amount'];
+            this.start_date = this.customerInfo['start_date'];
+            this.end_date = this.customerInfo['end_date'];
 
-              }
-                  // this.dealer_setting_id = this.customerInfo['dealer_setting_id'];
-                if (data['status'] == 202) {
-                    this.cookieStore.removeAll(this.rollback_url);
-                    this.router.navigate(['/auth/login']);
-                }else{
-                  alert(data['msg']);
-                }
-          });
+          }
+            // this.dealer_setting_id = this.customerInfo['dealer_setting_id'];
+          if (data['status'] == 202) {
+              this.cookieStore.removeAll(this.rollback_url);
+              this.router.navigate(['/auth/login']);
+          }else{
+            alert(data['msg']);
+          }
+        });
     }
 
   /**
@@ -100,49 +102,69 @@ export class JurisdictionComponent implements OnInit {
      * 升级用户等级
      */
     upCustomerLevel(){
-        this.globalService.httpRequest('post','upCustomer',{
-            'customer_id':this.customerInfo['c_id'],
-            'level':this.level,
-            'sid':this.cookieStore.getCookie('sid')
-        }).subscribe( (data)=>{
-              alert(data['msg']);
-              if(data['status'] == 200){
-              }else if(data['status'] == 202){
-                  this.cookieStore.removeAll(this.rollback_url);
-                  this.router.navigate(['/auth/login']);
-              }
-          },
-          response => {
-              console.log('PATCH call in error', response);
-          }
-        );
+      this.globalService.httpRequest('post','upCustomer',{
+        'customer_id':this.customerInfo['c_id'],
+        'level':this.level,
+        'sid':this.cookieStore.getCookie('sid')
+      }).subscribe( (data)=>{
+        alert(data['msg']);
+        if(data['status'] == 200){
+        }else if(data['status'] == 202){
+          this.cookieStore.removeAll(this.rollback_url);
+          this.router.navigate(['/auth/login']);
+        }
+      },
+      response => {
+        console.log('PATCH call in error', response);
+      });
     }
 
     /**
      * 设置客户发券功能
      */
-    settingCustomerTicket(){
-        this.globalService.httpRequest('post','ticketSettingToCustomer',{
-            'dealer_setting_id':this.customerInfo['dealer_setting_id'],
-            'customer_id':this.customerInfo['c_id'],
-            'type':this.type,
-            'satisfy_amount':this.satisfy_amount,
-            'amount':this.amount,
-            'start_date':this.start_date,
-            'end_date':this.end_date,
-            'sid':this.cookieStore.getCookie('sid')
-        }).subscribe( (data)=>{
-              alert(data['msg']);
-              if(data['status'] == 200){
-                  this.getInfo();
-              }else if(data['status'] == 202){
-                  this.cookieStore.removeAll(this.rollback_url);
-                  this.router.navigate(['/auth/login']);
-              }
-          },
-          response => {
-              console.log('PATCH call in error', response);
-          }
-        );
+    settingCustomerTicket() {
+      this.globalService.httpRequest('post','ticketSettingToCustomer',{
+        'dealer_setting_id':this.customerInfo['dealer_setting_id'],
+        'customer_id':this.customerInfo['c_id'],
+        'type':this.type,
+        'satisfy_amount':this.satisfy_amount,
+        'amount':this.amount,
+        'start_date':this.start_date,
+        'end_date':this.end_date,
+        'sid':this.cookieStore.getCookie('sid')
+      }).subscribe( (data)=>{
+        alert(data['msg']);
+        if(data['status'] == 200){
+            this.getInfo();
+        }else if(data['status'] == 202){
+            this.cookieStore.removeAll(this.rollback_url);
+            this.router.navigate(['/auth/login']);
+        }
+      },
+      response => {
+          console.log('PATCH call in error', response);
+      });
     }
+
+  /**
+   * 单独为某一个下家设置折扣
+   */
+  setChildDiscount() {
+    this.globalService.httpRequest('post','setChildDiscount',{
+      'customer_id':this.customerInfo['c_id'],
+      'discount':this.discount,
+      'sid':this.cookieStore.getCookie('sid')
+    }).subscribe( (data)=>{
+      alert(data['msg']);
+      if(data['status'] == 200){
+        this.getInfo();
+      }else if(data['status'] == 202){
+        this.cookieStore.removeAll(this.rollback_url);
+        this.router.navigate(['/auth/login']);
+      }
+    },
+    response => {
+      console.log('PATCH call in error', response);
+    });
+  }
 }

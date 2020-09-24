@@ -406,7 +406,10 @@ export class UserOrderComponent implements OnInit {
    * 备货框显示
    */
   choiceOrder(){
-    if(this.editStatusUserOrderId == 0 || !(this.editOrderState == 2 && this.editPrepareState == 1)){
+    console.log(this.editStatusUserOrderId);
+    console.log(this.editOrderState);
+    console.log(this.editPrepareState);
+    if(this.editStatusUserOrderId == 0 || !(this.editOrderState == 2 && (this.editPrepareState == 1 || this.editPrepareState == 2))){
       return false;
     }else{
       this.choiceExampleModal.show();

@@ -11,9 +11,10 @@ import {FileUploader} from "ng2-file-upload";
     templateUrl: './sales-order.component.html'
 })
 export class SalesOrderComponent implements OnInit {
-
     orderList: any = [];
     orderId: any = 0;
+    isVerify:number = 0;
+    orderState:number = 0;
     page: any;
     orderInfo: any = [];
     verifyInfo: any = [];
@@ -141,8 +142,10 @@ export class SalesOrderComponent implements OnInit {
     /**
      * 顶部
      */
-    isStatusShow(order_id:any) {
+    isStatusShow(order_id:any,is_verify:number,orderState:number) {
         this.orderId = order_id;
+        this.isVerify = is_verify;
+        this.orderState = orderState;
     }
 
     /**

@@ -55,7 +55,6 @@
                                             <th>买家名称</th>
                                             <th>交易金额</th>
                                             <th>退款金额</th>
-                                            <!--<th>原因</th>-->
                                             <th>商品明细</th>
                                             <th>退货物流 </th>
                                             <th>退货物流单号</th>
@@ -64,9 +63,8 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr *ngFor="let dl of orderList?.result?.data;let ind = index;" (click)="isStatusShow(dl.o_id)" [ngClass]="{'table-color':orderId == dl.o_id}">
+                                        <tr *ngFor="let dl of orderList?.result?.data;let ind = index;" (click)="isStatusShow(dl.o_id,dl.frozeno_is_verify,dl.frozeno_order_state)" [ngClass]="{'table-color':orderId == dl.o_id}">
                                             <td>
-                                                <!--审核中  已同意  已拒绝 已作废-->
                                                 <span [ngSwitch]="dl.frozeno_is_verify">
                                                     <span class="label-blue" *ngSwitchCase="1">审核中</span>
                                                     <span class="label-blue" *ngSwitchCase="2">已同意</span>
@@ -78,7 +76,6 @@
                                             <td>{{dl.c_name}} {{dl.c_phone}}</td>
                                             <td>{{dl.frozeno_order_amount}}</td>
                                             <td>{{dl.notes?.apply_amount}}</td>
-                                            <!--<td>{{ dl.notes?.reason}}</td>-->
                                             <td data-toggle="tooltip" data-placement="top" title="{{dl.order_name}}">{{dl.order_name}}</td>
                                             <td>{{dl.notes?.express_company}}</td>
                                             <td>{{dl.notes?.express_code}}</td>
@@ -87,6 +84,8 @@
                                                 <span [ngSwitch]="dl.frozeno_order_state">
                                                     <span class="label-normal" *ngSwitchCase="6">仅退款</span>
                                                     <span class="label-blue" *ngSwitchCase="14">退货退款</span>
+                                                    <span class="label-full" *ngSwitchCase="15">导入仪退款</span>
+                                                    <span class="label-full" *ngSwitchCase="16">导入仪已退款</span>
                                                     <span class="label-blue" *ngSwitchCase="7">完成退款</span>
                                                     <span class="label-full" *ngSwitchCase="8">需维修</span>
                                                     <span class="label-full" *ngSwitchCase="9">需换货</span>
@@ -219,6 +218,8 @@
                             <span [ngSwitch]="orderInfo?.result?.frozeno_order_state">
                                 <span class="label-full" *ngSwitchCase="6">退款中</span>
                                 <span class="label-full" *ngSwitchCase="14">退货退款</span>
+                                <span class="label-full" *ngSwitchCase="15">导入仪退款</span>
+                                <span class="label-full" *ngSwitchCase="16">导入仪已退款</span>
                                 <span class="label-full" *ngSwitchCase="7">已退款</span>
                                 <span class="label-full" *ngSwitchCase="8">需维修</span>
                                 <span class="label-full" *ngSwitchCase="9">需换货</span>
