@@ -240,8 +240,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="sendexampleModalLabel">发货（订单编号：{{orderInfo?.result?.o_order}}）</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" (click)="closeExpress()">&times;</span>
+                    <button type="button" class="close" (click)="closeExpress()">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body text-overflow-y">
@@ -284,20 +284,16 @@
                         </div>
                         <table class="table table-striped table-forum">
                             <thead>
-                            <tr>
-                                <th scope="col">名称</th>
-                                <th scope="col">购买数量</th>
-                            </tr>
+                                <tr>
+                                    <th scope="col">名称</th>
+                                    <th scope="col">购买数量</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td >无创水光尊享礼盒</td>
-                                <td>5</td>
-                            </tr>
-                            <tr>
-                                <td >润月雅水光精华套装</td>
-                                <td>5</td>
-                            </tr>
+                                <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
+                                    <td>{{pd.category_desc}}</td>
+                                    <td>{{pd.product_count}}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -481,7 +477,7 @@
                         <tr>
                             <th scope="col">用户名</th>
                             <th scope="col">会员等级</th>
-                            <th scope="col">成长值</th>
+                            <!--<th scope="col">成长值</th>-->
                             <th scope="col">优惠券</th>
                         </tr>
                         </thead>
@@ -489,7 +485,7 @@
                             <tr>
                                 <td>{{orderInfo?.result?.c_name}}</td>
                                 <td>{{orderInfo?.result?.level_name}}</td>
-                                <td>{{orderInfo?.result?.harvest_growth}}</td>
+                                <!--<td>{{orderInfo?.result?.harvest_growth}}</td>-->
                                 <td>{{orderInfo?.result?.harvest_ticket?.ticket_amount}}</td>
                             <tr>
                         </tbody>
@@ -511,7 +507,7 @@
                             <th scope="col">等级</th>
                             <th scope="col">可结算总金额</th>
                             <th scope="col">佣金（智美豆）</th>
-                            <th scope="col">成长值</th>
+                            <!--<th scope="col">成长值</th>-->
                         </tr>
                         </thead>
                         <tbody>
@@ -522,11 +518,11 @@
                             <td>{{orderInfo?.result?.frozeno_order_amount}}</td>
                             <td><span *ngIf="cp.frozeno_event == 3 || cp.frozeno_event == 5">{{cp.frozeno_event_trend_value}}({{cp.frozeno_is_entry == 1 ? '已结算' : '未结算'}})</span>
                                 <span *ngIf="cp.frozeno_event != 3 && cp.frozeno_event != 5">0</span></td>
-                            <td><span *ngIf="cp.frozeno_event == 2">{{cp.frozeno_event_trend_value}}</span>
-                                <span *ngIf="cp.frozeno_event != 2">0</span></td>
+                            <!--<td><span *ngIf="cp.frozeno_event == 2">{{cp.frozeno_event_trend_value}}</span>-->
+                                <!--<span *ngIf="cp.frozeno_event != 2">0</span></td>-->
                         <tr>
                         <tr class="m-order-colspan">
-                            <td colspan="6">订单总佣金（智美豆）：<span class="m-order-money">{{orderInfo?.result?.commission_total_amount}}</span></td>
+                            <td colspan="5">订单总佣金（智美豆）：<span class="m-order-money">{{orderInfo?.result?.commission_total_amount}}</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -544,7 +540,6 @@
 
 <!--此下为打印内容-->
 <div  style="display: none">
-
     <essence-ng2-print
             #printBtn
             [mode]="'popup'"

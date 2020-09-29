@@ -14,6 +14,8 @@ export class SalesDepositComponent implements OnInit {
     depositList: any = [];
     editId: any = 0;
     orderId: any = 0;
+    timeDiff: any = 0;//选中项时间，超过9个月不予审核，变已过期
+
     page: any;
     orderInfo: any = [];
     verifyInfo: any = [];
@@ -131,9 +133,10 @@ export class SalesDepositComponent implements OnInit {
     /**
      * 顶部
      */
-    isStatusShow(log_id:any,order_id:any) {
+    isStatusShow(log_id:any,order_id:any,time_diff:string) {
         this.editId = log_id;
         this.orderId = order_id;
+        this.timeDiff = time_diff;
     }
 
     /**
