@@ -41,6 +41,11 @@ export const routes: Routes = [
         loadChildren: 'app/mask-setting/jurisdiction/jurisdiction.module#JurisdictionModule',
         data: {pageTitle: 'jurisdiction'}
     },
+    {
+        path: 'user-list',
+        loadChildren: 'app/mask-setting/user-list/user-list.module#UserListModule',
+        data: {pageTitle: 'user-list'}
+    },
     // {
     //     path: 'dealer-finance',
     //     loadChildren: 'app/mask-setting/dealer-finance/dealer-finance.module#DealerFinanceModule',
