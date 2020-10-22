@@ -1,0 +1,32 @@
+.m-dealer{
+    background: #cce5ff;
+    color: #002752;
+    display: flex;
+    padding: 10px 20px;
+    font-size: 1rem;
+    align-items: center;
+}
+.m-dealer-item{
+    padding-right:40px;
+}
+.m-dealer-money{
+    font-size:1.5rem;
+    font-weight: bold;
+}
+.m-dealer-text{
+    color:#002752;
+}
+.m-deler-money1{
+    padding: .375rem .75rem;
+    border: 1px solid #ced4da;
+    background: #fff;
+    border-radius: .25rem;
+    font-size:1rem;
+}
+.m-deler-money1-text{
+    padding-right:10px;
+}
+.m-dealer-bold{
+    font-size:1rem;
+    font-weight: bold;
+}
