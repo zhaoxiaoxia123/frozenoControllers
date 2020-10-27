@@ -79,8 +79,7 @@
                                             <th>订单编号</th>
                                             <th>来源</th>
                                             <th>购买人</th>
-                                            <th>商品明细</th>
-                                            <th>总金额</th>
+                                            <!--<th>总金额</th>-->
                                             <th>实付款</th>
                                             <th>订单状态</th>
                                             <th>应返佣金</th>
@@ -95,13 +94,13 @@
                                             <td *ngIf="sl.o_is_complete != 3">{{ sl.o_order }}</td>
                                             <td>
                                                 <span [ngSwitch]="sl.frozeno_seller">
-                                                  <span class="label-normal" *ngSwitchCase="1">小程序商城</span>
+                                                  <span class="label-normal" *ngSwitchCase="1">商城小程序</span>
                                                   <span class="label-blue" *ngSwitchCase="2">经销商管理平台</span>
+                                                  <span class="label-blue" *ngSwitchCase="3">工作台小程序</span>
                                                 </span>
                                             </td>
                                             <td>{{sl.c_name}}&nbsp;&nbsp;{{sl.c_phone}}</td>
-                                            <td data-toggle="tooltip" data-placement="top" title="{{sl.order_name}}">{{ sl.order_name }}</td>
-                                            <td></td>
+                                            <!--<td></td>-->
                                             <td>{{ sl.frozeno_order_amount }}</td>
                                             <td>
                                                 <!--管理员可取消——未支付、待备货、待发货销售单里面的订单审核通过自动生成用户订单
@@ -188,32 +187,32 @@
                         </div>
                     </div>
                     <div class="m-order">
-                        <form class="navbar-form" role="search">
-                            <div class="btn-group"><button type="button" class="btn btn-danger" (click)="clearStock()">清空备货</button></div>
-                        </form>
+                        <!--<form class="navbar-form" role="search">-->
+                            <!--<div class="btn-group"><button type="button" class="btn btn-danger" (click)="clearStock()">清空备货</button></div>-->
+                        <!--</form>-->
                         <table class="table table-striped table-forum">
                             <thead>
                                 <tr>
                                     <th scope="col">名称</th>
                                     <th>购买数量</th>
-                                    <th>需备货数量</th>
-                                    <th>备货数量</th>
-                                    <th>备货扫码框</th>
+                                    <!--<th>需备货数量</th>-->
+                                    <!--<th>备货数量</th>-->
+                                    <!--<th>备货扫码框</th>-->
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
                                     <td>{{pd.category_desc}}</td>
                                     <td>{{pd.product_count}}</td>
-                                    <td>{{pd.beihuoTotalCount}}</td>
-                                    <td *ngIf="pd.frozeno_is_gift != 1 || pd.category_id == dryCategoryId">
-                                        <input type="text" class="form-control" [(ngModel)]="pd.choice_count" value="{{pd.choice_count}}" (change)="sumPCount(ind)" [ngStyle]="{'border-color': (((pd.beihuoTotalCount != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}" [ngModelOptions]="{standalone: true}" placeholder="备货个数">
-                                    </td>
-                                    <td *ngIf="pd.frozeno_is_gift == 1 && pd.category_id != dryCategoryId">0</td>
-                                    <td *ngIf="pd.frozeno_is_gift != 1 || pd.category_id == dryCategoryId">
-                                        <input type="text" class="form-control" [(ngModel)]="pd.product_code" value="{{pd.product_code}}" (change)="sumPCount(ind)" [ngStyle]="{'border-color': (((pd.beihuoTotalCount != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}" [ngModelOptions]="{standalone: true}" placeholder="请扫码或输入">
-                                    </td>
-                                    <td *ngIf="pd.frozeno_is_gift == 1 && pd.category_id != dryCategoryId">0</td>
+                                    <!--<td>{{pd.beihuoTotalCount}}</td>-->
+                                    <!--<td *ngIf="pd.frozeno_is_gift != 1 || pd.category_id == dryCategoryId">-->
+                                        <!--<input type="text" class="form-control" [(ngModel)]="pd.choice_count" value="{{pd.choice_count}}" (change)="sumPCount(ind)" [ngStyle]="{'border-color': (((pd.beihuoTotalCount != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}" [ngModelOptions]="{standalone: true}" placeholder="备货个数">-->
+                                    <!--</td>-->
+                                    <!--<td *ngIf="pd.frozeno_is_gift == 1 && pd.category_id != dryCategoryId">0</td>-->
+                                    <!--<td *ngIf="pd.frozeno_is_gift != 1 || pd.category_id == dryCategoryId">-->
+                                        <!--<input type="text" class="form-control" [(ngModel)]="pd.product_code" value="{{pd.product_code}}" (change)="sumPCount(ind)" [ngStyle]="{'border-color': (((pd.beihuoTotalCount != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}" [ngModelOptions]="{standalone: true}" placeholder="请扫码或输入">-->
+                                    <!--</td>-->
+                                    <!--<td *ngIf="pd.frozeno_is_gift == 1 && pd.category_id != dryCategoryId">0</td>-->
                                 </tr>
                             </tbody>
                         </table>
@@ -222,13 +221,13 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" (click)="beforePrint()">打印订单</button>
                     <button type="button" class="btn btn-secondary" (click)="closeChoice()">取消</button>
-
-                    <button type="button" class="btn btn-warning" *ngIf="isSucc" (click)="stockEntry(1)">保存</button>
-                    <button type="button" class="btn btn-secondary" *ngIf="!isSucc">保存</button>
+                    <!--*ngIf="isSucc"-->
+                    <button type="button" class="btn btn-warning" (click)="stockEntry(1)">保存</button>
+                    <!--<button type="button" class="btn btn-secondary" *ngIf="!isSucc">保存</button>-->
                     <!--待备货状态的订单-->
-                    <button type="button" class="btn btn-warning" *ngIf="isSucc" (click)="stockEntry(2)">保存显示下一条</button>
-                    <button type="button" class="btn btn-secondary" *ngIf="!isSucc">保存显示下一条</button>
-
+                    <!--*ngIf="isSucc"-->
+                    <button type="button" class="btn btn-warning" (click)="stockEntry(2)">保存显示下一条</button>
+                    <!--<button type="button" class="btn btn-secondary" *ngIf="!isSucc">保存显示下一条</button>-->
                 </div>
             </div>
         </div>
@@ -282,27 +281,61 @@
                                 </div>
                             </form>
                         </div>
+                        <!--<table class="table table-striped table-forum">-->
+                            <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th scope="col">名称</th>-->
+                                    <!--<th scope="col">购买数量</th>-->
+                                <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                                <!--<tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">-->
+                                    <!--<td>{{pd.category_desc}}</td>-->
+                                    <!--<td>{{pd.product_count}}</td>-->
+                                    <!---->
+                                <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+
+                        <form class="navbar-form" role="search">
+                            <div class="btn-group"><button type="button" class="btn btn-danger" (click)="clearStock()">清空备货</button></div>
+                        </form>
                         <table class="table table-striped table-forum">
                             <thead>
-                                <tr>
-                                    <th scope="col">名称</th>
-                                    <th scope="col">购买数量</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">名称</th>
+                                <th>购买数量</th>
+                                <th>需备货数量</th>
+                                <th>备货数量</th>
+                                <th>备货扫码框</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
-                                    <td>{{pd.category_desc}}</td>
-                                    <td>{{pd.product_count}}</td>
-                                </tr>
+                            <tr *ngFor="let pd of orderInfo?.result?.products;let ind = index;">
+                                <td>{{pd.category_desc}}</td>
+                                <td>{{pd.product_count}}</td>
+                                <td>{{pd.beihuoTotalCount}}</td>
+                                <td *ngIf="pd.frozeno_is_gift != 1 || pd.category_id == dryCategoryId">{{pd.choice_count}}</td>
+                                <td *ngIf="pd.frozeno_is_gift == 1 && pd.category_id != dryCategoryId">0</td>
+                                <td *ngIf="pd.frozeno_is_gift != 1 || pd.category_id == dryCategoryId">
+                                <input type="text" class="form-control" [(ngModel)]="pd.product_code" value="{{pd.product_code}}" (change)="sumPCount(ind)" [ngStyle]="{'border-color': (((pd.beihuoTotalCount != pd.choice_count && pd.product_code != '')|| pd.border_color=='red') ? 'red':'')}" [ngModelOptions]="{standalone: true}" placeholder="请扫码或输入">
+                                </td>
+                                <td *ngIf="pd.frozeno_is_gift == 1 && pd.category_id != dryCategoryId">0</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="closeExpress()">取消</button>
-                    <button type="button" class="btn btn-warning" (click)="sendOrder(2)">保存</button>
+                    <!--<button type="button" class="btn btn-warning" (click)="sendOrder(2)">保存</button>-->
                     <!--待发货状态已备货的订单-->
-                    <button type="button" class="btn btn-warning" (click)="sendOrder(3)">保存并显示下一条</button>
+                    <!--<button type="button" class="btn btn-warning" (click)="sendOrder(3)">保存并显示下一条</button>-->
+
+                    <button type="button" class="btn btn-warning" *ngIf="isSucc" (click)="sendOrder(2)">保存</button>
+                    <button type="button" class="btn btn-secondary" *ngIf="!isSucc">保存</button>
+                    <button type="button" class="btn btn-warning" *ngIf="isSucc" (click)="sendOrder(3)">保存并显示下一条</button>
+                    <button type="button" class="btn btn-secondary" *ngIf="!isSucc">保存并显示下一条</button>
                 </div>
             </div>
         </div>
@@ -327,8 +360,9 @@
                         <div class="row m-orderdetails">
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">订单编号：</span>{{orderInfo?.result?.o_order}}</div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">来源：</span>
-                                <span *ngIf="orderInfo?.result?.frozeno_seller == 1">小程序商城</span>
+                                <span *ngIf="orderInfo?.result?.frozeno_seller == 1">商城小程序</span>
                                 <span *ngIf="orderInfo?.result?.frozeno_seller == 2">商户管理平台</span>
+                                <span *ngIf="orderInfo?.result?.frozeno_seller == 3">工作台小程序</span>
                             </div>
                             <div class="col-6 col-md-4"><span class="m-orderdetails-title">购买人：</span>{{orderInfo?.result?.c_name}}&nbsp;&nbsp;{{orderInfo?.result?.c_phone}}</div>
                         </div>

@@ -413,21 +413,8 @@ export class UserOrderComponent implements OnInit {
       return false;
     }else{
       this.choiceExampleModal.show();
-      this.getOrderInfo('beihuo');
-    }
-  }
-
-  /**
-   * 发货框显示  1:显示发货弹框   2：发货   3：发货并跳转下一条
-   */
-  sendOrder(num){
-    if(num == 1) {
-      this.sendExampleModal.show();
-      this.getOrderInfo();
-    }else if(num == 2) {
-      this.sendOrderToExpress(1);
-    }else if(num == 3) {
-      this.sendOrderToExpress(2);
+      // this.getOrderInfo('beihuo');
+      this.getOrderInfo('');
     }
   }
 
@@ -531,43 +518,48 @@ export class UserOrderComponent implements OnInit {
    * num  (1:备货  2：备货并进入下一条)
    */
   stockEntry(num){
-    let isError = 0;
-    let arrStr = [];
-    for (let i = 0 ;i < this.orderInfo['result']['products'].length;i++){
-      let arr = this.sumPCount(i);
-      let goArray = {
-        'attach_id':this.orderInfo['result']['products'][i]['attach_id'],
-        'product_code':this.orderInfo['result']['products'][i]['product_code'],
-        'count':this.orderInfo['result']['products'][i]['choice_count']
-      };
-      arrStr.push(goArray);
-      let beihuoDetail = this.orderInfo['result']['products'][i]['beihuoDetail'];
-      for (let b = 0 ;b < beihuoDetail.length;b++) {
-        let totalCount = 0;
-        for (let a = 0 ;a < arr.length;a++) {
-          if (arr[a].indexOf(beihuoDetail[b]['key']) == 3 && beihuoDetail[b]['count'] >= 1) {
-            totalCount += 1;
-          }
-        }
-        console.log('totalCount:-----');
-        console.log(totalCount);
-        console.log('count:-----');
-        console.log(beihuoDetail[b]['count']);
-
-        if(totalCount != beihuoDetail[b]['count']){
-          isError ++;
-          this.orderInfo['result']['products'][i]['border_color'] = "red";
-        }
-      }
-    }
-    this.cdr.markForCheck();
-    this.cdr.detectChanges();
-    if(isError <= 0){
+    // let isError = 0;
+    // let arrStr = [];
+    // for (let i = 0 ;i < this.orderInfo['result']['products'].length;i++){
+    //   this.orderInfo['result']['products'][i]['border_color'] = "";
+    //   let arr = this.sumPCount(i);
+    //   let goArray = {
+    //     'attach_id':this.orderInfo['result']['products'][i]['attach_id'],
+    //     'product_code':this.orderInfo['result']['products'][i]['product_code'],
+    //     'count':this.orderInfo['result']['products'][i]['choice_count']
+    //   };
+    //   arrStr.push(goArray);
+    //   let beihuoDetail = this.orderInfo['result']['products'][i]['beihuoDetail'];
+    //   for (let b = 0 ;b < beihuoDetail.length;b++) {
+    //     let totalCount = 0;
+    //     for (let a = 0 ;a < arr.length;a++) {
+    //       if (arr[a].indexOf(beihuoDetail[b]['key']) == 3 && beihuoDetail[b]['count'] >= 1) {
+    //         totalCount += 1;
+    //       }
+    //     }
+    //     console.log('totalCount:-----');
+    //     console.log(totalCount);
+    //     console.log('count:-----');
+    //     console.log(beihuoDetail[b]['count']);
+    //     console.log(this.orderInfo['result']['products'][i]['beihuoTotalCount']);
+    //
+    //     if(totalCount != beihuoDetail[b]['count'] || this.orderInfo['result']['products'][i]['choice_count'] != this.orderInfo['result']['products'][i]['beihuoTotalCount']){
+    //       isError ++;
+    //       this.orderInfo['result']['products'][i]['border_color'] = "red";
+    //     }
+    //   }
+    // }
+    // console.log(isError);
+    // console.log(this.orderInfo);
+    // this.cdr.markForCheck();
+    // this.cdr.detectChanges();
+    // if(isError <= 0){
       this.globalService.httpRequest('post','putPrepare',{
         'order_id':this.editStatusUserOrderId,
-        'join_list':JSON.stringify(arrStr),
+        // 'join_list':JSON.stringify(arrStr),
         'u_id':this.cookieStore.getCookie('uid'),
-        'sid':this.cookieStore.getCookie('sid')
+        'is_clear':2,
+        'sid':this.cookieStore.getCookie('sid'),
       }).subscribe( (data)=>{
           alert(data['msg']);
           if(data['status'] == 200){
@@ -590,10 +582,82 @@ export class UserOrderComponent implements OnInit {
           console.log('PATCH call in error', response);
         }
       );
+    // }else{
+    //   alert('录入信息有误，请检查');
+    // }
+  }
+
+
+  /**
+   * 发货框显示  1:显示发货弹框   2：发货   3：发货并跳转下一条
+   */
+  sendOrder(num){
+    if(num == 1) {
+      this.sendExampleModal.show();
+      this.getOrderInfo('beihuo');
+    }else if(num == 2) {
+      this.sendOrderToExpress(1);
+    }else if(num == 3) {
+      this.sendOrderToExpress(2);
+    }
+  }
+
+  /**
+   * 发货框  num : 1:  发货  2:发货并显示下一条
+   */
+  sendOrderToExpress(num){
+    let isError = 0;
+    let arrStr = [];
+    for (let i = 0 ;i < this.orderInfo['result']['products'].length;i++){
+      this.orderInfo['result']['products'][i]['border_color'] = "";
+      let arr = this.sumPCount(i);
+      let goArray = {
+        'attach_id':this.orderInfo['result']['products'][i]['attach_id'],
+        'product_code':this.orderInfo['result']['products'][i]['product_code'],
+        'count':this.orderInfo['result']['products'][i]['choice_count']
+      };
+      arrStr.push(goArray);
+      let beihuoDetail = this.orderInfo['result']['products'][i]['beihuoDetail'];
+      for (let b = 0 ;b < beihuoDetail.length;b++) {
+        let totalCount = 0;
+        for (let a = 0 ;a < arr.length;a++) {
+          if (arr[a].indexOf(beihuoDetail[b]['key']) == 3 && beihuoDetail[b]['count'] >= 1) {
+            totalCount += 1;
+          }
+        }
+        if(totalCount != (beihuoDetail[b]['count']*this.orderInfo['result']['products'][i]['product_count']) || this.orderInfo['result']['products'][i]['choice_count'] != this.orderInfo['result']['products'][i]['beihuoTotalCount']){
+          isError ++;
+          this.orderInfo['result']['products'][i]['border_color'] = "red";
+        }
+      }
+    }
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
+    if(isError <= 0){
+      let param = {
+        'o_id': this.editStatusUserOrderId,
+        // 'express_code':this.expressCode,
+        'frozeno_order_state': 3,
+        'u_id': this.cookieStore.getCookie('uid'),
+        'join_list':JSON.stringify(arrStr),
+        'is_clear':2,
+        'sid': this.cookieStore.getCookie('sid')
+      };
+      this.editExpress(param);
+      this.getUserOrderList(this.page,'');
+      if(num == 1){
+        this.closeExpress();
+      }else if(num == 2){
+        // this.editStatusUserOrderId = 0;  //下一个发货的id
+        this.isNextSend = true;
+        this.getOrderInfo();
+      }
+
     }else{
       alert('录入信息有误，请检查');
     }
   }
+
 
   /**
    * 清空备货录入
@@ -623,7 +687,10 @@ export class UserOrderComponent implements OnInit {
     this.orderInfo['result']['products'][index]['choice_count'] = strArr.length;
     console.log(this.orderInfo['result']['products'][index]['beihuoTotalCount']);
     console.log(item);
-    if(!((this.orderInfo['result']['products'][index]['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '')|| item['border_color']=='red')){
+    console.log((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != ''));
+    console.log(item['border_color']=='red');
+    console.log(((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '')|| item['border_color']=='red'));
+    if(!((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '')|| item['border_color']=='red')){
       this.isSucc = true;
     }
     return strArr;
@@ -648,29 +715,6 @@ export class UserOrderComponent implements OnInit {
     this.editExpress(param);
   }
 
-
-  /**
-   * 发货框  num : 1:  发货  2:发货并显示下一条
-   */
-  sendOrderToExpress(num){
-    let param = {
-      'o_id': this.editStatusUserOrderId,
-      // 'express_code':this.expressCode,
-      'frozeno_order_state': 3,
-      'u_id': this.cookieStore.getCookie('uid'),
-      'sid': this.cookieStore.getCookie('sid')
-    };
-    this.editExpress(param);
-
-    this.getUserOrderList(this.page,'');
-    if(num == 1){
-      this.closeExpress();
-    }else if(num == 2){
-      // this.editStatusUserOrderId = 0;  //下一个发货的id
-      this.isNextSend = true;
-      this.getOrderInfo();
-    }
-  }
 
 
   /**
