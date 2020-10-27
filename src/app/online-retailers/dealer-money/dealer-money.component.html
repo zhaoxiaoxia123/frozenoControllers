@@ -1,1 +1,176 @@
-佣金  dealer-money
+<div id="content">
+    <sa-widgets-grid>
+        <div class="row">
+            <article class="col-sm-12 ">
+                <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false" [togglebutton]="false">
+                    <header>
+                        <!--<span class="widget-icon"> <i class="fa {{menuInfos?.menu_icon}}"></i> </span>-->
+                        <h2>我的账户</h2>
+                    </header>
+                    <div>
+                        <div class="widget-body no-padding">
+                            <article>
+                                <div class="m-dealer">
+
+                                    <div class="m-dealer-item" >
+                                        可提现金额(元)：<span class="m-dealer-money">255,255.0</span>
+                                    </div>
+                                    <div class="m-dealer-item m-dealer-text" >
+                                        未入账金额：<span>225,265.0</span>
+                                    </div>
+                                    <div class="m-dealer-item m-dealer-text" >
+                                        总金额：<span>485,265.20</span>
+                                    </div>
+                                </div>
+                                <div class="navbar navbar-default">
+
+                                    <form  class="navbar-form" role="search"  novalidate >
+                                        <div class="btn-group" data-toggle="modal" data-target="#exampleModal">
+                                            <button type="button" [ngClass]="{'btn btn-success':true,'not-click':editStatusUserOrderId == 0}" ><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
+                                        </div>
+
+                                    </form>
+                                    <iframe style="display: none;"></iframe>
+                                    <form  class="navbar-form" novalidate="" role="search"  >
+                                        <div class="btn-group">
+                                            <input name="" class="form-control"  type="date" />
+                                        </div>
+                                        <div class="btn-group m-deler-money1">
+                                            <span class="m-deler-money1-text">收入：122.00</span><span>支出：133.2</span>
+                                        </div>
+                                        <div class="btn-group">
+                                            <input type="text" class="form-control" maxlength="15" formControlName="keyword"  placeholder="请输入搜索内容">
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn default-btn" >搜索</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </article>
+                            <div style="padding:0;">
+                                <div class="table-scrolling padding0 printonly">
+                                    <table class="table table-striped smart-form table-height-20">
+                                        <thead>
+                                        <tr>
+                                            <!--当前状态、编号、类目、分类、金额、支付时间、支付方式、入账时间、订单编号、来源-->
+                                            <th>当前状态</th>
+                                            <th>编号</th>
+                                            <th>类目</th>
+                                            <th>分类</th>
+                                            <th>金额</th>
+                                            <th>支付时间</th>
+                                            <th>支付方式</th>
+                                            <th>入账时间</th>
+                                            <th>订单编号</th>
+                                            <th>来源</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody >
+                                        <tr >
+                                            <td>处理中</td>
+                                            <td>C001</td>
+                                            <td >购物使用</td>
+                                            <td>支出</td>
+                                            <td>
+                                                <span class="m-dealer-bold">
+                                                  <span class="" >-967.00</span>
+                                                </span>
+                                            </td>
+                                            <td>2020-10-12 10:07:50</td>
+                                            <td>账户余额</td>
+                                            <td>2020-10-12 10:07:50</td>
+                                            <td >W2019111117325499190744023</td>
+                                            <td>商城</td>
+                                        </tr>
+                                        <tr >
+                                            <td>已完成</td>
+                                            <td>C001</td>
+                                            <td >购物使用</td>
+                                            <td>支出</td>
+                                            <td>
+                                                <span class="m-dealer-bold">
+                                                  <span class="text-danger" >+967.00</span>
+                                                </span>
+                                            </td>
+                                            <td>2020-10-12 10:07:50</td>
+                                            <td>账户余额</td>
+                                            <td>2020-10-12 10:07:50</td>
+                                            <td >W2019111117325499190744023</td>
+                                            <td>工作台</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody >
+                                        <tr style="text-align: center;">
+                                            <td colspan="10">没有数据。</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 底部-（分页部分）-->
+                            <div class="footer-size flex-justify-end">
+                                <ul class="pagination" *ngIf="orderList?.page" >
+                                    <li *ngFor="let p of orderList?.page" class="{{p.class}}">
+                                        <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
+                                        <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>
+                                    </li>
+                                    <li class="page-item disabled">
+                                        <a class="page-link" disabled>共{{orderList.result?.total}}条</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </sa-widget>
+            </article>
+        </div>
+    </sa-widgets-grid>
+
+</div>
+
+
+<!-- 订单详情 -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">编号：C001</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-overflow-y">
+                <div class="m-order">
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">当前状态</span>处理中</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">编号：</span>C001</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">类目：</span>购物使用</div>
+
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">分类：</span>支出 </div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">金额：</span>  <span class="m-dealer-bold">
+                                  <span class="" >-967.00</span>
+                                <span class="text-danger" >+967.00</span>
+                                </span> </div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">支付时间：</span>2020-10-12 10:07:50</div>
+
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">支付方式：</span>微信支付</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">入账时间：</span>2020-10-12 10:07:50</div>
+                        <div class="col-6 col-md-4"><span class="m-orderdetails-title">来源：</span>商城</div>
+                    </div>
+                    <div class="row m-orderdetails">
+                        <div class="col-12 col-md-6"><span class="m-orderdetails-title">订单编号：</span>W2019111117325499190744023</div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -456,7 +456,7 @@ div.dataTables_paginate ul.pagination {
     padding: 2px 10px;
 }
 .label-unknown{
-    background-color: #909090!important;
+    background-color: #ccc!important;
     color: #fff;
     padding: 2px 10px;
 }

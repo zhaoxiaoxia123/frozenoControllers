@@ -5,7 +5,7 @@
                 <sa-widget [editbutton]="false" [deletebutton]="false" [colorbutton]="false" [togglebutton]="false">
                     <header>
                         <!--<span class="widget-icon"> <i class="fa fa-bar-chart-o"></i> </span>-->
-                        <h2>客户管理</h2>
+                        <h2>用户列表</h2>
                     </header>
                     <div>
                         <div class="widget-body no-padding" >
@@ -17,22 +17,12 @@
                                         </div>
                                         <div class="btn-group">
                                             <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                全部客户
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">客户</a>
-                                                <a class="dropdown-item" href="#">二级经销商</a>
-                                            </div>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn default-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                全部分组
+                                                全部
                                             </button>
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#">全部</a>
-                                                <a class="dropdown-item" href="#">默认分组</a>
-                                                <a class="dropdown-item" href="#">分组1</a>
-                                                <a class="dropdown-item" href="#">分组2</a>
+                                                <a class="dropdown-item" href="#">注册用户</a>
+                                                <a class="dropdown-item" href="#">经销商</a>
                                             </div>
                                         </div>
                                         <div class="btn-group">
@@ -62,16 +52,11 @@
                                     <tr>
                                         <th>序号</th>
                                         <th>用户名称 </th>
-                                        <th>微信昵称</th>
                                         <th>手机号码</th>
-                                        <th>加入时间</th>
-                                        <th>分组</th>
+                                        <th>用户等级</th>
+                                        <th>父级</th>
+                                        <th>注册时间</th>
                                         <th>折扣</th>
-                                        <th>个人月消费指数</th>
-                                        <th>个人年消费指数</th>
-                                        <th>月收益指数</th>
-                                        <th>年收益指数</th>
-                                        <th>备注名</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -79,18 +64,30 @@
                                     <tr >
                                         <td>1</td>
                                         <td>星星</td>
+                                        <td>15928592792 </td>
+                                        <td>注册用户</td>
+                                        <td>星星15928592792</td>
+                                        <td>2020.07.01 </td>
+                                        <td>无折扣</td>
+                                    </tr>
+                                    <tr >
+                                        <td>1</td>
                                         <td>星星</td>
                                         <td>15928592792 </td>
+                                        <td>注册用户</td>
+                                        <td>星星15928592792</td>
                                         <td>2020.07.01 </td>
-                                        <td>默认分组</td>
                                         <td>无折扣</td>
-                                        <td>151</td>
-                                        <td>1000</td>
-                                        <td>1000</td>
-                                        <td>1000</td>
-                                        <td>名字</td>
                                     </tr>
-
+                                    <tr >
+                                        <td>1</td>
+                                        <td>星星</td>
+                                        <td>15928592792 </td>
+                                        <td>经销商</td>
+                                        <td>——</td>
+                                        <td>2020.07.01 </td>
+                                        <td>无折扣</td>
+                                    </tr>
 
                                     </tbody>
                                 </table>
