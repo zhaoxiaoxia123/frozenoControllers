@@ -7,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DealerMoneyComponent implements OnInit {
 
+    //顶部按钮是否启用显示
+    editStatusUserOrderId : any = 0;
+    orderList : any = [];
     constructor() { }
 
     ngOnInit() {

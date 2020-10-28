@@ -650,9 +650,8 @@ export class UserOrderComponent implements OnInit {
       }else if(num == 2){
         // this.editStatusUserOrderId = 0;  //下一个发货的id
         this.isNextSend = true;
-        this.getOrderInfo();
+        this.getOrderInfo('beihuo');
       }
-
     }else{
       alert('录入信息有误，请检查');
     }
@@ -676,22 +675,24 @@ export class UserOrderComponent implements OnInit {
    */
   sumPCount(index){
     let item = this.orderInfo['result']['products'][index];
-    let code = item['product_code'];
     let strArr = [];
-    let n = 13;
-    for (let i = 0, l = code.length; i < l/n; i++) {
-      let a = code.slice(n * i, n * (i + 1));
-      strArr.push(a);
-    }
-    item['choice_count'] = strArr.length;
-    this.orderInfo['result']['products'][index]['choice_count'] = strArr.length;
-    console.log(this.orderInfo['result']['products'][index]['beihuoTotalCount']);
-    console.log(item);
-    console.log((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != ''));
-    console.log(item['border_color']=='red');
-    console.log(((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '')|| item['border_color']=='red'));
-    if(!((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '')|| item['border_color']=='red')){
-      this.isSucc = true;
+    if(item['beihuoDetail'].length > 0) {
+      let code = item['product_code'];
+      let n = 13;
+      for (let i = 0, l = code.length; i < l / n; i++) {
+        let a = code.slice(n * i, n * (i + 1));
+        strArr.push(a);
+      }
+      item['choice_count'] = strArr.length;
+      this.orderInfo['result']['products'][index]['choice_count'] = strArr.length;
+      console.log(this.orderInfo['result']['products'][index]['beihuoTotalCount']);
+      console.log(item);
+      console.log((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != ''));
+      console.log(item['border_color'] == 'red');
+      console.log(((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '') || item['border_color'] == 'red'));
+      if (!((item['beihuoTotalCount'] != item['choice_count'] && item['product_code'] != '') || item['border_color'] == 'red')) {
+        this.isSucc = true;
+      }
     }
     return strArr;
   }
