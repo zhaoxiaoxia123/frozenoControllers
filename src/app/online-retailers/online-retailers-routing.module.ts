@@ -50,6 +50,21 @@ export const routes: Routes = [
         path: 'dealer-orders',
         loadChildren: 'app/online-retailers/dealer-orders/dealer-orders.module#DealerOrdersModule',
         data: {pageTitle: 'dealer-orders'}
+    },
+    {
+        path: 'two-team',
+        loadChildren: 'app/online-retailers/two-team/two-team.module#TwoTeamModule',
+        data: {pageTitle: 'two-team'}
+    },
+    {
+        path: 'customer-details',
+        loadChildren: 'app/online-retailers/customer-details/customer-details.module#CustomerDetailsModule',
+        data: {pageTitle: 'customer-details'}
+    },
+    {
+        path: 'group',
+        loadChildren: 'app/online-retailers/group/group.module#GroupModule',
+        data: {pageTitle: 'group'}
     }
 ];
 
