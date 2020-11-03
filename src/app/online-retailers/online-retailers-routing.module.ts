@@ -73,17 +73,23 @@ export const routes: Routes = [
     },
     {
         path: 'two-team',
-        loadChildren: 'app/online-retailers/two-team/two-team.module#TwoTeamModule',
+        // loadChildren: 'app/online-retailers/two-team/two-team.module#TwoTeamModule',
+        loadChildren: () => import('./two-team/two-team.module')
+          .then((m) => m.TwoTeamModule),
         data: {pageTitle: 'two-team'}
     },
     {
         path: 'customer-details',
-        loadChildren: 'app/online-retailers/customer-details/customer-details.module#CustomerDetailsModule',
+        // loadChildren: 'app/online-retailers/customer-details/customer-details.module#CustomerDetailsModule',
+        loadChildren: () => import('./customer-details/customer-details.module')
+          .then((m) => m.CustomerDetailsModule),
         data: {pageTitle: 'customer-details'}
     },
     {
         path: 'group',
-        loadChildren: 'app/online-retailers/group/group.module#GroupModule',
+        // loadChildren: 'app/online-retailers/group/group.module#GroupModule',
+        loadChildren: () => import('./group/group.module')
+          .then((m) => m.GroupModule),
         data: {pageTitle: 'group'}
     }
 ];
