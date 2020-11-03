@@ -207,12 +207,12 @@ export const config: any = {
     'go back': (): any => {
       history.back();
     },
-    'scroll up': (): any => {
-      jQuery('html, body').animate({scrollTop: 0}, 100);
-    },
-    'scroll down': (): any => {
-      jQuery('html, body').animate({scrollTop: jQuery(document).height()}, 100);
-    },
+    // 'scroll up': (): any => {
+    //   jQuery('html, body').animate({scrollTop: 0}, 100);
+    // },
+    // 'scroll down': (): any => {
+    //   jQuery('html, body').animate({scrollTop: jQuery(document).height()}, 100);
+    // },
     'hide navigation': {
       type: 'layout',
       payload: 'hide navigation'

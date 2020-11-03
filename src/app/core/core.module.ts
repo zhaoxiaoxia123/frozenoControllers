@@ -6,12 +6,23 @@ import { LayoutService } from '../shared/layout/layout.service'
 import { UserService } from '../shared/user/user.service'
 import { VoiceControlService } from '../shared/voice-control/voice-control.service'
 import {SoundService} from "../shared/sound/sound.service";
-
-
-
 import { throwIfAlreadyLoaded } from './guards/module-import-guard';
 import {VoiceRecognitionService} from "../shared/voice-control/voice-recognition.service";
-import {TabsModule, ProgressbarModule, TooltipModule, BsDropdownModule, AlertModule} from "ngx-bootstrap";
+import {
+  TabsModule
+} from 'ngx-bootstrap/tabs'
+import {
+  ProgressbarModule
+} from 'ngx-bootstrap/progressbar'
+import {
+  TooltipModule
+} from 'ngx-bootstrap/tooltip'
+import {
+  BsDropdownModule
+} from 'ngx-bootstrap/dropdown'
+import {
+  AlertModule
+} from 'ngx-bootstrap/alert'
 
 @NgModule({
   imports: [

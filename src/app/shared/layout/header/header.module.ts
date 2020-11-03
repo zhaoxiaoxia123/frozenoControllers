@@ -2,7 +2,7 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {NgModule} from "@angular/core";
 
-import {PopoverModule} from "ngx-popover";
+// import {PopoverModule} from "ngx-popover";
 
 import {CollapseMenuComponent} from "./collapse-menu/collapse-menu.component";
 import {RecentProjectsComponent} from "./recent-projects/recent-projects.component";
@@ -18,7 +18,7 @@ import {UtilsModule} from "../../utils/utils.module";
 import {I18nModule} from "../../i18n/i18n.module";
 import {UserModule} from "../../user/user.module";
 import {VoiceControlModule} from "../../voice-control/voice-control.module";
-import {BsDropdownModule} from "ngx-bootstrap";
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 import {CookieStoreService} from "../../cookies/cookie-store.service";
 
 @NgModule({
@@ -31,7 +31,8 @@ import {CookieStoreService} from "../../cookies/cookie-store.service";
 
     BsDropdownModule,
 
-    UtilsModule, I18nModule, UserModule, PopoverModule,
+    UtilsModule, I18nModule, UserModule,
+    // PopoverModule,
   ],
   declarations: [
     ActivitiesMessageComponent,

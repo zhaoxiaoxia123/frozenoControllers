@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {GlobalService} from "../../core/global.service";
 import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
 import {ActivatedRoute, Params, Router,NavigationEnd} from "@angular/router";
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {isUndefined} from "util";
 import {ProcessAlreadyComponent} from "./process-already/process-already.component";
 
@@ -149,7 +149,7 @@ export class ApprovalProcessComponent implements OnInit,AfterViewInit {
         });
     }
 
-    @ViewChild('ProcessAlreadyComponent', { static: false })ProcessAlreadyComponent:ProcessAlreadyComponent;
+    @ViewChild('ProcessAlreadyComponent')ProcessAlreadyComponent:ProcessAlreadyComponent;
     /**
      * 展示tab
      * @param type

@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
 import {GlobalService} from "../../core/global.service";
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {NotificationService} from "../../shared/utils/notification.service";
 
 @Component({
@@ -522,7 +522,7 @@ export class AddSalesComponent implements OnInit {
     }
 
 
-    @ViewChild('lgModal', { static: false }) public lgModal:ModalDirective;
+    @ViewChild('lgModal') public lgModal:ModalDirective;
 
     //添加按钮
     smartModEg1() {

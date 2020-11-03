@@ -4,7 +4,7 @@ import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {Router} from '@angular/router';
 import {GlobalService} from '../../core/global.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {isUndefined} from "util";
 // import { Buffer } from 'buffer';
 

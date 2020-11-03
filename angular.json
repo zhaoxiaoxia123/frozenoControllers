@@ -11,6 +11,25 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "essence-ng2-print",
+              "ng-drag-drop",
+              "util",
+              "ngx-popover",
+              "rxjs/add/operator/debounceTime",
+              "rxjs/Rx",
+              "rxjs/add/operator/catch",
+              "rxjs/add/operator/delay",
+              "rxjs/add/operator/do",
+              "rxjs/add/observable/of",
+              "rxjs/Observable",
+              "querystring",
+              "zrender/lib/svg/svg",
+              "zrender/lib/vml/vml",
+              "script-loader!smartadmin-plugins/bower_components/relayfoods-jquery.sparkline/dist/jquery.sparkline.min.js",
+              "script-loader!smartadmin-plugins/bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.min.js"
+            ],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -25,9 +44,8 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/echarts/dist/echarts.min.js",
-              "node_modules/echarts-gl/dist/echarts-gl.min.js",
-              "node_modules/echarts/map/js/china.js",
+              "node_modules/echarts/dist/echarts.js",
+              "node_modules/echarts-gl/dist/echarts-gl.js",
               "node_modules/echarts/dist/extension/bmap.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
@@ -110,14 +128,11 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/echarts/dist/echarts.min.js",
-              "node_modules/echarts-gl/dist/echarts-gl.min.js",
-              "node_modules/echarts/map/js/china.js",
+              "node_modules/echarts/dist/echarts.js",
+              "node_modules/echarts-gl/dist/echarts-gl.js",
               "node_modules/echarts/dist/extension/bmap.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
-//              "node_modules/popper.js/dist/umd/popper.min.js",
-//              "node_modules/zone.js/dist/zone.js"
             ],
             "styles": [
               "node_modules/font-awesome/css/font-awesome.min.css",
@@ -152,5 +167,8 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
+  },
+  "cli": {
+    "analytics": "454cb99d-b519-4cdf-b278-4f6c05c5a8ba"
   }
 }

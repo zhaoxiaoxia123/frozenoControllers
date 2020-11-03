@@ -66,7 +66,7 @@ export class TodoMissionDetailComponent implements OnInit,OnDestroy {
 
     //分配人 审批人 关注人
     show_user_type : number = 0;
-    selected_user : Array<any> = [];
+    selected_user : any = [];
     check : boolean = false;
     userList : any = [];
     userDefault : any = [];

@@ -130,11 +130,11 @@ export class DealerFinanceComponent implements OnInit {
      * 获取用户日月年收益指数
      */
     getCustomerIncome() {
-        let url = 'getCustomerIncome?sid='+this.cookieStore.getCookie('sid');
+        let url = 'getCustomerIncomeDetail?sid='+this.cookieStore.getCookie('sid');
         this.globalService.httpRequest('get',url)
           .subscribe((data)=>{
               if(data) {
-                  this.income = data['result']['data'];
+                  this.income = data['result'];
                   if (data['status'] == 202) {
                       this.cookieStore.removeAll(this.rollback_url);
                       this.router.navigate(['/auth/login']);

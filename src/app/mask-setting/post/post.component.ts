@@ -3,7 +3,7 @@ import {FadeInTop} from '../../shared/animations/fade-in-top.decorator';
 import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {Router} from '@angular/router';
 import {GlobalService} from '../../core/global.service';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {FileUploader} from "ng2-file-upload";
 import {isNull, isUndefined} from "util";
 import {stringify} from "querystring";
@@ -399,8 +399,6 @@ export class PostComponent implements OnInit {
 
   /**
    * 筛选
-   * @param num
-   * @param name
    */
   checkType(num:number,name:string){
     this.checkTypeId = num;

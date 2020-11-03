@@ -4,7 +4,7 @@ import {LanguageSelectorComponent} from "./language-selector/language-selector.c
 import {I18nPipe} from "./i18n.pipe";
 import {I18nService} from "./i18n.service";
 import {CommonModule} from "@angular/common";
-import {BsDropdownModule} from "ngx-bootstrap";
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 
 @NgModule({
   imports: [

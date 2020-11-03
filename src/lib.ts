@@ -1,16 +1,14 @@
-// jQuery
-declare var jQuery: any;
-
 
 // RxJS
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
-
-// I3otp Dependencies
-window['jQuery'] = require('jquery');
-window['$'] = window['jQuery'];
-import 'jquery-ui-npm/jquery-ui.min.js'
+// // jQuery
+// declare var jQuery: any;
+// // I3otp Dependencies
+// window['jQuery'] = require('jquery');
+// window['$'] = window['jQuery'];
+// import 'jquery-ui-npm/jquery-ui.min.js'
 
 
 

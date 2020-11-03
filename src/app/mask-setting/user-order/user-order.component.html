@@ -1,4 +1,4 @@
-<div id="content">
+<div>
     <sa-widgets-grid>
         <div class="row">
             <article class="col-sm-12 ">
@@ -167,7 +167,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="choiceexampleModalLabel">备货（订单编号：{{orderInfo.result?.o_order}}）</h5>
+                    <h5 class="modal-title">备货（订单编号：{{orderInfo.result?.o_order}}）</h5>
                     <button type="button" class="close" (click)="closeChoice()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -238,7 +238,7 @@
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="sendexampleModalLabel">发货（订单编号：{{orderInfo?.result?.o_order}}）</h5>
+                    <h5 class="modal-title">发货（订单编号：{{orderInfo?.result?.o_order}}）</h5>
                     <button type="button" class="close" (click)="closeExpress()">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -384,7 +384,7 @@
                         </div>
                     </div>
                     <div class="m-order">
-                        <div class="collapse" id="collapseExample">
+                        <div class="collapse">
                             <!--商品明细-->
                             <!--</div>-->
                             <!--表格默认最少显示5行-->
@@ -718,7 +718,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">订单号：{{verifyInfo?.o_order}}
+                <h5 class="modal-title">订单号：{{verifyInfo?.o_order}}
                     <span [ngSwitch]="verifyInfo?.frozeno_order_state">
                       <span class="label-blue" *ngSwitchCase="2">
                          <span *ngIf="verifyInfo?.frozeno_prepare_state == 1">

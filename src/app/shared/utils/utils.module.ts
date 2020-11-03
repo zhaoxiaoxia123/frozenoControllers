@@ -1,4 +1,4 @@
-import {NgModule} from "@angular/core";
+import {ModuleWithProviders, NgModule} from "@angular/core";
 import {BodyService} from "./body.service";
 import {NotificationService} from "./notification.service";
 
@@ -8,10 +8,10 @@ import {NotificationService} from "./notification.service";
   providers: [BodyService, NotificationService]
 })
 export class UtilsModule{
-  static forRoot(){
+  static forRoot(): ModuleWithProviders<UtilsModule> {
     return {
-      ngModule: UtilsModule,
-      providers: [BodyService, NotificationService]
-    }
-  }
+        ngModule: UtilsModule,
+        providers: [BodyService, NotificationService]
+    };
+}
 }

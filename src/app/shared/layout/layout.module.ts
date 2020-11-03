@@ -10,10 +10,11 @@ import {LayoutSwitcherComponent} from "./layout-switcher.component";
 import { MainLayoutComponent } from './app-layouts/main-layout.component';
 import { EmptyLayoutComponent } from './app-layouts/empty-layout.component';
 import { AuthLayoutComponent } from './app-layouts/auth-layout.component';
-import {TooltipModule, BsDropdownModule} from "ngx-bootstrap";
 import { RouteBreadcrumbsComponent } from './ribbon/route-breadcrumbs.component';
 import {UtilsModule} from "../utils/utils.module";
 import {ShortcutComponent} from "./shortcut/shortcut.component";
+import { BsDropdownModule} from "ngx-bootstrap/dropdown";
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 @NgModule({
   imports: [

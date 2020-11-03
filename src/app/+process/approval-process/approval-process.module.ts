@@ -5,7 +5,6 @@ import { ApprovalProcessComponent } from './approval-process.component';
 import { ProcessAwaitComponent } from './process-await/process-await.component';
 import { ProcessAlreadyComponent } from './process-already/process-already.component';
 import { ProcessMyComponent } from './process-my/process-my.component';
-import { InitiateRequiteComponent } from './initiate-requite/initiate-requite.component';
 import { ProcessCopyComponent } from './process-copy/process-copy.component';
 import {I3otpModule} from "../../shared/i3otp.module";
 import {BigPicModule} from "../../shared/common/big-pic/big-pic.module";

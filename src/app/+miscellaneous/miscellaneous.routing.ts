@@ -7,11 +7,15 @@ export const routes: Routes = [
   },
   {
     path: 'error404',
-    loadChildren: './+error404/error404.module#Error404Module'
+    // loadChildren: './+error404/error404.module#Error404Module'
+    loadChildren: () => import('./+error404/error404.module')
+      .then((m) => m.Error404Module),
   },
   {
     path: 'error500',
-    loadChildren: './+error500/error500.module#Error500Module'
+    // loadChildren: './+error500/error500.module#Error500Module'
+    loadChildren: () => import('./+error500/error500.module')
+      .then((m) => m.Error500Module),
   }
 ];
 

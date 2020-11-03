@@ -4,10 +4,28 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 
 import {
-  ModalModule, ButtonsModule, TooltipModule, BsDropdownModule, ProgressbarModule, AlertModule, TabsModule
-} from 'ngx-bootstrap'
+  ModalModule
+} from 'ngx-bootstrap/modal'
 
-import {PopoverModule} from "ngx-popover";
+import {
+  ButtonsModule
+} from 'ngx-bootstrap/buttons'
+import {
+  TooltipModule
+} from 'ngx-bootstrap/tooltip'
+import {
+  BsDropdownModule
+} from 'ngx-bootstrap/dropdown'
+import {
+  ProgressbarModule
+} from 'ngx-bootstrap/progressbar'
+import {
+     AlertModule
+} from 'ngx-bootstrap/alert'
+import {
+  TabsModule
+} from 'ngx-bootstrap/tabs'
+// import {PopoverModule} from "ngx-popover";
 import {I3otpLayoutModule} from './layout'
 import {I18nModule} from "./i18n/i18n.module";
 import {VoiceControlModule} from "./voice-control/voice-control.module";
@@ -32,7 +50,7 @@ import {I3otpFormsLiteModule} from "./forms/i3otp-forms-lite.module";
     TooltipModule,
     BsDropdownModule,
     ProgressbarModule,
-    PopoverModule,
+    // PopoverModule,
     I3otpLayoutModule,
     I18nModule,
     UtilsModule,

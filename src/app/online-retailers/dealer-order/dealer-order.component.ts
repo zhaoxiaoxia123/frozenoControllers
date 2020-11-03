@@ -3,9 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {CookieStoreService} from '../../shared/cookies/cookie-store.service';
 import {GlobalService} from '../../core/global.service';
-import {ModalDirective} from "ngx-bootstrap";
-import {split} from "ts-node/dist";
-import {stringify} from "querystring";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {EssenceNg2PrintComponent} from "essence-ng2-print";
 
 @Component({

@@ -3,7 +3,7 @@ import {getProvince,getCity} from '../../shared/common/area';
 import {Router} from "@angular/router";
 import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
 import {GlobalService} from "../../core/global.service";
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-account-admin',

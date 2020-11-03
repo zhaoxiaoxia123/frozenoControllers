@@ -3,7 +3,7 @@ import {FadeInTop} from "../../shared/animations/fade-in-top.decorator";
 import {Router} from "@angular/router";
 import {GlobalService} from "../../core/global.service";
 import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 
 @FadeInTop()
 @Component({

@@ -18,11 +18,11 @@ export class AddPhonicsComponent implements OnInit {
   broadcastListUser : any = [];
   broadcastInfo : any = [];
   b_id : number = 0;
-  selects: Array<any> = [];
+  selects: any = [];
   u_id_default:number = 0;
   c_id_default : number = 0;
 
-  join_i3otp_category : Array<any> = [];
+  join_i3otp_category : any = [];
   //复选框
   color_i3otp_id : number = 0;
   div_show_i3otp : boolean = true;//传感器点击显示下拉框
@@ -30,7 +30,7 @@ export class AddPhonicsComponent implements OnInit {
   /**菜单id */
   menu_id:any;
   /** 权限 */
-  permissions : Array<any> = [];
+  permissions : any = [];
   constructor(
       fb:FormBuilder,
       private router : Router,

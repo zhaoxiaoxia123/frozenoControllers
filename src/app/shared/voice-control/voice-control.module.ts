@@ -1,6 +1,6 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders,NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ModalModule} from "ngx-bootstrap";
+import {ModalModule} from "ngx-bootstrap/modal";
 
 import {SoundModule} from "../sound/sound.module";
 import {UtilsModule} from "../utils/utils.module";
@@ -21,10 +21,10 @@ import {VoiceRecognitionService} from "./voice-recognition.service";
 
 })
 export class VoiceControlModule {
-  static forRoot() {
+  static forRoot(): ModuleWithProviders<VoiceControlModule> {
     return {
-      ngModule: VoiceControlModule,
-      providers: [VoiceControlService, VoiceRecognitionService]
-    }
-  }
+        ngModule: VoiceControlModule,
+        providers: [VoiceControlService, VoiceRecognitionService]
+    };
+}
 }

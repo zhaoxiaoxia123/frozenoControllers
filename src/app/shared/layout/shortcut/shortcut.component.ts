@@ -1,8 +1,5 @@
 import {Subscription} from "rxjs/Rx";
-import {
-  Component, OnInit, OnDestroy, ElementRef,
-  Renderer, AfterViewInit, AfterContentInit
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, AfterViewInit, AfterContentInit, Renderer2 } from '@angular/core';
 import { Router} from "@angular/router";
 
 import {LayoutService} from "../layout.service";
@@ -39,7 +36,7 @@ export class ShortcutComponent implements OnInit, AfterViewInit, AfterContentIni
 
   constructor(private layoutService:LayoutService,
               private router:Router,
-              private renderer:Renderer,
+              private renderer:Renderer2,
               private el:ElementRef) {
   }
 
@@ -57,12 +54,12 @@ export class ShortcutComponent implements OnInit, AfterViewInit, AfterContentIni
       this.state = store.shortcutOpen ? 'in' : 'out'
 
       if (store.shortcutOpen) {
-        this.documentSub = this.renderer.listenGlobal('document', 'mouseup', (event) => {
-          if (!this.el.nativeElement.contains(event.target)) {
-            this.layoutService.onShortcutToggle(false);
-            this.documentUnsub()
-          }
-        });
+        this.documentSub = this.renderer.listen('document', 'mouseup', (event) => {
+    if (!this.el.nativeElement.contains(event.target)) {
+        this.layoutService.onShortcutToggle(false);
+        this.documentUnsub();
+    }
+});
       } else {
         this.documentUnsub()
       }

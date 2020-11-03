@@ -1,4 +1,4 @@
-import {Component, OnInit, ElementRef, Renderer, OnDestroy, Output} from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy, Output, Renderer2 } from '@angular/core';
 import {CookieStoreService} from "../../../cookies/cookie-store.service";
 import {GlobalService} from "../../../../core/global.service";
 
@@ -23,7 +23,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
       private cookieStore:CookieStoreService,
       private globalService:GlobalService,
       private el:ElementRef,
-      private renderer: Renderer
+      private renderer: Renderer2
     ) {
     this.lastUpdate = new Date().getFullYear()+'-'+
     new Date().getMonth()+'-'+
@@ -79,13 +79,13 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.active = !this.active;
     if (this.active) {
       dropdown.fadeIn()
-      this.documentSub = this.renderer.listenGlobal('document', 'mouseup', (event) => {
-        if (!this.el.nativeElement.contains(event.target)) {
-          dropdown.fadeOut();
-          this.active = false;
-          this.documentUnsub()
-        }
-      });
+      this.documentSub = this.renderer.listen('document', 'mouseup', (event) => {
+    if (!this.el.nativeElement.contains(event.target)) {
+        dropdown.fadeOut();
+        this.active = false;
+        this.documentUnsub();
+    }
+});
     } else {
       dropdown.fadeOut()
       this.documentUnsub()

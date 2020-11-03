@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { formElementsRouting } from './form-elements.routing';
 import {I3otpModule} from "../../shared/i3otp.module";
 import {FormElementsComponent, KeysPipe} from './form-elements.component';
-import {AngularEchartsModule} from 'ngx-echarts';
+import {NgxEchartsModule} from 'ngx-echarts';
 import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
@@ -11,7 +11,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     formElementsRouting,
-    AngularEchartsModule,
+    NgxEchartsModule,
     I3otpModule
   ],
   declarations: [

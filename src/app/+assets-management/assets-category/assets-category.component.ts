@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
 import {GlobalService} from "../../core/global.service";
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 
 @Component({
   selector: 'app-assets-category',
@@ -331,6 +331,6 @@ export class AssetsCategoryComponent implements OnInit {
     this.editStatusCategoryId = 0;
   }
 
-  @ViewChild('lgModal', { static: false }) public lgModal:ModalDirective;
+  @ViewChild('lgModal') public lgModal:ModalDirective;
   @ViewChild('detailModel', { static: true }) public detailModel:ModalDirective;
 }

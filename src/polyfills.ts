@@ -34,7 +34,7 @@
 // import 'core-js/es6/set';
 
 /** Evergreen browsers require these. **/
-import 'core-js/es6/reflect';
+import 'core-js/es/reflect';
 
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 import 'classlist.js';  // Run `npm install --save classlist.js`.
@@ -43,6 +43,12 @@ import 'classlist.js';  // Run `npm install --save classlist.js`.
 import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 
 
+// jQuery
+declare var jQuery: any;
+// I3otp Dependencies
+window['jQuery'] = require('jquery');
+window['$'] = window['jQuery'];
+import 'jquery-ui-npm/jquery-ui.min.js'
 
 
 

@@ -100,7 +100,7 @@
                                     </div>
                                     <!-- 底部-（分页部分）-->
                                     <div class="footer-size flex-justify-end">
-                                        <ul class="pagination" *ngIf="postList" >
+                                        <ul class="pagination" *ngIf="postList?.page != ''" >
                                             <li *ngFor="let p of postList?.page" class="{{p.class}}">
                                                 <a class="page-link" (click)="pagination(p.value)" *ngIf="p.method=='method'">{{p.text}}</a>
                                                 <a class="page-link" *ngIf="p.method==''">{{p.text}}</a>

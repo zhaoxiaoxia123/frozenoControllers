@@ -9,7 +9,7 @@ import { PanelStaffComponent } from './panel-staff/panel-staff.component';
 import { PanelSellComponent } from './panel-sell/panel-sell.component';
 import { PanelStorehouseComponent } from './panel-storehouse/panel-storehouse.component';
 import { PanelProductsComponent } from './panel-products/panel-products.component';
-import {AngularEchartsModule} from 'ngx-echarts';
+import {NgxEchartsModule} from 'ngx-echarts';
 import { PanelMineComponent } from './panel-mine/panel-mine.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { PanelMineComponent } from './panel-mine/panel-mine.component';
     I3otpModule,
     CommonModule,
     DynamicWallRoutingModule,
-      AngularEchartsModule
+      NgxEchartsModule
   ],
   declarations: [
       DynamicWallComponent,

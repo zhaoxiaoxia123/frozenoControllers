@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CookieStoreService} from "../../shared/cookies/cookie-store.service";
 import {GlobalService} from "../../core/global.service";
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalDirective} from "ngx-bootstrap/modal";
 import {NotificationService} from "../../shared/utils/notification.service";
 
 @Component({
@@ -499,7 +499,7 @@ export class AddReceiptComponent implements OnInit {
     this.operate_button_type = '';
     this.getPurchaseInfo(this.pr_id);
   }
-  @ViewChild('lgModal', { static: false }) public lgModal:ModalDirective;
+  @ViewChild('lgModal') public lgModal:ModalDirective;
 
     //添加按钮
     smartModEg1() {
