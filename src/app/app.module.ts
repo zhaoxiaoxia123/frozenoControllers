@@ -17,10 +17,11 @@ import {I3otpLayoutModule} from "./shared/layout/layout.module";
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 import {GlobalService} from './core/global.service';
 import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
 import {TododetailService} from "./shared/tododetail.service";
 import {CookieModule} from "ngx-cookie";
 import {CookieStoreService} from "./shared/cookies/cookie-store.service";
-import {ImageCropperModule} from "ng2-img-cropper";
+// import {ImageCropperModule} from "ng2-img-cropper";
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -47,10 +48,11 @@ type StoreType = {
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ImageCropperModule,
+    // ImageCropperModule,
     CoreModule,
     I3otpLayoutModule,
-    NgxEchartsModule.forRoot({echarts:()=>import('echarts')}),
+    // NgxEchartsModule.forRoot({echarts:()=>import('echarts')}),
+    NgxEchartsModule.forRoot({ echarts }),
     routing,
     CookieModule.forRoot()
   ],

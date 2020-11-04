@@ -4,7 +4,7 @@
   "license": "WRAPBOOTSTRAP",
   "angular-cli": {},
   "scripts": {
-    "build:dev": "ng build --prod --configuration=production --max_old_space_size=8192",
+    "build:dev": "ng build --prod --configuration=production",
     "build:test": "ng build --prod --configuration=test",
     "build:prod": "ng build --prod --aot=false",
     "build:aot": "ng build --prod --aot",
@@ -67,7 +67,6 @@
     "ng-drag-drop": "^5.0.0",
     "ng2-date-picker": "^10.0.0",
     "ng2-file-upload": "^1.4.0",
-    "ng2-img-cropper": "^0.9.0",
     "ngx-bootstrap": "^6.1.0",
     "ngx-cookie": "^5.0.0",
     "ngx-echarts": "^5.1.0",

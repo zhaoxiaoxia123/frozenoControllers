@@ -341,18 +341,13 @@
           </select>
         </div>
       </div>
-
       <div class="form-group col-md-6">
         <label class="label ">详细地址</label>
         <input class="form-control" name='address4' formControlName="address4" placeholder="请输入详细地址"  type="text" maxlength="20">
       </div>
-
     </div>
-
     <div class="line-bm"></div>
-
     <div class="form-row">
-
       <div class="form-group col-md-6">
         <label class="label ">创建日期</label>
         <input class="form-control" name='created_at' formControlName="created_at" disabled="disabled"  type="text" >
@@ -361,20 +356,13 @@
         <label class="label">修改时间</label>
         <input  class="form-control" name='updated_at' formControlName="updated_at" disabled="disabled"  type="text" >
       </div>
-
     </div>
-
   </fieldset>
-
   <fieldset style="margin-top:-60px;">
     <button type="button" class="btn btn-primary btn-sm margin-top-20 margin-left-20 " (click)="changeDivStatus()" >
       {{(is_showDiv == true) ?'收起':'展开'}}
     </button>
-
   </fieldset>
-
-
-
 
   <div class="footer-size text-align-right" >
     <div *ngIf="isPermission(menu_id,'add') || isPermission(menu_id,'edit')">
@@ -395,77 +383,40 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
           ×
         </button>
-
       </div>
-      <div class="modal-body">
-        <form>
-          <fieldset>
-            <div class="text-align-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div class="col-xs-6">
-                <section>
-                  <div class="form-group ">
-                      <div class="c-content-inner">
-                        <img-cropper #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>
-                        <div  class="c-file-upload">
-                          <button class="btn btn-primary ">选择图片</button>
-                          <input id="image-input" class="btn btn-primary " type="file" c-img-cropper-select [cropper]="avatarCropper">
-                        </div>
-                      </div>
-                      <p class="help-block">
-                        仅支持JPG、GIF、PNG图片文件，且小于3M
-                      </p>
-                  </div>
-                </section>
-              </div>
-              <div class="col-xs-6">
-                <div class="text-align-center " >
-                  <span class="user-image" *ngIf="data1.image" >
-                      <img [src]="data1.image"
-                           style="width: 180px; height: 180px;">
-                  </span>
-                </div>
-                <div class="text-align-center " >
-                  <p class="help-block">
-                    大尺寸图片，180px×180px
-                  </p>
-                </div>
-              </div>
-              <!--<section>-->
-                <!--<div class="form-group ">-->
-                  <!--<label class="col-md-2 control-label">上传头像</label>-->
-                  <!--<div class="col-md-10">-->
-                    <!--<div class="c-content-inner">-->
-                      <!--<img-cropper #avatarCropper [image]="data1" [settings]="avatarSettings" (onCrop)="cropped($event)"></img-cropper>-->
-                      <!--<div  class="c-file-upload">-->
-                        <!--<button class="btn btn-primary ">浏览图片</button>-->
-                        <!--<input id="image-input" class="btn btn-primary " type="file" c-img-cropper-select [cropper]="avatarCropper">-->
-                      <!--</div>-->
-                    <!--</div>-->
 
-                    <!--<p class="help-block">-->
-                      <!--仅支持JPG、GIF、PNG图片文件，且小于3M-->
-                    <!--</p>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</section>-->
-              <!--<div class="text-align-center col-lg-12 col-md-12 col-sm-12 col-xs-12" >-->
-                <!--<p class="help-block">-->
-                  <!--大尺寸图片，180px×180px-->
-                <!--</p>-->
-              <!--</div>-->
+      <div class="card form-group" style="width:100%;">
+        <h5 class="card-header">选择图片</h5>
+        <div class="card-body">
+          <div class="picture-img">
+            <div dragsortbeauty>
+              <div class="picture-item" *ngFor="let img of imageAd;let imgInd = index;">
+                <div class="picture-item-img">
+                  <img class="dsimg picture-item-imge" [src]="img.image_url" (mousedown)="imgmousedown($event,img.image_url)" (mouseup)="imgmouseup(img.image_url)">
+                  <div class="picture-icon">
+                    <a class="fa-fw fa fa-trash" (click)="removeImg(img.img_id,imgInd)"></a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <!--<div class="text-align-center col-lg-12 col-md-12 col-sm-12 col-xs-12" >-->
-              <!--<span class="user-image" *ngIf="data1.image" >-->
-                  <!--<img [src]="data1.image"-->
-                       <!--style="width: 180px; height: 180px;">-->
-              <!--</span>-->
-            <!--</div>-->
-          </fieldset>
-        </form>
+            <div class="picture-item" >
+              <div class="picture-item-img">
+                <div class="picture-file">
+                  <input type="file" class="custom-file-input picture-file-input" ng2FileSelect [uploader]="uploader" multiple (change)="selectedFileOnChanged()">
+                  <i class="fa fa-upload picture-file-icon" aria-hidden="true"></i>
+                </div>
+                <div class="picture-icon">
+                  <a class="picture-file-upload" >图片上传</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="card-text">大尺寸图片，180px×180px</p>
+        </div>
       </div>
 
       <div class="footer-size text-align-right" >
-        <button type="button" class="btn btn-primary ml-2" (click)="postFile()"  data-dismiss="modal" aria-hidden="true">确定上传</button>
+        <!--<button type="button" class="btn btn-primary ml-2" (click)="postFile()"  data-dismiss="modal" aria-hidden="true">确定上传</button>-->
         <button type="button" class="btn btn-default ml-2" data-dismiss="modal">关闭</button>
       </div>
 

@@ -6,8 +6,10 @@ import {getProvince,getCity,getArea} from '../../../shared/common/area';
 import {Router,ActivatedRoute} from '@angular/router';
 import {GlobalService} from '../../../core/global.service';
 import {FadeInTop} from '../../../shared/animations/fade-in-top.decorator';
-import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
+// import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
 import {NotificationService} from "../../../shared/utils/notification.service";
+import {FileUploader} from "ng2-file-upload";
+import {isNull, isUndefined} from "util";
 
 @FadeInTop()
 @Component({
@@ -60,11 +62,20 @@ export class RegistrationFormComponent implements OnInit {
     showMultipleYearsNavigation:true,
   };
 
-  name:string;
-  data1:any;
-  avatarSettings:CropperSettings;
-  croppedWidth:number;
-  croppedHeight:number;
+  deleteId:any=[];    //delete img_id
+  imageAd:any=[];    //广告图片
+  // 初始化上次图片变量
+  public uploader:FileUploader = new FileUploader({
+    url: this.globalService.getDomain() + "/api/v1/uploadFile",
+    method: "POST",
+    removeAfterUpload:true,
+    itemAlias: "uploadedfile",
+  });
+  // name:string;
+  // data1:any;
+  // avatarSettings:CropperSettings;
+  // croppedWidth:number;
+  // croppedHeight:number;
 
   /**菜单id */
   menu_id:any;
@@ -73,7 +84,7 @@ export class RegistrationFormComponent implements OnInit {
 
   tempDomain:string = '';
   rollback_url :string = '';
-  @ViewChild('avatarCropper', /* TODO: add static flag */ undefined) avatarCropper:ImageCropperComponent;
+  // @ViewChild('avatarCropper', /* TODO: add static flag */ undefined) avatarCropper:ImageCropperComponent;
   constructor(
       fb:FormBuilder,
       private router : Router,
@@ -127,27 +138,27 @@ export class RegistrationFormComponent implements OnInit {
     this.province = getProvince(); //家庭住址
     this.birthplace_province = getProvince();  //籍贯
 
-    this.name = 'Angular2';
-    this.avatarSettings = new CropperSettings();
-    this.avatarSettings.width = 200;
-    this.avatarSettings.height = 200;
-    this.avatarSettings.croppedWidth = 200;
-    this.avatarSettings.croppedHeight = 200;
-    this.avatarSettings.canvasWidth = 300;
-    this.avatarSettings.canvasHeight = 300;
-    this.avatarSettings.minWidth = 10;
-    this.avatarSettings.minHeight = 10;
-    this.avatarSettings.rounded = false;
-    this.avatarSettings.keepAspect = true;
-    this.avatarSettings.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-    this.avatarSettings.cropperDrawSettings.strokeWidth = 2;
-    this.data1 = {};
+    // this.name = 'Angular2';
+    // this.avatarSettings = new CropperSettings();
+    // this.avatarSettings.width = 200;
+    // this.avatarSettings.height = 200;
+    // this.avatarSettings.croppedWidth = 200;
+    // this.avatarSettings.croppedHeight = 200;
+    // this.avatarSettings.canvasWidth = 300;
+    // this.avatarSettings.canvasHeight = 300;
+    // this.avatarSettings.minWidth = 10;
+    // this.avatarSettings.minHeight = 10;
+    // this.avatarSettings.rounded = false;
+    // this.avatarSettings.keepAspect = true;
+    // this.avatarSettings.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
+    // this.avatarSettings.cropperDrawSettings.strokeWidth = 2;
+    // this.data1 = {};
   }
 
-  cropped(bounds:Bounds) {
-    this.croppedHeight =bounds.bottom-bounds.top;
-    this.croppedWidth = bounds.right-bounds.left;
-  }
+  // cropped(bounds:Bounds) {
+  //   this.croppedHeight =bounds.bottom-bounds.top;
+  //   this.croppedWidth = bounds.right-bounds.left;
+  // }
   ngOnInit() {
     this.u_id = this.routInfo.snapshot.params['u_id'];
     if(this.u_id != 0){
@@ -463,43 +474,70 @@ export class RegistrationFormComponent implements OnInit {
     this.birthplace_city = getCity(brithplacePro);
   }
 
-  /**
-   * 上传文件
-   */
-  postFile(){
-    var that = this;
-    var form=document.forms[0];
-    var formData : FormData = new FormData(form);
-    //convertBase64UrlToBlob函数是将base64编码转换为Blob
-    formData.append("uploadedfile",this.globalService.convertBase64UrlToBlob(this.data1.image),"head_"+ new Date().getTime() +".png");
-    console.log(this.data1);
-    //组建XMLHttpRequest 上传文件
-    var infos ;
-    var request = new XMLHttpRequest();
-    //上传连接地址
-    request.open("POST", this.globalService.getDomain() + "/api/v1/uploadFile");
-    request.onreadystatechange=function()
-    {
-      console.log(request);
-      if (request.readyState==4)
-      {
-        if(request.status==200){
-          infos = JSON.parse(request.response);
-          if(infos['status']==200){
-            that.path = infos['result'];
-            alert("上传成功");
-          }else{
-            alert("上传失败，无法获取图片上传地址");
-          }
-          console.log(that.path);
-        }else{
-          alert("上传失败,检查上传地址是否正确");
-        }
-      }
+  //移除修改数据库图片
+  removeImg(img_id,imgIndex) {
+    if(img_id && !isNull(img_id)) {
+      this.deleteId.push(img_id);
     }
-    request.send(formData);
+    this.imageAd.splice(imgIndex,1);
   }
 
+  // C: 定义事件，选择文件
+  selectedFileOnChanged() {
+    let $this = this;
+    let selectedArr = [];
+
+    this.uploader.queue.forEach((q,i)=>{
+      let reader = new FileReader();
+      reader.readAsDataURL(q.some);
+      reader.onload = function(e){
+        let imgs = {
+          url:this.result,
+          uploadID:i,
+          type:'new',
+        };
+        selectedArr.push(imgs);
+      }
+    });
+    selectedArr.sort($this.compare('uploadID'));
+    this.uploadFile();
+  }
+
+  //数组字段根据某一字段进行排序
+  compare(property){
+    return function(a,b){
+      let value1 = a[property];
+      let value2 = b[property];
+      return value1 - value2;
+    }
+  }
+
+  // D: 定义事件，上传文件  单个文件
+  uploadFile() {
+    let that = this;
+    let len = that.uploader.queue.length;
+    this.uploader.queue.forEach((q,i)=> {
+      if (!isUndefined(that.uploader.queue[i])) {
+        that.uploader.queue[i].onSuccess = function (response, status, headers) {
+          let tempRes = JSON.parse(response);
+          // 上传文件成功
+          if (status == 200) {
+            let imgs = {"image_url":tempRes['result'],"type":"new"};
+            that.imageAd.push(imgs);
+            if((i+1) >= len) {
+              // alert("上传成功!");
+            }
+          } else {
+            // 上传文件后获取服务器返回的数据错误
+            alert(tempRes['msg']);
+          }
+        };
+        this.uploader.queue[i].upload(); // 开始上传
+      } else {
+        alert('找不到要上传的图片！');
+      }
+    });
+  }
 
     //添加按钮
     smartModEg1() {
