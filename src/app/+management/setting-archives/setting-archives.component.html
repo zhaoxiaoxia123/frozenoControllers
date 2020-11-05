@@ -28,11 +28,9 @@
                     <div class="btn-group" *ngIf="isPermission(menu_id,'detail')">
                       <button type="button"  [ngClass]="{'btn btn-success':true,'not-click':isStatus == 0}" (click)="detailProduct('detail')"><span class="fa-fw fa fa-list-alt mr-5"></span>详情</button>
                     </div>
-
                     <div class="btn-group" *ngIf="isStatus == 2 && isPermission(menu_id,'edit')">
                       <button type="button" class="btn btn-success"  (click)="editStatus(1,'id')"><span class="fa-fw fa fa-play mr-5 "></span>启用</button>
                     </div>
-
                     <div class="btn-group" *ngIf="isStatus == 1 && isPermission(menu_id,'edit')">
                       <button type="button" class="btn btn-danger" (click)="editStatus(2,'id')"><span class="fa-fw fa fa-stop mr-5 "></span>无效</button>
                     </div>
