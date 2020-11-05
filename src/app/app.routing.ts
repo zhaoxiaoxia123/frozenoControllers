@@ -36,11 +36,6 @@ export const routes: Routes = [
           .then((m) => m.AssetsManagementModule),
         data: {pageTitle: 'AssetsManagement'}
       },
-      {path: 'auth', component: AuthLayoutComponent,
-        // loadChildren: 'app/+auth/auth.module#AuthModule'
-        loadChildren: () => import('./+auth/auth.module')
-          .then((m) => m.AuthModule),
-      },
       {
         path: 'customer-management',
         // loadChildren: 'app/+customer-management/customer-management.module#CustomerManagementModule',
@@ -197,6 +192,11 @@ export const routes: Routes = [
       }
     ]
   },
+    {path: 'auth', component: AuthLayoutComponent,
+        // loadChildren: 'app/+auth/auth.module#AuthModule'
+        loadChildren: () => import('./+auth/auth.module')
+            .then((m) => m.AuthModule),
+    },
   // {path: '**', redirectTo: 'miscellaneous/error404'}
 ];
 

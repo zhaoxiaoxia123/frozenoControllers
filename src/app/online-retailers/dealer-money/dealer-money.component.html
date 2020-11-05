@@ -29,6 +29,15 @@
                                     </form>
                                     <form  class="navbar-form" novalidate="" role="search">
                                         <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                全部
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" >全部</a>
+                                                <a class="dropdown-item" >按月份查看</a>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group" style="margin-bottom:-16px;">
                                             <input class="form-control" [(ngModel)]="date" [ngModelOptions]="{standalone: true}" [dpDayPicker]="datePickerConfig" [theme]="'dp-material'" [mode]="'month'">
                                         </div>
                                         <div class="btn-group m-deler-money1">
