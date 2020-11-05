@@ -4,14 +4,12 @@ import { Routes, RouterModule } from '@angular/router';
 export const routes: Routes = [
     {
         path: 'account-company',
-        // loadChildren: 'app/+account/account-company/account-company.module#AccountCompanyModule',
         loadChildren: () => import('./account-company/account-company.module')
           .then((m) => m.AccountCompanyModule),
         data: {pageTitle: 'AccountCompany'}
     },
     {
         path: 'account-permissions',
-        // loadChildren: 'app/+account/account-permissions/account-permissions.module#AccountPermissionsModule',
         loadChildren: () => import('./account-permissions/account-permissions.module')
           .then((m) => m.AccountPermissionsModule),
         data: {pageTitle: 'AccountPermissions'}

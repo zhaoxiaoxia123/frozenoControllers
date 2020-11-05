@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 export const routes: Routes = [
     {
         path: 'unit-classify',
-        // loadChildren: 'app/+customer-management/unit-classify/unit-classify.module#UnitClassifyModule',
         loadChildren: () => import('./unit-classify/unit-classify.module')
           .then((m) => m.UnitClassifyModule),
         data: {pageTitle: 'UnitClassify'}
